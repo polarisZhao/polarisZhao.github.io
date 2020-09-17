@@ -1,0 +1,762 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>pytorch Cookbook - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-03-19 13:20" pubdate>
+        March 19, 2019 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      33
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">pytorch Cookbook</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>🔥 一些 pytorch 编程的小技巧、trick 和 示例代码</p>
+<a id="more"></a>
+<p>本文代码基于PyTorch 1.0版本，需要用到以下包</p>
+<pre><code class="hljs elm"><span class="hljs-keyword">import</span> collections
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> shutil
+<span class="hljs-keyword">import</span> tqdm
+
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> PIL.Image
+<span class="hljs-keyword">import</span> torch
+<span class="hljs-keyword">import</span> torchvision</code></pre>
+<h3 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h3><h5 id="1-check-pytorch-version"><a href="#1-check-pytorch-version" class="headerlink" title="(1) check pytorch version"></a>(1) check pytorch version</h5><pre><code class="hljs python">torch.__version__               <span class="hljs-comment"># PyTorch version</span>
+torch.version.cuda              <span class="hljs-comment"># Corresponding CUDA version</span>
+torch.backends.cudnn.version()  <span class="hljs-comment"># Corresponding cuDNN version</span>
+torch.cuda.get_device_name(<span class="hljs-number">0</span>)   <span class="hljs-comment"># GPU type</span></code></pre>
+<h5 id="2-update-pytorch"><a href="#2-update-pytorch" class="headerlink" title="(2) update pytorch"></a>(2) update pytorch</h5><pre><code class="hljs ebnf"><span class="hljs-attribute">conda update pytorch torchvision -c pytorch</span></code></pre>
+<h5 id="3-random-seed-setting"><a href="#3-random-seed-setting" class="headerlink" title="(3) random seed setting"></a>(3) random seed setting</h5><pre><code class="hljs css"><span class="hljs-selector-tag">torch</span><span class="hljs-selector-class">.manual_seed</span>(0) # <span class="hljs-selector-tag">CPU</span>
+<span class="hljs-selector-tag">torch</span><span class="hljs-selector-class">.cuda</span><span class="hljs-selector-class">.manual_seed_all</span>(0) # <span class="hljs-selector-tag">GPU</span></code></pre>
+<h5 id="4-指定程序运行在特定显卡上："><a href="#4-指定程序运行在特定显卡上：" class="headerlink" title="(4) 指定程序运行在特定显卡上："></a>(4) 指定程序运行在特定显卡上：</h5><p>在命令行指定环境变量</p>
+<pre><code class="hljs angelscript">CUDA_VISIBLE_DEVICES=<span class="hljs-number">0</span>,<span class="hljs-number">1</span> python train.py</code></pre>
+<p>在代码中指定</p>
+<pre><code class="hljs lua"><span class="hljs-built_in">os</span>.environ[<span class="hljs-string">&#x27;CUDA_VISIBLE_DEVICES&#x27;</span>] = <span class="hljs-string">&#x27;0,1&#x27;</span></code></pre>
+<h5 id="5-判断是否有CUDA支持"><a href="#5-判断是否有CUDA支持" class="headerlink" title="(5) 判断是否有CUDA支持"></a>(5) 判断是否有CUDA支持</h5><pre><code class="hljs ceylon">torch.cuda.<span class="hljs-keyword">is</span><span class="hljs-number">_</span>available()
+torch.set<span class="hljs-number">_</span><span class="hljs-keyword">default</span><span class="hljs-number">_</span>tensor<span class="hljs-number">_</span>type(<span class="hljs-string">&#x27;torch.cuda.FloatTensor&#x27;</span>)   
+os.environ[<span class="hljs-string">&#x27;CUDA_LAUNCH_BLOCKING&#x27;</span>] = <span class="hljs-string">&#x27;1&#x27;</span></code></pre>
+<h5 id="6-设置为cuDNN-benchmark模式"><a href="#6-设置为cuDNN-benchmark模式" class="headerlink" title="(6) 设置为cuDNN benchmark模式"></a>(6) 设置为cuDNN benchmark模式</h5><p>Benchmark模式会提升计算速度，但是由于计算中有随机性，每次网络前馈结果略有差异。</p>
+<pre><code class="hljs ini"><span class="hljs-attr">toch.backends.cudnn.benchmark</span> = <span class="hljs-literal">True</span></code></pre>
+<p>如果想要避免这种结果波动，设置</p>
+<pre><code class="hljs ini"><span class="hljs-attr">torch.backends.cudnn.deterministic</span> = <span class="hljs-literal">True</span></code></pre>
+<h5 id="7-手动清除GPU存储"><a href="#7-手动清除GPU存储" class="headerlink" title="(7) 手动清除GPU存储"></a>(7) 手动清除GPU存储</h5><p>有时Control-C中止运行后GPU存储没有及时释放，需要手动清空。在PyTorch内部可以</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">torch</span><span class="hljs-selector-class">.cuda</span><span class="hljs-selector-class">.empty_cache</span>()</code></pre>
+<p>或在命令行可以先使用ps找到程序的PID，再使用kill结束该进程</p>
+<pre><code class="hljs vim"><span class="hljs-keyword">ps</span> aux | <span class="hljs-keyword">grep</span> <span class="hljs-keyword">python</span>    kill -<span class="hljs-number">9</span> [pid]</code></pre>
+<p>或者直接重置没有被清空的GPU</p>
+<pre><code class="hljs ada">nvidia-smi <span class="hljs-comment">--gpu-reset -i [gpu_id]</span></code></pre>
+<h3 id="2-模型"><a href="#2-模型" class="headerlink" title="2. 模型"></a>2. 模型</h3><h5 id="1-提取ImageNet预训练模型某层的卷积特征"><a href="#1-提取ImageNet预训练模型某层的卷积特征" class="headerlink" title="(1) 提取ImageNet预训练模型某层的卷积特征"></a>(1) 提取ImageNet预训练模型某层的卷积特征</h5><pre><code class="hljs gams"># VGG<span class="hljs-number">-16</span> relu5<span class="hljs-number">-3</span> feature.
+<span class="hljs-keyword">model</span> = torchvision.<span class="hljs-keyword">models</span>.vgg16(pretrained=True).features
+# VGG<span class="hljs-number">-16</span> pool5 feature.
+<span class="hljs-keyword">model</span> = torchvision.<span class="hljs-keyword">models</span>.vgg16(pretrained=True)
+<span class="hljs-keyword">model</span> = torch.nn.Sequential(<span class="hljs-keyword">model</span>.features, <span class="hljs-keyword">model</span>.avgpool)
+# VGG<span class="hljs-number">-16</span> fc7 feature.
+<span class="hljs-keyword">model</span> = torchvision.<span class="hljs-keyword">models</span>.vgg16(pretrained=True)
+<span class="hljs-keyword">model</span>.classifier = torch.nn.Sequential(*list(<span class="hljs-keyword">model</span>.classifier.children())[:<span class="hljs-number">-3</span>])
+# ResNet GAP feature.
+<span class="hljs-keyword">model</span> = torchvision.<span class="hljs-keyword">models</span>.resnet18(pretrained=True)
+<span class="hljs-keyword">model</span> = torch.nn.Sequential(collections.OrderedDict(
+    list(<span class="hljs-keyword">model</span>.named_children())[:<span class="hljs-number">-1</span>]))
+
+with torch.no_grad():
+    <span class="hljs-keyword">model</span>.eval()
+    conv_representation = <span class="hljs-keyword">model</span>(image)</code></pre>
+<h5 id="2-提取ImageNet预训练模型多层的卷积特征"><a href="#2-提取ImageNet预训练模型多层的卷积特征" class="headerlink" title="(2) 提取ImageNet预训练模型多层的卷积特征"></a>(2) 提取ImageNet预训练模型多层的卷积特征</h5><pre><code class="hljs vim">class FeatureExtractor(torch.<span class="hljs-keyword">nn</span>.Module):
+    <span class="hljs-string">&quot;&quot;</span><span class="hljs-comment">&quot;Helper class to extract several convolution features from the given</span>
+    <span class="hljs-keyword">pre</span>-trained model.
+
+    Attribute<span class="hljs-variable">s:</span>
+        _model, torch.<span class="hljs-keyword">nn</span>.Module.
+        _layers_to_extract, <span class="hljs-keyword">list</span><span class="hljs-symbol">&lt;str&gt;</span> <span class="hljs-built_in">or</span> <span class="hljs-keyword">set</span><span class="hljs-symbol">&lt;str&gt;</span>
+
+    Example:
+        &gt;&gt;&gt; model = torchvision.models.resnet152(pretrained=True)
+        &gt;&gt;&gt; model = torch.<span class="hljs-keyword">nn</span>.Sequential(collections.OrderedDict(
+                <span class="hljs-keyword">list</span>(model.named_children())[:-<span class="hljs-number">1</span>]))
+        &gt;&gt;&gt; conv_representation = FeatureExtractor(
+                pretrained_model=model,
+                layers_to_extract=&#123;<span class="hljs-string">&#x27;layer1&#x27;</span>, <span class="hljs-string">&#x27;layer2&#x27;</span>, <span class="hljs-string">&#x27;layer3&#x27;</span>, <span class="hljs-string">&#x27;layer4&#x27;</span>&#125;)(image)
+    <span class="hljs-string">&quot;&quot;</span><span class="hljs-comment">&quot;</span>
+    def __init__(self, pretrained_model, layers_to_extract):
+        torch.<span class="hljs-keyword">nn</span>.Module.__init__(self)
+        self._model = pretrained_model
+        self._model.<span class="hljs-built_in">eval</span>()
+        self._layers_to_extract = <span class="hljs-keyword">set</span>(layers_to_extract)
+    
+    def forward(self, <span class="hljs-keyword">x</span>):
+        with torch.no_grad():
+            conv_representation = []
+            <span class="hljs-keyword">for</span> name, layer in self._model.named_children():
+                <span class="hljs-keyword">x</span> = layer(<span class="hljs-keyword">x</span>)
+                <span class="hljs-keyword">if</span> name in self._layers_to_extrac<span class="hljs-variable">t:</span>
+                    conv_representation.<span class="hljs-keyword">append</span>(<span class="hljs-keyword">x</span>)
+            <span class="hljs-keyword">return</span> conv_representation</code></pre>
+<h5 id="３-部分层使用预训练模型"><a href="#３-部分层使用预训练模型" class="headerlink" title="(３)  部分层使用预训练模型"></a>(３)  部分层使用预训练模型</h5><p>注意如果保存的模型是<code>torch.nn.DataParallel</code>，则当前的模型也需要是<code>torch.nn.DataParallel</code>。<code>torch.nn.DataParallel(model).module == model</code>。</p>
+<pre><code class="hljs reasonml">model.load<span class="hljs-constructor">_state_dict(<span class="hljs-params">torch</span>.<span class="hljs-params">load</span>(&#x27;<span class="hljs-params">model</span>,<span class="hljs-params">pth</span>&#x27;)</span>, strict=False)</code></pre>
+<p>将在GPU保存的模型加载到CPU:</p>
+<pre><code class="hljs reasonml">model.load<span class="hljs-constructor">_state_dict(<span class="hljs-params">torch</span>.<span class="hljs-params">load</span>(&#x27;<span class="hljs-params">model</span>,<span class="hljs-params">pth</span>&#x27;, <span class="hljs-params">map_location</span>=&#x27;<span class="hljs-params">cpu</span>&#x27;)</span>)</code></pre>
+<h5 id="（４）fine-tune-微调全连接层"><a href="#（４）fine-tune-微调全连接层" class="headerlink" title="（４）fine-tune 微调全连接层"></a>（４）fine-tune 微调全连接层</h5><h5 id="4-微调全连接层"><a href="#4-微调全连接层" class="headerlink" title="(4) 微调全连接层"></a>(4) 微调全连接层</h5><pre><code class="hljs nix"><span class="hljs-attr">model</span> = torchvision.models.resnet18(<span class="hljs-attr">pretrained=True)</span>
+for param <span class="hljs-keyword">in</span> model.parameters():
+    param.<span class="hljs-attr">requires_grad</span> = False
+model.<span class="hljs-attr">fc</span> = nn.Linear(<span class="hljs-number">512</span>, <span class="hljs-number">100</span>)  <span class="hljs-comment"># Replace the last fc layer</span>
+<span class="hljs-attr">optimizer</span> = torch.optim.SGD(model.fc.parameters(), <span class="hljs-attr">lr=1e-2,</span> <span class="hljs-attr">momentum=0.9,</span> <span class="hljs-attr">weight_decay=1e-4)</span></code></pre>
+<p>以较大学习率微调全连接层，较小学习率微调卷积层</p>
+<pre><code class="hljs ini"><span class="hljs-attr">model</span> = torchvision.models.resnet18(pretrained=<span class="hljs-literal">True</span>)
+<span class="hljs-attr">finetuned_parameters</span> = list(map(id, model.fc.parameters()))
+<span class="hljs-attr">conv_parameters</span> = (p for p in model.parameters() if id(p) not in finetuned_parameters)
+<span class="hljs-attr">parameters</span> = [&#123;<span class="hljs-string">&#x27;parameters&#x27;</span>: conv_parameters, <span class="hljs-string">&#x27;lr&#x27;</span>: <span class="hljs-number">1</span>e-<span class="hljs-number">3</span>&#125;, 
+              &#123;<span class="hljs-string">&#x27;parameters&#x27;</span>: model.fc.parameters()&#125;]
+<span class="hljs-attr">optimizer</span> = torch.optim.SGD(parameters, lr=<span class="hljs-number">1</span>e-<span class="hljs-number">2</span>, momentum=<span class="hljs-number">0.9</span>, weight_decay=<span class="hljs-number">1</span>e-<span class="hljs-number">4</span>)</code></pre>
+<h5 id="（５）保存与加载断点"><a href="#（５）保存与加载断点" class="headerlink" title="（５）保存与加载断点"></a>（５）保存与加载断点</h5><p>注意为了能够恢复训练，我们需要同时保存模型和优化器的状态，以及当前的训练轮数。</p>
+<pre><code class="hljs lua"># Save checkpoint.
+is_best = current_acc &gt; best_acc
+best_acc = <span class="hljs-built_in">max</span>(best_acc, current_acc)
+checkpoint = &#123;
+    <span class="hljs-string">&#x27;best_acc&#x27;</span>: best_acc,    
+    <span class="hljs-string">&#x27;epoch&#x27;</span>: t + <span class="hljs-number">1</span>,
+    <span class="hljs-string">&#x27;model&#x27;</span>: model.state_dict(),
+    <span class="hljs-string">&#x27;optimizer&#x27;</span>: optimizer.state_dict(),
+&#125;
+model_path = <span class="hljs-built_in">os</span>.<span class="hljs-built_in">path</span>.join(<span class="hljs-string">&#x27;model&#x27;</span>, <span class="hljs-string">&#x27;checkpoint.pth.tar&#x27;</span>)
+torch.save(checkpoint, model_path)
+<span class="hljs-keyword">if</span> is_best:
+    shutil.copy(<span class="hljs-string">&#x27;checkpoint.pth.tar&#x27;</span>, model_path)
+
+# Load checkpoint.
+<span class="hljs-keyword">if</span> <span class="hljs-built_in">resume</span>:
+    model_path = <span class="hljs-built_in">os</span>.<span class="hljs-built_in">path</span>.join(<span class="hljs-string">&#x27;model&#x27;</span>, <span class="hljs-string">&#x27;checkpoint.pth.tar&#x27;</span>)
+    <span class="hljs-built_in">assert</span> <span class="hljs-built_in">os</span>.<span class="hljs-built_in">path</span>.isfile(model_path)
+    checkpoint = torch.<span class="hljs-built_in">load</span>(model_path)
+    best_acc = checkpoint[<span class="hljs-string">&#x27;best_acc&#x27;</span>]
+    start_epoch = checkpoint[<span class="hljs-string">&#x27;epoch&#x27;</span>]
+    model.load_state_dict(checkpoint[<span class="hljs-string">&#x27;model&#x27;</span>])
+    optimizer.load_state_dict(checkpoint[<span class="hljs-string">&#x27;optimizer&#x27;</span>])
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Load checkpoint at epoch %d.&#x27;</span> % start_epoch)</code></pre>
+<h5 id="６-计算模型参数量-D"><a href="#６-计算模型参数量-D" class="headerlink" title="(６) 计算模型参数量[D]"></a>(６) 计算模型参数量[D]</h5><pre><code class="hljs lisp"># Total parameters                    
+num_params = sum(<span class="hljs-name">p</span>.numel() for p in model.parameters()) 
+# Trainable parameters
+num_trainable_params = sum(<span class="hljs-name">p</span>.numel() for p in model.parameters() if p.requires_grad)</code></pre>
+<h5 id="７-模型权值初始化-D"><a href="#７-模型权值初始化-D" class="headerlink" title="(７) 模型权值初始化[D]"></a>(７) 模型权值初始化[D]</h5><p>注意<code>model.modules()</code>和<code>model.children()</code>的区别：<code>model.modules()</code>会迭代地遍历模型的所有子层，而<code>model.children()</code>只会遍历模型下的一层。</p>
+<pre><code class="hljs python"><span class="hljs-comment"># Common practise for initialization.</span>
+<span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> model.modules():
+    <span class="hljs-keyword">if</span> isinstance(m, torch.nn.Conv2d):
+        torch.nn.init.kaiming_normal_(m.weight, mode=<span class="hljs-string">&#x27;fan_out&#x27;</span>,
+                                      nonlinearity=<span class="hljs-string">&#x27;relu&#x27;</span>)
+        <span class="hljs-keyword">if</span> m.bias <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            torch.nn.init.constant_(m.bias, val=<span class="hljs-number">0.0</span>)
+    
+    <span class="hljs-keyword">elif</span> isinstance(m, torch.nn.BatchNorm2d):
+        torch.nn.init.constant_(m.weight, <span class="hljs-number">1.0</span>)
+        torch.nn.init.constant_(m.bias, <span class="hljs-number">0.0</span>)
+  
+    <span class="hljs-keyword">elif</span> isinstance(m, torch.nn.Linear):
+        torch.nn.init.xavier_normal_(m.weight)
+        <span class="hljs-keyword">if</span> m.bias <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            torch.nn.init.constant_(m.bias, <span class="hljs-number">0.0</span>)
+
+<span class="hljs-comment"># Initialization with given tensor.</span>
+m.weight = torch.nn.Parameter(tensor)</code></pre>
+<h5 id="8-冻结参数"><a href="#8-冻结参数" class="headerlink" title="(8) 冻结参数"></a>(8) 冻结参数</h5><pre><code class="hljs sqf"><span class="hljs-keyword">if</span> <span class="hljs-built_in">not</span> requires_grad:
+    <span class="hljs-keyword">for</span> <span class="hljs-built_in">param</span> <span class="hljs-built_in">in</span> self.parameters():
+        <span class="hljs-built_in">param</span>.requires_grad = <span class="hljs-literal">False</span></code></pre>
+<h3 id="3-数据"><a href="#3-数据" class="headerlink" title="3. 数据"></a>3. 数据</h3><h5 id="1-常见训练和验证数据预处理"><a href="#1-常见训练和验证数据预处理" class="headerlink" title="(1) 常见训练和验证数据预处理"></a>(1) 常见训练和验证数据预处理</h5><p>ToTensor操作会将PIL.Image或形状为H×W×D，数值范围为[0, 255]的np.ndarray转换为形状为D×H×W，数值范围为[0.0, 1.0]的torch.Tensor。</p>
+<pre><code class="hljs angelscript">train_transform = torchvision.transforms.Compose([
+    torchvision.transforms.RandomResizedCrop(size=<span class="hljs-number">224</span>,
+                                             scale=(<span class="hljs-number">0.08</span>, <span class="hljs-number">1.0</span>)),
+    torchvision.transforms.RandomHorizontalFlip(),
+    torchvision.transforms.ToTensor(),
+    torchvision.transforms.Normalize(mean=(<span class="hljs-number">0.485</span>, <span class="hljs-number">0.456</span>, <span class="hljs-number">0.406</span>),
+                                     std=(<span class="hljs-number">0.229</span>, <span class="hljs-number">0.224</span>, <span class="hljs-number">0.225</span>)),
+ ])
+ val_transform = torchvision.transforms.Compose([
+    torchvision.transforms.Resize(<span class="hljs-number">224</span>),
+    torchvision.transforms.CenterCrop(<span class="hljs-number">224</span>),
+    torchvision.transforms.ToTensor(),
+    torchvision.transforms.Normalize(mean=(<span class="hljs-number">0.485</span>, <span class="hljs-number">0.456</span>, <span class="hljs-number">0.406</span>),
+                                     std=(<span class="hljs-number">0.229</span>, <span class="hljs-number">0.224</span>, <span class="hljs-number">0.225</span>)),
+])</code></pre>
+<h3 id="4-训练"><a href="#4-训练" class="headerlink" title="4. 训练"></a>4. 训练</h3><h5 id="1-将整数标记转换成独热（one-hot）编码"><a href="#1-将整数标记转换成独热（one-hot）编码" class="headerlink" title="(1) 将整数标记转换成独热（one-hot）编码"></a>(1) 将整数标记转换成独热（one-hot）编码</h5><p> (PyTorch中的标记默认从0开始)</p>
+<pre><code class="hljs routeros">N = tensor.size(0)
+one_hot = torch.zeros(N, num_classes).long()
+one_hot.scatter_(<span class="hljs-attribute">dim</span>=1, <span class="hljs-attribute">index</span>=torch.unsqueeze(tensor, <span class="hljs-attribute">dim</span>=1), <span class="hljs-attribute">src</span>=torch.ones(N, num_classes).long())</code></pre>
+<h5 id="2-计算两组数据之间的两两欧式距离"><a href="#2-计算两组数据之间的两两欧式距离" class="headerlink" title="(2) 计算两组数据之间的两两欧式距离"></a>(2) 计算两组数据之间的两两欧式距离</h5><pre><code class="hljs markdown"><span class="hljs-section"># X1 is of shape m<span class="hljs-emphasis">*d.</span></span>
+<span class="hljs-section"><span class="hljs-emphasis">X1 = torch.unsqueeze(X1, dim=1).expand(m, n, d)</span></span>
+<span class="hljs-section"><span class="hljs-emphasis"># X2 is of shape n*</span>d.</span>
+X2 = torch.unsqueeze(X2, dim=0).expand(m, n, d)
+<span class="hljs-section"># dist is of shape m<span class="hljs-emphasis">*n, where dist[<span class="hljs-string">i</span>][<span class="hljs-symbol">j</span>] = sqrt(|X1[i, :] - X[j, :]|^2)</span></span>
+<span class="hljs-section"><span class="hljs-emphasis">dist = torch.sqrt(torch.sum((X1 - X2) <span class="hljs-strong">** 2, dim=2))</span></span></span></code></pre>
+<h5 id="3-双线性汇合（bilinear-pooling）"><a href="#3-双线性汇合（bilinear-pooling）" class="headerlink" title="(3) 双线性汇合（bilinear pooling）"></a>(3) 双线性汇合（bilinear pooling）</h5><pre><code class="hljs tp"><span class="hljs-keyword">X</span> = torch.reshape(N, D, H * <span class="hljs-keyword">W</span>)                        # Assume <span class="hljs-keyword">X</span> has shape N*D*H*<span class="hljs-keyword">W</span>
+<span class="hljs-keyword">X</span> = torch.bmm(<span class="hljs-keyword">X</span>, torch.transpose(<span class="hljs-keyword">X</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)) / (H * <span class="hljs-keyword">W</span>)  # Bilinear pooling
+assert <span class="hljs-keyword">X</span>.size() == (N, D, D)
+<span class="hljs-keyword">X</span> = torch.reshape(<span class="hljs-keyword">X</span>, (N, D * D))
+<span class="hljs-keyword">X</span> = torch.sign(<span class="hljs-keyword">X</span>) * torch.sqrt(torch.abs(<span class="hljs-keyword">X</span>) + <span class="hljs-number">1e-5</span>)   # Signed-sqrt normalization
+<span class="hljs-keyword">X</span> = torch.nn.functional.normalize(<span class="hljs-keyword">X</span>)                  # L<span class="hljs-number">2</span> normalization</code></pre>
+<h5 id="4-L1-正则化"><a href="#4-L1-正则化" class="headerlink" title="(4) L1 正则化"></a>(4) L1 正则化</h5><pre><code class="hljs gams">l1_regularization = torch.nn.L1Loss(reduction=<span class="hljs-string">&#x27;sum&#x27;</span>)
+loss = ...  # Standard cross-<span class="hljs-built_in">entropy</span> loss
+<span class="hljs-keyword">for</span> param in <span class="hljs-keyword">model</span>.parameters():
+    loss += torch.<span class="hljs-keyword">sum</span>(torch.<span class="hljs-built_in">abs</span>(param))
+loss.backward()
+
+
+reg = <span class="hljs-number">1e-6</span>
+l2_loss = <span class="hljs-keyword">Variable</span>(torch.FloatTensor(1), requires_grad=True)
+for <span class="hljs-comment">name, param in model.named_parameters():</span>
+    if <span class="hljs-comment">&#x27;bias&#x27;</span><span class="hljs-comment"> not in name:</span>
+        l2_loss <span class="hljs-comment">= l2_loss + (0.5 * reg * torch.sum(torch.pow(W, 2)))</span></code></pre>
+<h5 id="5-不对偏置项进行L2正则化-权值衰减（weight-decay）"><a href="#5-不对偏置项进行L2正则化-权值衰减（weight-decay）" class="headerlink" title="(5) 不对偏置项进行L2正则化/权值衰减（weight decay）"></a>(5) 不对偏置项进行L2正则化/权值衰减（weight decay）</h5><pre><code class="hljs ini"><span class="hljs-attr">bias_list</span> = (param for name, param in model.named_parameters() if name[-<span class="hljs-number">4</span>:] == <span class="hljs-string">&#x27;bias&#x27;</span>)
+<span class="hljs-attr">others_list</span> = (param for name, param in model.named_parameters() if name[-<span class="hljs-number">4</span>:] != <span class="hljs-string">&#x27;bias&#x27;</span>)
+<span class="hljs-attr">parameters</span> = [&#123;<span class="hljs-string">&#x27;parameters&#x27;</span>: bias_list, <span class="hljs-string">&#x27;weight_decay&#x27;</span>: <span class="hljs-number">0</span>&#125;,                
+              &#123;<span class="hljs-string">&#x27;parameters&#x27;</span>: others_list&#125;]
+<span class="hljs-attr">optimizer</span> = torch.optim.SGD(parameters, lr=<span class="hljs-number">1</span>e-<span class="hljs-number">2</span>, momentum=<span class="hljs-number">0.9</span>, weight_decay=<span class="hljs-number">1</span>e-<span class="hljs-number">4</span>)</code></pre>
+<h5 id="6-梯度裁剪（gradient-clipping）"><a href="#6-梯度裁剪（gradient-clipping）" class="headerlink" title="(6) 梯度裁剪（gradient clipping）"></a>(6) 梯度裁剪（gradient clipping）</h5> <pre><code class="hljs reasonml">torch.nn.utils.clip<span class="hljs-constructor">_grad_norm_(<span class="hljs-params">model</span>.<span class="hljs-params">parameters</span>()</span>, max_norm=<span class="hljs-number">20</span>)</code></pre>
+<h5 id="7-计算Softmax-输出的正确率"><a href="#7-计算Softmax-输出的正确率" class="headerlink" title="(7) 计算Softmax 输出的正确率"></a>(7) 计算Softmax 输出的正确率</h5><pre><code class="hljs ini"><span class="hljs-attr">score</span> = model(images)
+<span class="hljs-attr">prediction</span> = torch.argmax(score, dim=<span class="hljs-number">1</span>)
+<span class="hljs-attr">num_correct</span> = torch.sum(prediction == labels).item()
+<span class="hljs-attr">accuruacy</span> = num_correct / labels.size(<span class="hljs-number">0</span>)</code></pre>
+<h5 id="8-获取当前学习率"><a href="#8-获取当前学习率" class="headerlink" title="(8) 获取当前学习率"></a>(8) 获取当前学习率</h5><pre><code class="hljs vim"># If there <span class="hljs-keyword">is</span> one <span class="hljs-keyword">global</span> learning rate (which <span class="hljs-keyword">is</span> the common case).
+<span class="hljs-keyword">lr</span> = <span class="hljs-keyword">next</span>(iter(optimizer.param_groups))[<span class="hljs-string">&#x27;lr&#x27;</span>]
+# If there are multiple learning rates <span class="hljs-keyword">for</span> different layers.
+all_lr = []
+<span class="hljs-keyword">for</span> param_group in optimizer.param_group<span class="hljs-variable">s:</span>
+    all_lr.<span class="hljs-keyword">append</span>(param_group[<span class="hljs-string">&#x27;lr&#x27;</span>])</code></pre>
+<h3 id="5-Trick"><a href="#5-Trick" class="headerlink" title="5. Trick"></a>5. Trick</h3><h5 id="1-label-smothing"><a href="#1-label-smothing" class="headerlink" title="(1)  label smothing"></a>(1)  label smothing</h5><pre><code class="hljs nix">for images, labels <span class="hljs-keyword">in</span> train_loader:
+    images, <span class="hljs-attr">labels</span> = images.cuda(), labels.cuda()
+    <span class="hljs-attr">N</span> = labels.size(<span class="hljs-number">0</span>)
+    <span class="hljs-comment"># C is the number of classes.</span>
+    <span class="hljs-attr">smoothed_labels</span> = torch.full(<span class="hljs-attr">size=(N,</span> C), <span class="hljs-attr">fill_value=0.1</span> / (C - <span class="hljs-number">1</span>)).cuda()
+    smoothed_labels.scatter_(<span class="hljs-attr">dim=1,</span> <span class="hljs-attr">index=torch.unsqueeze(labels,</span> <span class="hljs-attr">dim=1),</span> <span class="hljs-attr">value=0.9)</span>
+
+    <span class="hljs-attr">score</span> = model(images)
+    <span class="hljs-attr">log_prob</span> = torch.nn.functional.log_softmax(score, <span class="hljs-attr">dim=1)</span>
+    <span class="hljs-attr">loss</span> = -torch.sum(log_prob * smoothed_labels) / N
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()</code></pre>
+<h5 id="2-Mixup"><a href="#2-Mixup" class="headerlink" title="(2) Mixup"></a>(2) Mixup</h5><pre><code class="hljs reasonml">beta_distribution = torch.distributions.beta.<span class="hljs-constructor">Beta(<span class="hljs-params">alpha</span>, <span class="hljs-params">alpha</span>)</span>
+<span class="hljs-keyword">for</span> images, labels <span class="hljs-keyword">in</span> train_loader:
+    images, labels = images.cuda<span class="hljs-literal">()</span>, labels.cuda<span class="hljs-literal">()</span>
+
+    # Mixup images.
+    lambda_ = beta_distribution.sample(<span class="hljs-literal">[]</span>).item<span class="hljs-literal">()</span>
+    index = torch.randperm(images.size(<span class="hljs-number">0</span>)).cuda<span class="hljs-literal">()</span>
+    mixed_images = lambda_<span class="hljs-operator"> * </span>images + (<span class="hljs-number">1</span> - lambda_)<span class="hljs-operator"> * </span>images<span class="hljs-literal">[<span class="hljs-identifier">index</span>, :]</span>
+
+    # Mixup loss.    
+    scores = model(mixed_images)
+    loss = (lambda_<span class="hljs-operator"> * </span>loss<span class="hljs-constructor">_function(<span class="hljs-params">scores</span>, <span class="hljs-params">labels</span>)</span> 
+            + (<span class="hljs-number">1</span> - lambda_)<span class="hljs-operator"> * </span>loss<span class="hljs-constructor">_function(<span class="hljs-params">scores</span>, <span class="hljs-params">labels</span>[<span class="hljs-params">index</span>])</span>)
+
+    optimizer.zero<span class="hljs-constructor">_grad()</span>
+    loss.backward<span class="hljs-literal">()</span>
+    optimizer.step<span class="hljs-literal">()</span></code></pre>
+<h5 id="3-多卡同步BN（Batch-normalization）"><a href="#3-多卡同步BN（Batch-normalization）" class="headerlink" title="(3) 多卡同步BN（Batch normalization）"></a>(3) 多卡同步BN（Batch normalization）</h5><p>当使用torch.nn.DataParallel将代码运行在多张GPU卡上时，PyTorch的BN层默认操作是各卡上数据独立地计算均值和标准差，同步BN使用所有卡上的数据一起计算BN层的均值和标准差，缓解了当批量大小（batch size）比较小时对均值和标准差估计不准的情况，是在目标检测等任务中一个有效的提升性能的技巧。</p>
+<p>参见： <a href="vacancy/Synchronized-BatchNorm-PyTorchgithub.com">Synchronized-BatchNorm-PyTorchgithub</a></p>
+<p>Reference:</p>
+<ol>
+<li><a href>Tensorflow cookbook</a></li>
+<li><a href>Pytorch cookbook</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kevinzakka/pytorch-goodies">Pytorch-goodies</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/chenyuntc/pytorch-book">Pytorch book</a></li>
+<li>Pytorch 官方文档 和 Tutorial</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Pytorch/">Pytorch</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Pytorch/">Pytorch</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/04/06/FDDB-benchmark/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">FDDB测评</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/17/pytorch%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
+                        <span class="hidden-mobile">pytorch基本概念</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "pytorch Cookbook&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

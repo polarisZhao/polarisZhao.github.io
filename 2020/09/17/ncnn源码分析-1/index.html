@@ -1,0 +1,1276 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>ncnn源码分析_1 - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-17 18:26" pubdate>
+        September 17, 2020 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      77
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">ncnn源码分析_1</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>ncnn 源码分析 — 参数与模型载入</p>
+<a id="more"></a>
+<h4 id="1-实例代码"><a href="#1-实例代码" class="headerlink" title="1. 实例代码"></a>1. 实例代码</h4><p>使用ncnn进行前向计算的步骤很简单，就如下几行代码即可完成。</p>
+<pre><code class="hljs cpp"> <span class="hljs-comment">// 代码来自 ncnn/examples/shufflenetv2.cpp</span>
+ <span class="hljs-comment">/* Step 1.1 : 加载.parma 文件 和 .bin 文件 */</span>
+ ncnn::Net shufflenetv2;
+ shufflenetv2.load_param(<span class="hljs-string">&quot;shufflenet_v2_x0.5.param&quot;</span>);
+ shufflenetv2.load_model(<span class="hljs-string">&quot;shufflenet_v2_x0.5.bin&quot;</span>);
+
+ <span class="hljs-comment">/* Step 1.2 : 构建并配置 提取器 */</span>
+ ncnn::Extractor ex = shufflenetv2.create_extractor();
+
+ <span class="hljs-comment">/* Step 1.3 : 设置输入（将图片转换成ncnn::Mat结构作为输入） */</span>    
+ncnn::Mat in = ncnn::Mat::from_pixels_resize(bgr.data, ncnn::Mat::PIXEL_BGR, bgr.cols, bgr.rows, <span class="hljs-number">224</span>, <span class="hljs-number">224</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> norm_vals[<span class="hljs-number">3</span>] = &#123;<span class="hljs-number">1</span>/<span class="hljs-number">255.f</span>, <span class="hljs-number">1</span>/<span class="hljs-number">255.f</span>, <span class="hljs-number">1</span>/<span class="hljs-number">255.f</span>&#125;;
+in.substract_mean_normalize(<span class="hljs-number">0</span>, norm_vals);
+ex.input(<span class="hljs-string">&quot;data&quot;</span>, in);
+        
+<span class="hljs-comment">/* Step 1.4 : 提取输出 */</span> 
+ncnn::Mat out;
+ex.extract(<span class="hljs-string">&quot;fc&quot;</span>, out);</code></pre>
+<h4 id="2-代码分析"><a href="#2-代码分析" class="headerlink" title="2. 代码分析"></a>2. 代码分析</h4><p><strong>我姑且将其分为：加载模型</strong>、<strong>构建并配置提取器</strong>、<strong>设置输入</strong>、<strong>输出处理</strong>、<strong>模型封装</strong>五个部分来加以分析</p>
+<p><strong>模型载入</strong>:</p>
+<p><strong>相关代码:</strong></p>
+<p><strong>net.h/cpp</strong>   <strong>blob.h/cpp</strong>   <strong>layer.h/.cpp</strong>  </p>
+<p>​    <strong>paramdict.cpp/h</strong>  </p>
+<p>​    <strong>modelbin.h/.cpp</strong></p>
+<p><strong>相关文件:</strong></p>
+<p>xx.bin  xx.param</p>
+<h4 id="3-加载模型"><a href="#3-加载模型" class="headerlink" title="3. 加载模型"></a>3. 加载模型</h4><p>ncnn 在使用 <strong>.param</strong> 和 <strong>.bin</strong> 两个文件来描述一个神经网络模型。 模型加载的根本目的是将 .param 和 .bin 文件的信息加载到目标神经网络（一个ncnn::Net结构）中</p>
+<p>其中：</p>
+<p><strong>.param</strong>：描述神经网络的结构，包括层名称，层输入输出信息，层参数信息（如卷积层的kernal大小等）等。</p>
+<p><strong>.bin</strong> 文件则记录神经网络运算所需要的数据信息（比如卷积层的权重、偏置信息等）</p>
+<p><img src="/2020/09/17/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-1/ncnn1.png" srcset="/img/loading.gif" alt="ncnn官方demo中的模型文件"></p>
+<h6 id="3-1-param-文件"><a href="#3-1-param-文件" class="headerlink" title="3.1 param 文件"></a>3.1 param 文件</h6><p><strong>一个.param文件由以下几部分组成：</strong></p>
+<p><img src="/2020/09/17/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-1/ncnn2.png" srcset="/img/loading.gif" alt></p>
+<p><strong>1）MagicNum</strong></p>
+<p>固定位7767517，可以通过这个数来判定版本 -&gt; 为什么这个数字，不知道问倪神去吧 </p>
+<p>2）<strong>layer、blob个数</strong></p>
+<p>上图示例的文件两个数字分别为：75、83</p>
+<p>​    <strong>layer：我们知道神经网络是一层一层向前推进计算的，每一层我们用一个layer表示；</strong></p>
+<p>​    <strong>blob：每一个layer都可能会有输入、输出，在ncnn中，它们统一用一个多维（3维）向量表示，我们称每一个输入、输出的原子为一个blob，并为它起名</strong></p>
+<p>2.1.1.2 layer的描述</p>
+<p>layer 在 .param 中是一个相对复杂的元素（从第3行起的每一行描述一个layer），所以我们把它单独抽出来进行说明。</p>
+<p><strong>1）层类型</strong>     比如<strong>Input、Convolution、ReLU</strong></p>
+<p><strong>2）层名</strong>       模型训练者为该层起得名字（毕竟相同类型的层可能多次使用，我们要区分它们）</p>
+<p><strong>3）层输入输出  包含：层输入blob数量，层输出blob数量，层输入、输出blob的名称</strong></p>
+<p><strong>4）层配置参数</strong></p>
+<p>比如 <strong>卷积层（Convolution Layer）的 卷积核大小、步长信息</strong> 等</p>
+<p>在 具体层里面都有一个函数: load_param, 从里面可以查询到相关信息。</p>
+<p><strong>data层： 0=长 1=宽 3=通道</strong></p>
+<p><strong>Convolution层 0=输出单元 1=卷积核大小  2=核膨胀[见膨胀卷积]    3=stride</strong>    </p>
+<p>​                                 <strong>4=padding    5=是否存在偏置    6=权重数量</strong></p>
+<p><strong>pooling 层    0=池化类型   1=卷积核大小   2=步长stride   3=padding   4=全局池化  5=padding类型</strong></p>
+<p><strong>ReLU 层 0=0.000000 无参数</strong></p>
+<p><strong>softmax 层 0=0 无参数</strong></p>
+<p><strong>Concat Split Dropout 无参数</strong></p>
+<p><strong>ConvolutionDepthWise    7=group 数目</strong></p>
+<h6 id="3-2-读取"><a href="#3-2-读取" class="headerlink" title="3.2 读取"></a>3.2 读取</h6><p><strong>下面我们具体从代码的角度来看看如何读取这个文件的:(文件为 net.cpp/h 和 paramdict.cpp/h) 为了方便， 我们将 Vulkan 相关代码剔除掉。</strong></p>
+<p><strong>net.h 主要是 Net 类的接口， 其中最重要的功能是实现 load_param(载入模型参数) 和 load_model(载入模型的数据) 功能</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// net.h</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Net</span></span>
+<span class="hljs-class">&#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">// empty init</span>
+    Net();
+    <span class="hljs-comment">// clear and destroy</span>
+    ~Net();
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STRING</span>
+    <span class="hljs-comment">// register custom layer by layer type name</span>
+    <span class="hljs-comment">// return 0 if success</span>
+    <span class="hljs-comment">// 注册自定义类型层， 通过string类型名</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">register_custom_layer</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* type, layer_creator_func creator)</span></span>;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span> <span class="hljs-comment">// NCNN_STRING</span></span>
+    <span class="hljs-comment">// register custom layer by layer type</span>
+    <span class="hljs-comment">// return 0 if success</span>
+    <span class="hljs-comment">// 注册自定义层， 通过int类型的 layer 索引</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">register_custom_layer</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index, layer_creator_func creator)</span></span>;
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STDIO</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STRING</span>
+    <span class="hljs-comment">// load network structure from plain param file</span>
+    <span class="hljs-comment">// return 0 if success</span>
+    <span class="hljs-comment">// 从文件指针中载入参数</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">load_param</span><span class="hljs-params">(FILE* fp)</span></span>;
+    <span class="hljs-comment">// 从 param 文件中载入参数</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">load_param</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* protopath)</span></span>;
+    <span class="hljs-comment">// 从 mem 中载入参数</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">load_param_mem</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* mem)</span></span>;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span> <span class="hljs-comment">// NCNN_STRING</span></span>
+    <span class="hljs-comment">// load network structure from binary param file</span>
+    <span class="hljs-comment">// return 0 if success</span>
+    <span class="hljs-comment">// 从二进制文件指针中载入 param 参数</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">load_param_bin</span><span class="hljs-params">(FILE* fp)</span></span>;
+    <span class="hljs-comment">// 从二进制文件中载入参数</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">load_param_bin</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* protopath)</span></span>;
+
+    <span class="hljs-comment">// load network weight data from model file</span>
+    <span class="hljs-comment">// return 0 if success</span>
+    <span class="hljs-comment">// 从 file 指针中传入模型</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">load_model</span><span class="hljs-params">(FILE* fp)</span></span>;
+    <span class="hljs-comment">// 从二进制文件中载入模型</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">load_model</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* modelpath)</span></span>;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span> <span class="hljs-comment">// NCNN_STDIO</span></span>
+
+    <span class="hljs-comment">// load network structure from external memory</span>
+    <span class="hljs-comment">// memory pointer must be 32-bit aligned</span>
+    <span class="hljs-comment">// return bytes consumed</span>
+    <span class="hljs-comment">// 从外部内存中载入参数</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">load_param</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>* mem)</span></span>;
+
+    <span class="hljs-comment">// reference network weight data from external memory</span>
+    <span class="hljs-comment">// weight data is not copied but referenced</span>
+    <span class="hljs-comment">// so external memory should be retained when used</span>
+    <span class="hljs-comment">// memory pointer must be 32-bit aligned</span>
+    <span class="hljs-comment">// return bytes consumed</span>
+    <span class="hljs-comment">// 从外部内存中载入网络权重</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">load_model</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>* mem)</span></span>;
+
+    <span class="hljs-comment">// unload network structure and weight data</span>
+    <span class="hljs-comment">// 清空网络结构</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">clear</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-comment">// construct an Extractor from network</span>
+    <span class="hljs-comment">// 从网络构建一个执行器</span>
+    <span class="hljs-function">Extractor <span class="hljs-title">create_extractor</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;
+<span class="hljs-keyword">protected</span>:
+    <span class="hljs-keyword">friend</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Extractor</span>;</span> <span class="hljs-comment">// 外部 Extractor 接口</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STRIN</span>
+    <span class="hljs-comment">// 通过name查找blob对应的索引</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find_blob_index_by_name</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span> <span class="hljs-keyword">const</span></span>; 
+    <span class="hljs-comment">// 通过name查找对应的 layer 索引</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find_layer_index_by_name</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name)</span> <span class="hljs-keyword">const</span></span>;
+    <span class="hljs-comment">// 通过类型查找对应的 layer索引</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">custom_layer_to_index</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* type)</span></span>;
+    <span class="hljs-comment">// 通过类型创建layer</span>
+    <span class="hljs-function">Layer* <span class="hljs-title">create_custom_layer</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* type)</span></span>;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span> <span class="hljs-comment">// NCNN_STRING</span></span>
+    <span class="hljs-comment">// 通过 index 穿件 layer</span>
+    <span class="hljs-function">Layer* <span class="hljs-title">create_custom_layer</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index)</span></span>;
+    <span class="hljs-comment">// 前向推理层</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">forward_layer</span><span class="hljs-params">(<span class="hljs-keyword">int</span> layer_index, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;Mat&gt;&amp; blob_mats, Option&amp; opt)</span> <span class="hljs-keyword">const</span></span>;
+
+<span class="hljs-keyword">protected</span>:
+    <span class="hljs-comment">// blobs &amp; layers</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;Blob&gt; blobs;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;Layer*&gt; layers;
+    <span class="hljs-comment">// layers</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;layer_registry_entry&gt; custom_layer_registry;
+&#125;;</code></pre>
+<p>在此我们可以先来看一下 blob类 ! 着重看一下，对应的生产者、消费者模型</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// Blob 用于记录数据传输过程， producer 记录当前blob从那一层产生的，</span>
+<span class="hljs-comment">// consumer 记录当前blob被哪些层调用:</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Blob</span></span>
+<span class="hljs-class">&#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">// empty</span>
+    Blob();
+
+<span class="hljs-keyword">public</span>:
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STRING</span>
+    <span class="hljs-comment">// blob name</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> name;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span> <span class="hljs-comment">// NCNN_STRING</span></span>
+    <span class="hljs-comment">// layer index which produce this blob as output</span>
+    <span class="hljs-comment">// 生产者</span>
+    <span class="hljs-keyword">int</span> producer;
+    <span class="hljs-comment">// layer index which need this blob as input</span>
+    <span class="hljs-comment">// 消费者</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; consumers;
+&#125;;</code></pre>
+<p>然后我们打开 net.cpp 文件，来看一下 load_param 的具体实现:</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 从文件中载入 net 参数</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Net::load_param</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* protopath)</span></span>
+<span class="hljs-function"></span>&#123;
+    FILE* fp = fopen(protopath, <span class="hljs-string">&quot;rb&quot;</span>);
+    <span class="hljs-keyword">if</span> (!fp)
+    &#123;
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;fopen %s failed\n&quot;</span>, protopath);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    &#125;
+    <span class="hljs-comment">// 从文件指针中载入 param</span>
+    <span class="hljs-keyword">int</span> ret = load_param(fp);
+    fclose(fp);
+    <span class="hljs-keyword">return</span> ret;
+&#125;</code></pre>
+<p>参数载入接口中， 调用了另外一个参数载入接口: load_param(FILE * fp)</p>
+<p>(1) 读取 magic number, 通过判断 magic number 是否等于 7767517, 就可以判断当前param文件是否是最新的 param 文件 </p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">int</span> magic = <span class="hljs-number">0</span>;
+<span class="hljs-comment">// 读取 magic number</span>
+<span class="hljs-keyword">int</span> nbr = <span class="hljs-built_in">fscanf</span>(fp, <span class="hljs-string">&quot;%d&quot;</span>, &amp;magic);
+<span class="hljs-comment">// 读取失败</span>
+<span class="hljs-keyword">if</span> (nbr != <span class="hljs-number">1</span>)
+&#123;
+    <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;issue with param file\n&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+&#125;
+<span class="hljs-comment">// 判断是否是最新的 magic number</span>
+<span class="hljs-keyword">if</span> (magic != <span class="hljs-number">7767517</span>)
+&#123;
+    <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;param is too old, please regenerate\n&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+&#125;</code></pre>
+<p>(2) 解析出网络的 layer 层数和 blob 数目 </p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 对 layer 和 blob 进行解析</span>
+<span class="hljs-keyword">int</span> layer_count = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">int</span> blob_count = <span class="hljs-number">0</span>;
+<span class="hljs-comment">// 层数 &amp;&amp; blob 数目</span>
+nbr = <span class="hljs-built_in">fscanf</span>(fp, <span class="hljs-string">&quot;%d %d&quot;</span>, &amp;layer_count, &amp;blob_count);
+<span class="hljs-comment">// 层数和 blob数读取失败</span>
+<span class="hljs-keyword">if</span> (nbr != <span class="hljs-number">2</span> || layer_count &lt;= <span class="hljs-number">0</span> || blob_count &lt;= <span class="hljs-number">0</span>)
+&#123;
+    <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;issue with param file\n&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+&#125;
+<span class="hljs-comment">// resize 网络的层数和blob数目</span>
+layers.resize((<span class="hljs-keyword">size_t</span>)layer_count);
+blobs.resize((<span class="hljs-keyword">size_t</span>)blob_count);</code></pre>
+<p>(3) 遍历所有的 layer, 解析每层 layer 层的类型(layer type)、名称(layer name)、输入数目(bottom_count) 和 输出数目(top_count)</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;layer_count; i++)
+&#123;
+    <span class="hljs-keyword">int</span> nscan = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">// layer 的类型和名称</span>
+    <span class="hljs-keyword">char</span> layer_type[<span class="hljs-number">257</span>];
+    <span class="hljs-keyword">char</span> layer_name[<span class="hljs-number">257</span>];
+    <span class="hljs-keyword">int</span> bottom_count = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> top_count = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 读取层类型、名称。输入bottom数目和输出top数目</span>
+    nscan = <span class="hljs-built_in">fscanf</span>(fp, <span class="hljs-string">&quot;%256s %256s %d %d&quot;</span>, layer_type, layer_name, &amp;bottom_count, &amp;top_count);
+    <span class="hljs-keyword">if</span> (nscan != <span class="hljs-number">4</span>) <span class="hljs-comment">// 解析失败</span>
+    &#123;
+        <span class="hljs-keyword">continue</span>;
+    &#125;</code></pre>
+<p>(4) 根据layer的类型， 创建 layer</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 创建 layer</span>
+Layer* layer = create_layer(layer_type);
+<span class="hljs-comment">// layer_type 不是默认类型</span>
+<span class="hljs-keyword">if</span> (!layer)
+&#123;
+    <span class="hljs-comment">// 从自定义 layer 读取</span>
+    layer = create_custom_layer(layer_type);
+&#125;
+<span class="hljs-keyword">if</span> (!layer) <span class="hljs-comment">// 如果自定义 layer 中不存在当前类型的 layer </span>
+&#123;
+    <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;layer %s not exists or registered\n&quot;</span>, layer_type);
+    clear();
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+&#125;
+
+<span class="hljs-comment">// 设置 layer 参数: layer的类型、名称、输入和输出      </span>
+layer-&gt;type = <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>(layer_type);
+layer-&gt;name = <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>(layer_name);</code></pre>
+<p>(5) 在设置输入时，如果当前blob名不存在，就将当前blob名添加到net的blobs数组里面</p>
+<pre><code class="hljs cpp">layer-&gt;bottoms.resize(bottom_count); <span class="hljs-comment">// layer的输入</span>
+<span class="hljs-comment">// 解析 layer 的输入</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>; j&lt;bottom_count; j++)
+&#123;
+    <span class="hljs-keyword">char</span> bottom_name[<span class="hljs-number">257</span>];
+    <span class="hljs-comment">// 解析 bottom的name</span>
+    nscan = <span class="hljs-built_in">fscanf</span>(fp, <span class="hljs-string">&quot;%256s&quot;</span>, bottom_name);
+    <span class="hljs-keyword">if</span> (nscan != <span class="hljs-number">1</span>)
+    &#123;
+        <span class="hljs-keyword">continue</span>;
+    &#125;
+    <span class="hljs-comment">// 按照 bottom 的name 查找对应 blob 的index</span>
+    <span class="hljs-keyword">int</span> bottom_blob_index = find_blob_index_by_name(bottom_name);
+    <span class="hljs-comment">// 如果没有找到 bottom_name 对应的 blob</span>
+    <span class="hljs-comment">// 将向 blobs 数组中插入一个名为 bottom_name 的 blob</span>
+    <span class="hljs-keyword">if</span> (bottom_blob_index == <span class="hljs-number">-1</span>)
+    &#123;
+        <span class="hljs-comment">// 设置第blob_index个blob 的参数</span>
+        Blob&amp; blob = blobs[blob_index];
+        <span class="hljs-comment">// blob的索引</span>
+        bottom_blob_index = blob_index;
+        <span class="hljs-comment">// 设置blob的name</span>
+        blob.name = <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>(bottom_name);
+        <span class="hljs-comment">// 更新全局的 blob 索引</span>
+        blob_index++;
+    &#125;
+    <span class="hljs-comment">// 设置当前的blob的参数</span>
+    Blob&amp; blob = blobs[bottom_blob_index];
+    <span class="hljs-comment">// 使用当前的blob记录传输关系， 第i层以当前blob为输入</span>
+    blob.consumers.push_back(i);
+    <span class="hljs-comment">// 第i层layer的第j个输入</span>
+    layer-&gt;bottoms[j] = bottom_blob_index;
+&#125;</code></pre>
+<p> (6) 设置输出的过程和这个类似，在此不再赘述，最后就是<strong>参数载入了</strong>:</p>
+<p>例如: <strong>conv1的参数: 0=64 1=3 11=3 5=1 6=1728</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-comment">//解析 blob后面跟随的特定参数字典 pd</span>
+<span class="hljs-keyword">int</span> pdlr = pd.load_param(fp);
+<span class="hljs-keyword">if</span> (pdlr != <span class="hljs-number">0</span>)
+&#123;
+    <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;ParamDict load_param failed\n&quot;</span>);
+    <span class="hljs-keyword">continue</span>;
+&#125;
+<span class="hljs-comment">// layer 载入 param</span>
+<span class="hljs-keyword">int</span> lr = layer-&gt;load_param(pd);
+<span class="hljs-keyword">if</span> (lr != <span class="hljs-number">0</span>)
+&#123;
+    <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;layer load_param failed\n&quot;</span>);
+    <span class="hljs-keyword">continue</span>;
+&#125;
+
+layers[i] = layer;</code></pre>
+<p>这其中有两个重要的函数:</p>
+<p>pd.load_param(fp) 和  layer_param(pd)。前者负责解析 .param 文件中特定的参数， 后者则是用解析的参数来构建对应的layer</p>
+<p>(7) 用参数字典来解析layer相关参数！ 看一下这个自己构造layer， 以及解析的过程 </p>
+<p>   在使用load_param接口载入参数时，需要用参数字典ParamDict来解析.param文件中的特定参数，那么参数字典具体如何进行解析的？我们首先看一下paramdict.h文件中定义的数据成员变量：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// parameters</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span></span>
+<span class="hljs-class">&#123;</span>
+    <span class="hljs-comment">// 是否已经被载入：1表示已载入</span>
+    <span class="hljs-keyword">int</span> loaded;
+    <span class="hljs-comment">// 单个值可能为整形也有可能为浮点型</span>
+    <span class="hljs-keyword">union</span> &#123; <span class="hljs-keyword">int</span> i; <span class="hljs-keyword">float</span> f; &#125;;
+    <span class="hljs-comment">// 还有可能是数组</span>
+    Mat v;
+&#125; params[NCNN_MAX_PARAM_COUNT];</code></pre>
+<p>​    这里，NCNN_MAX_PARAM_COUNT大小为20，params是一个大小为32的结构体数组，即一行中特定参数数量不能超过20，当然，一般情况下也不会超过20。</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// at most 20 parameters</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> NCNN_MAX_PARAM_COUNT 20</span></code></pre>
+<p>​    然后，我们看一下paramdict.cpp源码，可以看到，这里会解析出当前行的index（id），也即是等号左边部分： </p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 解析之后的 key=value 对</span>
+<span class="hljs-keyword">int</span> id = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">while</span> (<span class="hljs-built_in">fscanf</span>(fp, <span class="hljs-string">&quot;%d=&quot;</span>, &amp;id) == <span class="hljs-number">1</span>)
+&#123;
+    ...
+&#125;</code></pre>
+<p> 在这里可以结合 <a target="_blank" rel="noopener" href="https://github.com/Tencent/ncnn/wiki/param-and-model-file-structure">https://github.com/Tencent/ncnn/wiki/param-and-model-file-structure</a> 阅读源码：</p>
+<p><strong>index-value 的规则为:</strong></p>
+<ul>
+<li>index为0~19: 对应整形或浮点型数据</li>
+<li><p>index小于 -23000： 对应整形或浮点型数组, 等号右边第一个参数就是数组长度，后面顺序就是数组内容，[array size],int,int,…,int或[array size],float,float,…,float，例如：</p>
+<p><strong>0=1 1=2.5 -23303=2,2.0,3.0</strong></p>
+<p>index为 -23303，表明当前参数为数组，等号右边第一个参数为2，表明数组长度为2，后面2.0,3.0就是数组的内容</p>
+</li>
+</ul>
+<pre><code class="hljs cpp"><span class="hljs-keyword">bool</span> is_array = id &lt;= <span class="hljs-number">-23300</span>; <span class="hljs-comment">// index &lt;= -23300：数组</span>
+<span class="hljs-keyword">if</span> (is_array) <span class="hljs-comment">// 如果是数组</span>
+&#123;  <span class="hljs-comment">// 计算id</span>
+    id = -id - <span class="hljs-number">23300</span>;
+&#125;
+<span class="hljs-keyword">if</span> (is_array)  <span class="hljs-comment">// 如果当前参数是数组类型</span>
+&#123;
+    <span class="hljs-keyword">int</span> len = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 数组长度</span>
+    <span class="hljs-keyword">int</span> nscan = <span class="hljs-built_in">fscanf</span>(fp, <span class="hljs-string">&quot;%d&quot;</span>, &amp;len);
+    <span class="hljs-keyword">if</span> (nscan != <span class="hljs-number">1</span>)             <span class="hljs-comment">// 等于1才表示读取成功</span>
+    &#123;
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;ParamDict read array length failed\n&quot;</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    &#125;
+    
+    params[id].v.create(len);  <span class="hljs-comment">// 创建数组：就是一个Mat</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; len; j++)
+    &#123;
+        <span class="hljs-keyword">char</span> vstr[<span class="hljs-number">16</span>]; <span class="hljs-comment">// 从二值文件中读取string</span>
+        nscan = <span class="hljs-built_in">fscanf</span>(fp, <span class="hljs-string">&quot;,%15[^,\n ]&quot;</span>, vstr);
+        <span class="hljs-keyword">if</span> (nscan != <span class="hljs-number">1</span>) <span class="hljs-comment">// 如果读取失败</span>
+        &#123;
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;ParamDict read array element failed\n&quot;</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        &#125;
+ 
+        <span class="hljs-comment">// 是否为浮点型：看解析的字符串中是否存在&#x27;.&#x27;或&#x27;e&#x27;</span>
+        <span class="hljs-comment">// 小数点计数法和科学计数法</span>
+        <span class="hljs-keyword">bool</span> is_float = vstr_is_float(vstr);
+        <span class="hljs-comment">// 如果是浮点数</span>
+        <span class="hljs-keyword">if</span> (is_float)  <span class="hljs-comment">// vstr赋值给params[id].v[j]</span>
+        &#123;
+            <span class="hljs-keyword">float</span>* ptr = params[id].v;
+            nscan = <span class="hljs-built_in">sscanf</span>(vstr, <span class="hljs-string">&quot;%f&quot;</span>, &amp;ptr[j]);
+        &#125;
+        <span class="hljs-keyword">else</span>  <span class="hljs-comment">// vstr赋值给params[id].v[j]</span>
+        &#123;
+            <span class="hljs-keyword">int</span>* ptr = params[id].v;
+            nscan = <span class="hljs-built_in">sscanf</span>(vstr, <span class="hljs-string">&quot;%d&quot;</span>, &amp;ptr[j]);
+        &#125;
+        <span class="hljs-keyword">if</span> (nscan != <span class="hljs-number">1</span>)  <span class="hljs-comment">// 赋值失败</span>
+        &#123;
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;ParamDict parse array element failed\n&quot;</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        &#125;
+    &#125;
+&#125;</code></pre>
+<p>​    这里有个vstr_is_float函数，原理很简单，就是判断数字对应字符串中是否存在小数点’.’或字母’e’，对应小数的两种写法，一种正常的小数点表示法，一种是科学计数法。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">vstr_is_float</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> vstr[<span class="hljs-number">16</span>])</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-comment">// look ahead for determine isfloat</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>; j&lt;<span class="hljs-number">16</span>; j++)
+    &#123;
+        <span class="hljs-keyword">if</span> (vstr[j] == <span class="hljs-string">&#x27;\0&#x27;</span>)
+            <span class="hljs-keyword">break</span>;
+
+        <span class="hljs-keyword">if</span> (vstr[j] == <span class="hljs-string">&#x27;.&#x27;</span> || <span class="hljs-built_in">tolower</span>(vstr[j]) == <span class="hljs-string">&#x27;e&#x27;</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;</code></pre>
+<p>​    如果不是数组，直接读取即可：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">else</span>   <span class="hljs-comment">// 不是数组</span>
+&#123;
+    <span class="hljs-keyword">char</span> vstr[<span class="hljs-number">16</span>];
+    <span class="hljs-keyword">int</span> nscan = <span class="hljs-built_in">fscanf</span>(fp, <span class="hljs-string">&quot;%15s&quot;</span>, vstr); <span class="hljs-comment">// 直接将字符串赋值给vstr</span>
+    <span class="hljs-keyword">if</span> (nscan != <span class="hljs-number">1</span>)  <span class="hljs-comment">// 赋值失败</span>
+    &#123;
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;ParamDict read value failed\n&quot;</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    &#125;
+    <span class="hljs-keyword">bool</span> is_float = vstr_is_float(vstr);  <span class="hljs-comment">// 判断是否为浮点数</span>
+    <span class="hljs-keyword">if</span> (is_float)  <span class="hljs-comment">// 将字符串中的值赋给参数字典</span>
+        nscan = <span class="hljs-built_in">sscanf</span>(vstr, <span class="hljs-string">&quot;%f&quot;</span>, &amp;params[id].f);
+    <span class="hljs-keyword">else</span>
+        nscan = <span class="hljs-built_in">sscanf</span>(vstr, <span class="hljs-string">&quot;%d&quot;</span>, &amp;params[id].i);
+    <span class="hljs-keyword">if</span> (nscan != <span class="hljs-number">1</span>)  <span class="hljs-comment">// 赋值失败</span>
+    &#123;
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;ParamDict parse value failed\n&quot;</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    &#125;
+&#125;
+params[id].loaded = <span class="hljs-number">1</span>;         <span class="hljs-comment">// 载入成功</span></code></pre>
+<p>(8) 用参数字典来解析layer相关参数</p>
+<p>如前所示, layer会根据参数字典来构造 layer</p>
+<pre><code class="hljs cpp"> <span class="hljs-comment">// layer载入param</span>
+<span class="hljs-keyword">int</span> lr = layer-&gt;load_param(pd);</code></pre>
+<p>转到 layer层的 load_param 接口可以看到：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 载入参数：参数列表</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Layer::load_param</span><span class="hljs-params">(<span class="hljs-keyword">const</span> ParamDict&amp; <span class="hljs-comment">/*pd*/</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p>这里并没有实现，在layer.h头文件中有：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// load layer specific parameter from parsed dict</span>
+<span class="hljs-comment">// return 0 if success</span>
+<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">load_param</span><span class="hljs-params">(<span class="hljs-keyword">const</span> ParamDict&amp; pd)</span></span>;</code></pre>
+<p> ! load_param实际上是一个虚函数，熟悉C++的同学应该知道，调用虚函数时，实际调用的是继承类的版本，那么到底如何调用的？，我们可以往回看，有这样一段代码：</p>
+<pre><code class="hljs cpp">Layer* layer = create_layer(layer_type)  <span class="hljs-comment">// 创建layer</span>
+<span class="hljs-keyword">if</span> (!layer) <span class="hljs-comment">// layer_type不是默认类型</span>
+&#123;   
+    layer = create_custom_layer(layer_type);   <span class="hljs-comment">// 从自定义layer读取</span>
+&#125;
+<span class="hljs-keyword">if</span> (!layer)   <span class="hljs-comment">// 如果自定义layer中也不存在当前类型layer</span>
+&#123;
+    <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;layer %s not exists or registered\n&quot;</span>, layer_type);
+    clear();
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+&#125;</code></pre>
+<p>回到layer.cpp文件中，可以看到，代码中先找到当前层layer类型对应层注册器中类型的索引index。</p>
+<p><strong>layer_type -&gt; index -&gt; create_layer</strong></p>
+<pre><code class="hljs cpp"> <span class="hljs-comment">// 将string对应layer类型转换成对应index</span>
+ <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">layer_to_index</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* type)</span></span>
+<span class="hljs-function"> </span>&#123;
+     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;layer_registry_entry_count; i++)
+     &#123;
+         <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(type, layer_registry[i].name) == <span class="hljs-number">0</span>)
+             <span class="hljs-keyword">return</span> i;
+     &#125;
+     <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+ &#125;
+  
+ <span class="hljs-comment">// 根据index创建layer：</span>
+<span class="hljs-function">Layer* <span class="hljs-title">create_layer</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (index &lt; <span class="hljs-number">0</span> || index &gt;= layer_registry_entry_count)     <span class="hljs-comment">// index不能超过索引范围</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+ 
+    layer_creator_func layer_creator = layer_registry[index].creator;     <span class="hljs-comment">// 创建layer构造器</span>
+    <span class="hljs-keyword">if</span> (!layer_creator)     <span class="hljs-comment">// layer构造器创建失败</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+ 
+    Layer* layer = layer_creator();     <span class="hljs-comment">// 构造layer</span>
+    layer-&gt;typeindex = index;    <span class="hljs-comment">// 设置layer的类型index</span>
+    <span class="hljs-keyword">return</span> layer;
+&#125;
+
+<span class="hljs-comment">// 根据字符串layer类型创建layer -&gt; 调用上面两个函数， 创建layer</span>
+<span class="hljs-function">Layer* <span class="hljs-title">create_layer</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* type)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> index = layer_to_index(type);
+    <span class="hljs-keyword">if</span> (index == <span class="hljs-number">-1</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+ 
+    <span class="hljs-keyword">return</span> create_layer(index);
+&#125;</code></pre>
+<p>line 18 有个layer_registry，其定义为：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> layer_registry_entry layer_registry[] =
+&#123;
+    #include <span class="hljs-string">&quot;layer_registry.h&quot;</span>
+&#125;;</code></pre>
+<p>而这个”layer_registry.h”文件是在build项目的时候自动产生的，部分内容如下：</p>
+<pre><code class="hljs cpp"> <span class="hljs-comment">// Layer Registry header</span>
+ <span class="hljs-comment">//</span>
+ <span class="hljs-comment">// This file is auto-generated by cmake, don&#x27;t edit it.</span>
+ 
+ <span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STRING</span>
+ &#123;<span class="hljs-string">&quot;AbsVal&quot;</span>,AbsVal_final_layer_creator&#125;,
+ <span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+ &#123;AbsVal_final_layer_creator&#125;,
+ <span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+ 
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STRING</span>
+&#123;<span class="hljs-string">&quot;ArgMax&quot;</span>,<span class="hljs-number">0</span>&#125;,
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+&#123;<span class="hljs-number">0</span>&#125;,
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STRING</span>
+&#123;<span class="hljs-string">&quot;BatchNorm&quot;</span>,BatchNorm_final_layer_creator&#125;,
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+&#123;BatchNorm_final_layer_creator&#125;,
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STRING</span>
+&#123;<span class="hljs-string">&quot;Bias&quot;</span>,Bias_final_layer_creator&#125;,
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+&#123;Bias_final_layer_creator&#125;,
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></code></pre>
+<p>而 layer_registry_entry 的结构为：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// layer factory function</span>
+<span class="hljs-keyword">typedef</span> Layer* (*layer_creator_func)();
+ 
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">layer_registry_entry</span></span>
+<span class="hljs-class">&#123;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STRING</span>
+    <span class="hljs-comment">// layer type name</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span> <span class="hljs-comment">// NCNN_STRING</span></span>
+    <span class="hljs-comment">// layer factory entry</span>
+    layer_creator_func creator;
+&#125;;
+</code></pre>
+<p>我们代入一组参数进去就是：</p>
+<pre><code class="hljs cpp">name = <span class="hljs-string">&quot;AbsVal&quot;</span>;
+layer_creator_func = AbsVal_final_layer_creator;</code></pre>
+<p>这里layer_creator_func定义为：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> Layer* (*layer_creator_func)();</code></pre>
+<p>那么，layer_creator_func AbsVal_final_layer_creator转换过去就是： </p>
+<pre><code class="hljs isbl"><span class="hljs-variable">Layer</span>* <span class="hljs-function"><span class="hljs-title">AbsVal_final_layer_creator</span>()</span></code></pre>
+<p>在layer.h文件最下面还有一个定义：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// ## 字符串连接</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> DEFINE_LAYER_CREATOR(name) \</span>
+    ::ncnn::Layer* name##_layer_creator() &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> name; &#125;
+</code></pre>
+<p>我们在absval.cpp文件中可以看到 DEFINE_LAYER_CREATOR(AbsVal)，相当于就是声明了一个函数：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// #define DEFINE_LAYER_CREATOR(name) \</span>
+<span class="hljs-comment">//    ::ncnn::Layer* name##_layer_creator() &#123; return new name; &#125;</span>
+<span class="hljs-comment">// 由上面这段代码可知，DEFINE_LAYER_CREATOR(AbsVal)等价于：</span>
+::<span class="hljs-function">ncnn::Layer* <span class="hljs-title">AbsVal_layer_creator</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> AbsVal; &#125;</code></pre>
+<p>​    上面那句话相当于就是new了一个AbsVal层，但是这里还是对应不起来，上面的是 AbsVal_final_layer_creator()，这里声明的是AbsVal_layer_creator()，这里就涉及到ncnn还有一层继承，使用cmake编译ncnn项目后，除了生成了layer_registry.h文件之外，还生成了一个layer_declaration.h文件，打开这个文件，一切就清楚了：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// Layer Declaration header</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// This file is auto-generated by cmake, don&#x27;t edit it.</span>
+ 
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;layer/absval.h&quot;</span></span>
+<span class="hljs-keyword">namespace</span> ncnn &#123;
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AbsVal_final</span> :</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">public</span> AbsVal
+&#123;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">create_pipeline</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Option&amp; opt)</span> </span>&#123;
+        &#123; <span class="hljs-keyword">int</span> ret = AbsVal::create_pipeline(opt); <span class="hljs-keyword">if</span> (ret) <span class="hljs-keyword">return</span> ret; &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">destroy_pipeline</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Option&amp; opt)</span> </span>&#123;
+        &#123; <span class="hljs-keyword">int</span> ret = AbsVal::destroy_pipeline(opt); <span class="hljs-keyword">if</span> (ret) <span class="hljs-keyword">return</span> ret; &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    &#125;
+&#125;;
+DEFINE_LAYER_CREATOR(AbsVal_final)
+&#125; <span class="hljs-comment">// namespace ncnn</span>
+ 
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;layer/batchnorm.h&quot;</span></span>
+<span class="hljs-keyword">namespace</span> ncnn &#123;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BatchNorm_final</span> :</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">public</span> BatchNorm
+&#123;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">create_pipeline</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Option&amp; opt)</span> </span>&#123;
+        &#123; <span class="hljs-keyword">int</span> ret = BatchNorm::create_pipeline(opt); <span class="hljs-keyword">if</span> (ret) <span class="hljs-keyword">return</span> ret; &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">int</span> <span class="hljs-title">destroy_pipeline</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Option&amp; opt)</span> </span>&#123;
+        &#123; <span class="hljs-keyword">int</span> ret = BatchNorm::destroy_pipeline(opt); <span class="hljs-keyword">if</span> (ret) <span class="hljs-keyword">return</span> ret; &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    &#125;
+&#125;;
+DEFINE_LAYER_CREATOR(BatchNorm_final)
+&#125; <span class="hljs-comment">// namespace ncnn</span></code></pre>
+<p>​    AbsVal_final层继承了AbsVal层，如果当前操作系统不是linux系统，就会将create_pipeline()和destroy_pipeline()抽象出来，具体调用时，就调用对应优化了的代码。那么layer载入ParamDict具体实现就对应于各个layer的载入流程了。</p>
+<h6 id="3-3-bin文件"><a href="#3-3-bin文件" class="headerlink" title="3.3 bin文件"></a>3.3 bin文件</h6><p>​    前面已经大致总结了ncnn的param文件载入，根据param文件创建网络结构，然后通过bin文件载入每一层对应的网络参数。这里就总结一下，如何载入每一层的参数：</p>
+<p>​        我们常用的网络参数载入的接口为：</p>
+<pre><code class="hljs reasonml"><span class="hljs-comment">// 从二进制文件中载入模型</span>
+<span class="hljs-built_in">int</span> load<span class="hljs-constructor">_model(<span class="hljs-params">const</span> <span class="hljs-params">char</span><span class="hljs-operator">*</span> <span class="hljs-params">modelpath</span>)</span>;</code></pre>
+<p>​    找到对应net.cpp文件实现部分有：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 从二进制文件中载入模型</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Net::load_model</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* modelpath)</span></span>
+<span class="hljs-function"></span>&#123;
+    FILE* fp = fopen(modelpath, <span class="hljs-string">&quot;rb&quot;</span>);
+    <span class="hljs-keyword">if</span> (!fp)
+    &#123;
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;fopen %s failed\n&quot;</span>, modelpath);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    &#125;
+ 
+    <span class="hljs-keyword">int</span> ret = load_model(fp);
+ 
+    fclose(fp);
+ 
+    <span class="hljs-keyword">return</span> ret;
+&#125;</code></pre>
+<p>和载入模型参数一样，ncnn模型载入这里调用了另外一个接口，从文件指针载入权重参数：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 从文件指针载入模型</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Net::load_model</span><span class="hljs-params">(FILE* fp)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (layers.empty()) <span class="hljs-comment">// 判断当前layer是否为空</span>
+    &#123;
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;network graph not ready\n&quot;</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    &#125;
+    
+    <span class="hljs-keyword">int</span> ret = <span class="hljs-number">0</span>;     <span class="hljs-comment">// load file</span>
+    <span class="hljs-function">ModelBinFromStdio <span class="hljs-title">mb</span><span class="hljs-params">(fp)</span></span>;     <span class="hljs-comment">// 从二进制文件读取</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i=<span class="hljs-number">0</span>; i&lt;layers.size(); i++)     <span class="hljs-comment">// 遍历所有的层</span>
+    &#123;
+        Layer* layer = layers[i]; <span class="hljs-comment">// 读取第i层</span>
+        <span class="hljs-comment">//Here we found inconsistent content in the parameter file.</span>
+        <span class="hljs-keyword">if</span> (!layer)&#123;    <span class="hljs-comment">// 如果第i层不存在</span>
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;load_model error at layer %d, parameter file has inconsistent content.\n&quot;</span>, (<span class="hljs-keyword">int</span>)i);
+            ret = <span class="hljs-number">-1</span>;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+ 
+        <span class="hljs-comment">// 载入模型参数</span>
+        <span class="hljs-keyword">int</span> lret = layer-&gt;load_model(mb);
+        <span class="hljs-keyword">if</span> (lret != <span class="hljs-number">0</span>)
+        &#123;
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;layer load_model %d failed\n&quot;</span>, (<span class="hljs-keyword">int</span>)i);
+            ret = <span class="hljs-number">-1</span>;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+ 
+        <span class="hljs-keyword">int</span> cret = layer-&gt;create_pipeline(opt);  <span class="hljs-comment">// 从opt处创建网络的pipline</span>
+        <span class="hljs-keyword">if</span> (cret != <span class="hljs-number">0</span>) <span class="hljs-comment">// 如果创建第i层的pipline失败</span>
+        &#123;
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;layer create_pipeline %d failed\n&quot;</span>, (<span class="hljs-keyword">int</span>)i);
+            ret = <span class="hljs-number">-1</span>;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+    &#125;
+ 
+    <span class="hljs-comment">// 网络复用</span>
+    fuse_network();
+    <span class="hljs-keyword">return</span> ret;
+&#125;</code></pre>
+<p>​    按照代码注释，应该还是比较好懂得，这里需要解析两个部分，第一个部分为<strong>ModelBinFromStdio</strong>，对应于二进制模型文件解析，另外一部分为 <strong>layer-&gt;load_model(mb)</strong>，对应于具体某个层的参数载入：</p>
+<p>​    （1）二进制模型文件解析</p>
+<p>​    这里对应于modelbin.h和modelbin.cpp文件，首先看一下modelbin.h文件：</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ModelBin</span></span>
+<span class="hljs-class">&#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">virtual</span> ~ModelBin();
+    <span class="hljs-comment">// element type</span>
+    <span class="hljs-comment">// 0 = auto</span>
+    <span class="hljs-comment">// 1 = float32</span>
+    <span class="hljs-comment">// 2 = float16</span>
+    <span class="hljs-comment">// 3 = int8</span>
+    <span class="hljs-comment">// load vec</span>
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> Mat <span class="hljs-title">load</span><span class="hljs-params">(<span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span> type)</span> <span class="hljs-keyword">const</span> </span>= <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// load image</span>
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> Mat <span class="hljs-title">load</span><span class="hljs-params">(<span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span> h, <span class="hljs-keyword">int</span> type)</span> <span class="hljs-keyword">const</span></span>;
+    <span class="hljs-comment">// load dim</span>
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> Mat <span class="hljs-title">load</span><span class="hljs-params">(<span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span> h, <span class="hljs-keyword">int</span> c, <span class="hljs-keyword">int</span> type)</span> <span class="hljs-keyword">const</span></span>;
+&#125;;
+ 
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> NCNN_STDIO</span>
+<span class="hljs-comment">// 载入模型参数到一个Mat中</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ModelBinFromStdio</span> :</span> <span class="hljs-keyword">public</span> ModelBin
+&#123;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">// construct from file</span>
+    ModelBinFromStdio(FILE* binfp);
+ 
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> Mat <span class="hljs-title">load</span><span class="hljs-params">(<span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span> type)</span> <span class="hljs-keyword">const</span></span>;
+ 
+<span class="hljs-keyword">protected</span>:
+    FILE* binfp;
+&#125;;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span> <span class="hljs-comment">// NCNN_STDIO</span></span>
+ 
+<span class="hljs-comment">// 载入模型参数到一个Mat中</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ModelBinFromMemory</span> :</span> <span class="hljs-keyword">public</span> ModelBin
+&#123;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">// construct from external memory</span>
+    ModelBinFromMemory(<span class="hljs-keyword">const</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>*&amp; mem);
+ 
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> Mat <span class="hljs-title">load</span><span class="hljs-params">(<span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span> type)</span> <span class="hljs-keyword">const</span></span>;
+ 
+<span class="hljs-keyword">protected</span>:
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>*&amp; mem;
+&#125;;
+ 
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ModelBinFromMatArray</span> :</span> <span class="hljs-keyword">public</span> ModelBin
+&#123;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">// construct from weight blob array</span>
+    ModelBinFromMatArray(<span class="hljs-keyword">const</span> Mat* weights);
+ 
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> Mat <span class="hljs-title">load</span><span class="hljs-params">(<span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span> type)</span> <span class="hljs-keyword">const</span></span>;
+ 
+<span class="hljs-keyword">protected</span>:
+    <span class="hljs-keyword">mutable</span> <span class="hljs-keyword">const</span> Mat* weights;
+&#125;;</code></pre>
+<p>   找到对应实现部分，就是modelbin.cpp，可以看到，ModelBinFromStdio mb(fp);就是将文件指针传给binfp对象</p>
+<pre><code class="hljs cpp">ModelBinFromStdio::ModelBinFromStdio(FILE* _binfp) : binfp(_binfp)
+&#123;
+&#125;</code></pre>
+<p>​    下面再看一下layer载入参数，layer具体操作对应于具体类型的层操作，例如batchnorm，可以看到：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 载入模型</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">BatchNorm::load_model</span><span class="hljs-params">(<span class="hljs-keyword">const</span> ModelBin&amp; mb)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-comment">// slope数据</span>
+    slope_data = mb.load(channels, <span class="hljs-number">1</span>);
+    <span class="hljs-comment">// 载入失败：返还-100</span>
+    <span class="hljs-keyword">if</span> (slope_data.empty())
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-100</span>;
+ 
+    <span class="hljs-comment">// mean数据</span>
+    mean_data = mb.load(channels, <span class="hljs-number">1</span>);
+    <span class="hljs-comment">// 载入数据失败，返还-100</span>
+    <span class="hljs-keyword">if</span> (mean_data.empty())
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-100</span>;
+ 
+    <span class="hljs-comment">// variance数据</span>
+    var_data = mb.load(channels, <span class="hljs-number">1</span>);
+    <span class="hljs-comment">// 载入数据失败，返还-100</span>
+    <span class="hljs-keyword">if</span> (var_data.empty())
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-100</span>;
+ 
+    <span class="hljs-comment">// bias数据</span>
+    bias_data = mb.load(channels, <span class="hljs-number">1</span>);
+    <span class="hljs-comment">// 载入数据失败，返还-100</span>
+    <span class="hljs-keyword">if</span> (bias_data.empty())
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-100</span>;
+ 
+    <span class="hljs-comment">// 创建矩阵</span>
+    a_data.create(channels);
+    <span class="hljs-keyword">if</span> (a_data.empty())
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-100</span>;
+    <span class="hljs-comment">// 创建矩阵</span>
+    b_data.create(channels);
+    <span class="hljs-keyword">if</span> (b_data.empty())
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-100</span>;
+ 
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;channels; i++)
+    &#123;
+        <span class="hljs-comment">// sqrt variance</span>
+        <span class="hljs-keyword">float</span> sqrt_var = <span class="hljs-built_in">sqrt</span>(var_data[i] + eps);
+        a_data[i] = bias_data[i] - slope_data[i] * mean_data[i] / sqrt_var;
+        b_data[i] = slope_data[i] / sqrt_var;
+    &#125;
+ 
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p>实际上调用的是ModelBinFromStdio 的load接口：</p>
+<pre><code class="hljs cpp"><span class="hljs-function">Mat <span class="hljs-title">ModelBinFromStdio::load</span><span class="hljs-params">(<span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span> type)</span> <span class="hljs-keyword">const</span></span></code></pre>
+<p>后面type对应有四种类型：auto，float32，float16和int8</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 0 = auto</span>
+<span class="hljs-comment">// 1 = float32</span>
+<span class="hljs-comment">// 2 = float16</span>
+<span class="hljs-comment">// 3 = int8</span></code></pre>
+<p> 然后，根据这四种类型进行模型参数载入，感觉没什么好说的，主要是里面有个alignSize函数需要做个笔记：</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-keyword">size_t</span> <span class="hljs-title">alignSize</span><span class="hljs-params">(<span class="hljs-keyword">size_t</span> sz, <span class="hljs-keyword">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> (sz + n<span class="hljs-number">-1</span>) &amp; -n;
+&#125;</code></pre>
+<p>alignSize就是申请sz大小的内存，实际申请内存是 y =(sz+n-1)&amp;-n 大小的内存，y &gt;= sz，且y是n的整数倍，然后对(sz+n-1)&amp; -n的解释是：</p>
+<p>​    假设n为16，-n就是0xfffffff0，(sz+n-1)，加这个n-1一是为了保证sz刚好是16的倍数不会多算，二十为了防止不是16的倍数会少算，如，sz=3, 就是从二进制角度舍弃19小于16部分。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/17/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-2/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ncnn源码分析_2</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/17/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">
+                        <span class="hidden-mobile">ncnn源码分析_0</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "ncnn源码分析_1&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
