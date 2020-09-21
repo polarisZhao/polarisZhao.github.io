@@ -315,7 +315,7 @@ factor_count = <span class="hljs-number">0</span>
 
     <span class="hljs-keyword">return</span> keep</code></pre>
 <p><strong>（3）三个任务的损失是什么？函数如何平衡？</strong></p>
-<p>第一个任务是分类任务：其损失函数为交叉熵损失函数。第二个任务和第三个任务均是回归任务，其损失是平方均差损失函数。通过加权 $\alpha$ 来平衡三个任务的权重：在 P-Net 和 R-Net 中，$\alpha<em>{det}=1, \alpha</em>{box}=0.5, \alpha<em>{landmark}=0.5$，在O-Net中，$\alpha</em>{det}=1, \alpha<em>{box}=0.5, \alpha</em>{landmark}=1$</p>
+<p>第一个任务是分类任务：其损失函数为交叉熵损失函数。第二个任务和第三个任务均是回归任务，其损失是平方均差损失函数。通过加权 $\alpha$ 来平衡三个任务的权重：在 P-Net 和 R-Net 中，$\alpha<em>{det}=1$, $\alpha</em>{box}=0.5$, $\alpha<em>{landmark}=0.5$，在O-Net中，$\alpha</em>{det}=1$, $\alpha<em>{box}=0.5$, $\alpha</em>{landmark}=1$</p>
 <p><strong>（4）论文的主要创新点？ 尽量简单概括</strong></p>
 <p>​    通过级联三个卷积神经网络来实现人脸的检测和Landmark定位。另外本文也提出了一种online hard sample mining方法，具体就是在每个mini-batch中，取loss最大的70%进行反向传播，忽略那些简单的样本。</p>
 <p><strong>（5）有什么改进措施？</strong></p>

@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      0 字
+      543 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      9
        分钟
     </span>
   
@@ -208,7 +208,82 @@
             <h1 style="display: none">pytorch2ncnn</h1>
             
             <div class="markdown-body" id="post-body">
-              
+              <p>借助 onnx 实现 pytorch 到 ncnn 的转换</p>
+<a id="more"></a>
+<p><strong>1. 安装 onnx</strong> </p>
+<pre><code class="hljs shell">pip3 install onnx</code></pre>
+<p><strong>2. pytorch model &gt; onnx</strong></p>
+<pre><code class="hljs python"><span class="hljs-keyword">from</span> models.pfld <span class="hljs-keyword">import</span> PFLDInference, AuxiliaryNet
+<span class="hljs-keyword">from</span> torch.autograd <span class="hljs-keyword">import</span> Variable
+<span class="hljs-keyword">import</span> onnx
+<span class="hljs-keyword">import</span> torch
+
+checkpoint = torch.load(<span class="hljs-string">&quot;./checkpoint/snapshot/checkpoint.pth.tar&quot;</span>, map_location=<span class="hljs-string">&#x27;cpu&#x27;</span>)
+pfld_backbone = PFLDInference()
+pfld_backbone.load_state_dict(checkpoint[<span class="hljs-string">&#x27;pfld_backbone&#x27;</span>])
+
+dummy_input = Variable(torch.randn(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">112</span>, <span class="hljs-number">112</span>)) 
+torch.onnx.export(plfd_backbone, dummy_input, <span class="hljs-string">&quot;output/plfd.onnx&quot;</span>)
+
+model = onnx.load(<span class="hljs-string">&#x27;output/pfld.onnx&#x27;</span>)</code></pre>
+<p><strong>3. 安装ncnn</strong></p>
+<p>(1) 安装 protobuf</p>
+<pre><code class="hljs shell">unzip protobuf-all-3.7.1.zip
+cd protobuf-all-3.7.1
+./configure --prefix=/usr/local
+make -j4
+make check -j4
+sudo make install
+sudo ldconfig</code></pre>
+<p>(2) 安装 opencv， opencv 这里用的是2.4.13.6</p>
+<pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># 源码编译</span></span>
+unzip opencv-2.4.13.6.zip
+cd opencv-2.4.13.6
+mkdir build
+cd build
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
+make -j8
+sudo make install
+sudo ldconfig</code></pre>
+<p>(3) 安装依赖项</p>
+<pre><code class="hljs shell">sudo apt-get install build-essential
+sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+sudo apt-get install  libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev</code></pre>
+<p>(4) 把ncnn的源码clone下来，我们这里主要想使用tools下面的onnx转换工具。</p>
+<p>这里作一点修改，pytorch1.0之后支持0维的张量，这在ncnn转换中会出现问题，修改onnx2ncnn.cpp中Constant和MemoryData的转换，<strong>有2处</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (M.dims_size() == <span class="hljs-number">1</span>) &#123;
+   <span class="hljs-built_in">fprintf</span>(pp, <span class="hljs-string">&quot; 0=%d&quot;</span>, (<span class="hljs-keyword">int</span>)M.dims(<span class="hljs-number">0</span>));
+&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (M.dims_size() == <span class="hljs-number">2</span>) &#123;
+    <span class="hljs-built_in">fprintf</span>(pp, <span class="hljs-string">&quot; 0=%d&quot;</span>, (<span class="hljs-keyword">int</span>)M.dims(<span class="hljs-number">1</span>));
+    <span class="hljs-built_in">fprintf</span>(pp, <span class="hljs-string">&quot; 1=%d&quot;</span>, (<span class="hljs-keyword">int</span>)M.dims(<span class="hljs-number">0</span>));
+&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (M.dims_size() == <span class="hljs-number">3</span>) &#123;
+    <span class="hljs-built_in">fprintf</span>(pp, <span class="hljs-string">&quot; 0=%d&quot;</span>, (<span class="hljs-keyword">int</span>)M.dims(<span class="hljs-number">2</span>));
+    <span class="hljs-built_in">fprintf</span>(pp, <span class="hljs-string">&quot; 1=%d&quot;</span>, (<span class="hljs-keyword">int</span>)M.dims(<span class="hljs-number">1</span>));
+    <span class="hljs-built_in">fprintf</span>(pp, <span class="hljs-string">&quot; 2=%d&quot;</span>, (<span class="hljs-keyword">int</span>)M.dims(<span class="hljs-number">0</span>));
+&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (get_tensor_proto_data_size(M)==<span class="hljs-number">1</span>) &#123;
+    <span class="hljs-comment">// scalar tensor!!! </span>
+    <span class="hljs-built_in">fprintf</span>(pp, <span class="hljs-string">&quot; 0=1&quot;</span>);
+&#125;</code></pre>
+<p>(3) 编译 ncnn</p>
+<pre><code class="hljs shell">cd ncnn
+mkdir -p build
+cd build
+cmake ..
+make -j4</code></pre>
+<p>这样在 build/tools/onnx/ 目录下就有转换工具 onnx2ncnn 了</p>
+<p><strong>4. 简化一些onnx 模型</strong></p>
+<p>先别急着转换，onnx转换模型时有一些冗余，我们用工具简化一些onnx模型</p>
+<pre><code class="hljs shell">pip3 install onnx-simplifier
+python3 -m onnxsim pfld.onnx pfld-sim.onnx</code></pre>
+<p><strong>5.  onnx &gt; ncnn</strong></p>
+<pre><code class="hljs shell">cd ~/xxx/ncnn/build/tools/onnx/
+./onnx2ncnn pfld-sim.onnx pfld-sim.param pfld-sim.bin</code></pre>
+<p>现在就生成了两个文件可以供使用: <strong>pfld-sim.bin</strong> 和 <strong>pfld-sim.param</strong></p>
+<p><strong>6. 编写一个可以供调用的ncnn文件进行调用即可。</strong></p>
+<p><strong>错误信息:</strong></p>
+<p><strong>Q: Python中Import Error: no module named ‘past’错误以及解决方法</strong></p>
+<pre><code class="hljs shell">pip3 install future</code></pre>
+
             </div>
             <hr>
             <div>

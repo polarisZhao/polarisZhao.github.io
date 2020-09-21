@@ -1,0 +1,1048 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>ncnn源码分析_4 - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-21 11:20" pubdate>
+        September 21, 2020 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      51
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">ncnn源码分析_4</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>ncnn源码分析-4 模型量化源码</p>
+<a id="more"></a>
+<p>ncnn量化分析代码对应的文件主要有两个:ncnn/tools/quantize/<strong>ncnn2table.cpp</strong> 和 ncnn/tools/quantize/<strong>ncnn2int8.cpp</strong>。</p>
+<ul>
+<li><strong>ncnn2table.cpp</strong> <strong>主要是分析生成相应的量化表， 其中存储了每个层的 scale 值。</strong></li>
+<li><strong>ncnn2int8.cpp</strong> <strong>则是对网络进行 int8量化</strong></li>
+</ul>
+<h4 id="1-ncnn2int8"><a href="#1-ncnn2int8" class="headerlink" title="1. ncnn2int8"></a>1. ncnn2int8</h4><p>​    我们首先对 ncnn2int8.cpp 这个文件进行分析。 该文件完成的主要功能是将 float32 类型转化为 int8 类型。主要分为四个步骤:</p>
+<p>(1) 读取生成的 table 文件，里面存储了对应的 scale。这本质上就是一个文本文件的读取和解析。</p>
+<p>​    read<em>int8_scale_table 负责读取 table 文件, 将 scale 分别存储在 weight_int8scale_table (带 _param\</em>) 和 blob<em>int8scale_table(不带_param\</em>)。 这里只是一个读取文件并解析的过程。</p>
+<p><strong>weight</strong>( 带_param_)格式示例： scale 个数和通道数相同，是主通道进行量化</p>
+<p><img src="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-4/1.jpg" srcset="/img/loading.gif" alt></p>
+<p><strong>blob</strong> (不带_param_) 格式示例：</p>
+<p><img src="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-4/2.jpg" srcset="/img/loading.gif" alt></p>
+<p>(2) <strong>载入原始的参数和模型文件。</strong>net 中的 .param 和 .bin 载入方式<strong>。</strong></p>
+<p>(3) <strong>对卷积层、深度可分离卷积层和全连接层进行量化。quantize_convolution、quantize_convolutiondepthwise、quantize_innerproduct</strong> 分别对卷积层、可分离卷积层和全连接层进行量化<strong>。 这里其实是构建了一个量化层，然后将原始的fp32类型的权重和scale作为输入, 进行一次forward运算，将结果替换原来的fp32权重</strong></p>
+<p>(4) <strong>保存量化后的权重文件</strong></p>
+<p><img src="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-4/3.jpg" srcset="/img/loading.gif" alt></p>
+<p><strong>从主函数入手</strong>: 分别读取了5个参数, <strong>分别是输入模型文件、参数文件、输出模型文件、输出参数文件和量化表的路径</strong>。 然后执行如上所示的四个步骤。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span>** argv)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-comment">// 读取相应的参数 </span>
+    <span class="hljs-keyword">if</span> (argc != <span class="hljs-number">6</span>)
+    &#123;
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;usage: %s [inparam] [inbin] [outparam] [outbin] [calibration table]\n&quot;</span>, argv[<span class="hljs-number">0</span>]);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    &#125;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* inparam = argv[<span class="hljs-number">1</span>];  <span class="hljs-comment">// 输入模型文件</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* inbin = argv[<span class="hljs-number">2</span>];  <span class="hljs-comment">// 输入参数文件</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* outparam = argv[<span class="hljs-number">3</span>];  <span class="hljs-comment">// 输出模型文件</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* outbin = argv[<span class="hljs-number">4</span>];  <span class="hljs-comment">// 输出参数文件</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* int8scale_table_path = argv[<span class="hljs-number">5</span>]; <span class="hljs-comment">// 量化表的路径</span>
+
+    NetQuantize quantizer; <span class="hljs-comment">// 主要的量化类</span>
+
+    <span class="hljs-comment">// (1)  读取并解析 scale table 文件</span>
+    <span class="hljs-keyword">if</span> (int8scale_table_path)
+    &#123;
+        <span class="hljs-keyword">bool</span> s2 = read_int8scale_table(int8scale_table_path, quantizer.blob_int8scale_table, quantizer.weight_int8scale_table);
+        <span class="hljs-keyword">if</span> (!s2) 
+        &#123;
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;read_int8scale_table failed\n&quot;</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        &#125;
+    &#125;
+    <span class="hljs-comment">// (2) 载入模型文件和参数</span>
+    quantizer.load_param(inparam); 
+    quantizer.load_model(inbin);
+    <span class="hljs-comment">// (3) 量化: 主要量化三层: conv、convdw 和 fc</span>
+    quantizer.quantize_convolution();
+    quantizer.quantize_convolutiondepthwise();
+    quantizer.quantize_innerproduct();
+    <span class="hljs-comment">// (4) 存储模型和参数文件</span>
+    quantizer.save(outparam, outbin);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p>​    <strong>代码的最核心的三个函数:</strong> <strong>quantize_convolution、quantize_convolutiondepthwise、quantize_innerproduct</strong> 分别对卷积层、可分离卷积层和全连接层进行量化, </p>
+<p>我们在此以 <strong>quantize_convolution</strong> 为例:</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">NetQuantize::quantize_convolution</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> layer_count = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">int</span>&gt;(layers.size());
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; layer_count; i++)
+    &#123;
+        <span class="hljs-comment">// 查找所有的卷积层</span>
+        <span class="hljs-keyword">if</span> (layers[i]-&gt;type != <span class="hljs-string">&quot;Convolution&quot;</span>)
+            <span class="hljs-keyword">continue</span>;                
+         <span class="hljs-comment">// 获取卷积层的名称           </span>
+        <span class="hljs-keyword">char</span> key[<span class="hljs-number">256</span>];
+        <span class="hljs-built_in">sprintf</span>(key, <span class="hljs-string">&quot;%s_param_0&quot;</span>, layers[i]-&gt;name.c_str());  
+                 
+         <span class="hljs-comment">// 在 blob_int8scale_table 找到该层  /* 其实这里的 blob_int8scale_table 下文并没有用到 */</span>
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">map</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; &gt;::iterator iter_data = blob_int8scale_table.find(layers[i]-&gt;name);
+        <span class="hljs-keyword">if</span> (iter_data == blob_int8scale_table.end())
+            <span class="hljs-keyword">continue</span>;
+        <span class="hljs-comment">// 在 weight_int8scale_table 找到该层</span>
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">map</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; &gt;::iterator iter = weight_int8scale_table.find(key);
+        <span class="hljs-keyword">if</span> (iter == weight_int8scale_table.end())
+        &#123;
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;this layer need to be quantized, but no scale param!\n&quot;</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        &#125;
+        
+        <span class="hljs-comment">// 卷积层量化 -&gt;  fp32 到 int8</span>
+        ncnn::Convolution* convolution = (ncnn::Convolution*)layers[i]; <span class="hljs-comment">// (1) 获取该卷积层</span>
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;quantize_convolution %s\n&quot;</span>, convolution-&gt;name.c_str());
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; weight_data_int8_scales = iter-&gt;second; <span class="hljs-comment">//  (2) 获取weight_data_int8_scales</span>
+        &#123;
+            <span class="hljs-function">ncnn::Mat <span class="hljs-title">int8_weight_data</span><span class="hljs-params">(convolution-&gt;weight_data_size, (<span class="hljs-keyword">size_t</span>)<span class="hljs-number">1u</span>)</span></span>; <span class="hljs-comment">// (3) 结果，和weight的大小一致</span>
+            <span class="hljs-keyword">if</span> (int8_weight_data.empty())
+                <span class="hljs-keyword">return</span> <span class="hljs-number">-100</span>;
+            <span class="hljs-comment">// 这里所谓的量化，即进行了一次简单的前向传播，将原来的float32类型的权重替换为int类型结果</span>
+            <span class="hljs-comment">// 在此之前我们准备的东西有</span>
+            <span class="hljs-comment">// (1) 卷积层的 fp32 的数据 (2) scale 数据 (3) 声明了一个 int8_weight_data的数据</span>
+            <span class="hljs-comment">// 我们的目标就是 (1) + (2) -&gt; (3)</span>
+            <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> weight_data_size_output = convolution-&gt;weight_data_size / convolution-&gt;num_output;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> n = <span class="hljs-number">0</span>; n &lt; convolution-&gt;num_output; n++)   <span class="hljs-comment">// 逐卷积核进行量化</span>
+            &#123;
+                <span class="hljs-comment">// (4) 创建一个quantize op</span>
+                ncnn::Layer* op = ncnn::create_layer(ncnn::LayerType::Quantize); 
+                <span class="hljs-comment">// (5) 把量化表中的scale设置进op里去</span>
+                ncnn::ParamDict pd;
+                pd.<span class="hljs-built_in">set</span>(<span class="hljs-number">0</span>, weight_data_int8_scales[n]);
+                op-&gt;load_param(pd);
+                <span class="hljs-comment">// (6) blob_allocator</span>
+                ncnn::Option opt;
+                opt.blob_allocator = int8_weight_data.allocator;
+                <span class="hljs-comment">// (7) weight_data &lt;-&gt; weight_data_n , int8_weight_data &lt;-&gt;  int8_weight_data_n </span>
+                <span class="hljs-keyword">const</span> ncnn::Mat weight_data_n = convolution-&gt;weight_data.range(weight_data_size_output * n, weight_data_size_output);
+                ncnn::Mat int8_weight_data_n = int8_weight_data.range(weight_data_size_output * n, weight_data_size_output);
+                <span class="hljs-comment">// (8) quantitze op前传，计算量化权值 weight_data_n -&gt;  int8_weight_data_n</span>
+                op-&gt;forward(weight_data_n, int8_weight_data_n, opt); 
+                
+                <span class="hljs-keyword">delete</span> op;
+            &#125;
+            convolution-&gt;weight_data = int8_weight_data; <span class="hljs-comment">// (9) 用量化后的权值替换原来的权值</span>
+        &#125;
+        convolution-&gt;int8_scale_term = <span class="hljs-number">2</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p>可以来简单的看一下 <strong>quantize</strong> 层:</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-keyword">signed</span> <span class="hljs-keyword">char</span> <span class="hljs-title">float2int8</span><span class="hljs-params">(<span class="hljs-keyword">float</span> v)</span></span>&#123;
+    <span class="hljs-keyword">int</span> int32 = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">int</span>&gt;(round(v)); <span class="hljs-comment">// 取整数, 然后转化为 int32类型</span>
+    <span class="hljs-keyword">if</span> (int32 &gt; <span class="hljs-number">127</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">127</span>;  <span class="hljs-comment">// 如果大于127, 返回127</span>
+    <span class="hljs-keyword">if</span> (int32 &lt; <span class="hljs-number">-127</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">-127</span>; <span class="hljs-comment">// 如果小于 -127, 返回 -127</span>
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">signed</span> <span class="hljs-keyword">char</span>)int32; <span class="hljs-comment">// 返回 int32 -&gt; int8</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Quantize::forward</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Mat&amp; bottom_blob, Mat&amp; top_blob, <span class="hljs-keyword">const</span> Option&amp; opt)</span> <span class="hljs-keyword">const</span></span>&#123;
+    <span class="hljs-keyword">int</span> dims = bottom_blob.dims;
+
+    <span class="hljs-keyword">if</span> (dims == <span class="hljs-number">1</span>)&#123;
+        <span class="hljs-keyword">int</span> w = bottom_blob.w;
+
+        top_blob.create(w, (<span class="hljs-keyword">size_t</span>)<span class="hljs-number">1u</span>, opt.blob_allocator);
+        <span class="hljs-keyword">if</span> (top_blob.empty())
+            <span class="hljs-keyword">return</span> <span class="hljs-number">-100</span>;
+
+        <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span>* ptr = bottom_blob;
+        <span class="hljs-keyword">signed</span> <span class="hljs-keyword">char</span>* outptr = top_blob;
+
+        <span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> omp parallel for num_threads(opt.num_threads)</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;w; i++)
+        &#123;
+            <span class="hljs-comment">// ! 这一句是最核心的，也是整个量化部分代码的核心</span>
+            <span class="hljs-comment">// 将 float32 乘以 scale， 然后将其转化为 int8 类型</span>
+            outptr[i] = float2int8(ptr[i] * scale); 
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">if</span> (dims == <span class="hljs-number">2</span>)&#123;
+        ...
+    &#125;
+
+    <span class="hljs-keyword">if</span> (dims == <span class="hljs-number">3</span>)&#123;
+        ...
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p><strong>2. ncnn2table.cpp</strong> </p>
+<p>ncnn2table.cpp 主要用于<strong>量化表的计算</strong>，说白了就是使用我们之前说的算法来计算各个参数的 scale，在ncnn2table.cpp下，顶层代码核心就一句话：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">/* ncnn2table.cpp */</span>
+<span class="hljs-comment">// filenames: 用来calibration的图片list </span>
+<span class="hljs-comment">// parampath: 参数文件路径</span>
+<span class="hljs-comment">// binpath: bin 二进制文件路径</span>
+<span class="hljs-comment">// tablepath: 生成的量化表的路径</span>
+<span class="hljs-comment">// pre_param: 参数</span>
+post_training_quantize(filenames, parampath, binpath, tablepath, pre_param);</code></pre>
+<p>我们接下来重点看post_training_quantize这个函数，该函数做了如下几件事：</p>
+<p><strong>&gt;&gt;&gt;&gt;  (1) 初始化quantitize_datas    (2) 计算最大值    (3) 初始化直方图的间隔      (4) 计算直方图           (5) 计算Scale</strong></p>
+<p><strong>(1) 初始化quantitize_datas</strong></p>
+<p>​    没什么好说的，每一个层有一个<strong>QuantizeData</strong>对象，初始化 num_bins=2048，也就是原始的fp32分布Po，其统计直方图一共有<strong>2048个bins</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;QuantizeData&gt; quantize_datas;
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; net.conv_names.size(); i++)
+&#123;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> layer_name = net.conv_names[i];
+
+    <span class="hljs-function">QuantizeData <span class="hljs-title">quantize_data</span><span class="hljs-params">(layer_name, <span class="hljs-number">2048</span>)</span></span>;
+    quantize_datas.push_back(quantize_data);
+&#125;</code></pre>
+<p><strong>(2) 计算最大值</strong></p>
+<p>​    遍历所有图片，计算每个blob的最大激活值，这里找的是绝对值最大的那个</p>
+<pre><code class="hljs cpp">    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; image_list.size(); i++) <span class="hljs-comment">// 遍历calibration数据</span>
+    &#123;
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> img_name = image_list[i];
+        <span class="hljs-keyword">if</span> ((i + <span class="hljs-number">1</span>) % <span class="hljs-number">100</span> == <span class="hljs-number">0</span>)
+        &#123;
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;    %d/%d\n&quot;</span>, <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">int</span>&gt;(i + <span class="hljs-number">1</span>), <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">int</span>&gt;(size));
+        &#125;
+
+        cv::Mat bgr = cv::imread(img_name, cv::IMREAD_COLOR);
+        <span class="hljs-keyword">if</span> (bgr.empty())
+        &#123;
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;cv::imread %s failed\n&quot;</span>, img_name.c_str());
+            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        &#125;
+
+        ncnn::Mat in = ncnn::Mat::from_pixels_resize(bgr.data, swapRB ? ncnn::Mat::PIXEL_BGR2RGB : ncnn::Mat::PIXEL_BGR, bgr.cols, bgr.rows, width, height);
+        in.substract_mean_normalize(mean_vals, norm_vals);
+
+        ncnn::Extractor ex = net.create_extractor();
+        ex.input(net.input_names[<span class="hljs-number">0</span>].c_str(), in);
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> j = <span class="hljs-number">0</span>; j &lt; net.conv_names.size(); j++)
+        &#123;
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> layer_name = net.conv_names[j];
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> blob_name = net.conv_bottom_blob_names[layer_name];
+
+            ncnn::Mat out;
+            ex.extract(blob_name.c_str(), out); <span class="hljs-comment">// 前传网络，相当于caffe的forwardTo，拿到blob数据</span>
+
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> k = <span class="hljs-number">0</span>; k &lt; quantize_datas.size(); k++)
+            &#123;
+                <span class="hljs-keyword">if</span> (quantize_datas[k].name == layer_name)
+                &#123;
+                    quantize_datas[k].initial_blob_max(out); <span class="hljs-comment">// 统计最大值</span>
+                    <span class="hljs-keyword">break</span>;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    
+<span class="hljs-comment">// 被调函数:</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">QuantizeData::initial_blob_max</span><span class="hljs-params">(ncnn::Mat data)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> channel_num = data.c;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> size = data.w * data.h;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> q = <span class="hljs-number">0</span>; q &lt; channel_num; q++)
+    &#123;
+        <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> *data_n = data.channel(q);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; size; i++)
+        &#123;
+            max_value = <span class="hljs-built_in">std</span>::max(max_value, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">fabs</span>(data_n[i]));
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p><strong>(3) 初始化直方图间隔</strong></p>
+<p>也很简单，遍历每个层，初始化直方图间隔=最大激活值/2048</p>
+<pre><code class="hljs cpp">    <span class="hljs-comment">// step 2 histogram_interval</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;    ====&gt; step 2 : generate the histogram_interval.\n&quot;</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; net.conv_names.size(); i++)
+    &#123;
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> layer_name = net.conv_names[i];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> k = <span class="hljs-number">0</span>; k &lt; quantize_datas.size(); k++)
+        &#123;
+            <span class="hljs-keyword">if</span> (quantize_datas[k].name == layer_name)
+            &#123;
+                quantize_datas[k].initial_histogram_interval();
+
+                <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;%-20s : max = %-15f interval = %-10f\n&quot;</span>, quantize_datas[k].name.c_str(), quantize_datas[k].max_value, quantize_datas[k].histogram_interval);
+                <span class="hljs-keyword">break</span>;
+            &#125;
+        &#125;
+    &#125;
+    
+<span class="hljs-comment">// 被调函数    </span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">QuantizeData::initial_histogram_interval</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    histogram_interval = max_value / <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">float</span>&gt;(num_bins);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p><strong>(4) 计算直方图</strong></p>
+<p>​    再前传一次，遍历每个blob，向每个bin中投票，计算出直方图，得到原始fp32分布</p>
+<pre><code class="hljs cpp">    <span class="hljs-comment">// step 3 histogram</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;    ====&gt; step 3 : generate the histogram.\n&quot;</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; image_list.size(); i++)
+    &#123;
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> img_name = image_list[i];
+
+        <span class="hljs-keyword">if</span> ((i + <span class="hljs-number">1</span>) % <span class="hljs-number">100</span> == <span class="hljs-number">0</span>)
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;          %d/%d\n&quot;</span>, (<span class="hljs-keyword">int</span>)(i + <span class="hljs-number">1</span>), (<span class="hljs-keyword">int</span>)size);
+            
+        cv::Mat bgr = cv::imread(img_name, cv::IMREAD_COLOR);
+        <span class="hljs-keyword">if</span> (bgr.empty())
+        &#123;
+            <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;cv::imread %s failed\n&quot;</span>, img_name.c_str());
+            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        &#125;
+
+        ncnn::Mat in = ncnn::Mat::from_pixels_resize(bgr.data, swapRB ? ncnn::Mat::PIXEL_BGR2RGB : ncnn::Mat::PIXEL_BGR, bgr.cols, bgr.rows, width, height);
+        in.substract_mean_normalize(mean_vals, norm_vals);
+
+        ncnn::Extractor ex = net.create_extractor();
+        ex.input(net.input_names[<span class="hljs-number">0</span>].c_str(), in);
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> j = <span class="hljs-number">0</span>; j &lt; net.conv_names.size(); j++)
+        &#123;
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> layer_name = net.conv_names[j];
+            <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> blob_name = net.conv_bottom_blob_names[layer_name];
+
+            ncnn::Mat out;
+            ex.extract(blob_name.c_str(), out);
+
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> k = <span class="hljs-number">0</span>; k &lt; quantize_datas.size(); k++)
+            &#123;
+                <span class="hljs-keyword">if</span> (quantize_datas[k].name == layer_name)
+                &#123;
+                    quantize_datas[k].update_histogram(out);
+                    <span class="hljs-keyword">break</span>;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    
+<span class="hljs-comment">// 被调函数      </span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">QuantizeData::update_histogram</span><span class="hljs-params">(ncnn::Mat data)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> channel_num = data.c;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> size = data.w * data.h;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> q = <span class="hljs-number">0</span>; q &lt; channel_num; q++)
+    &#123;
+        <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> *data_n = data.channel(q);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; size; i++)
+        &#123;
+            <span class="hljs-keyword">if</span> (data_n[i] == <span class="hljs-number">0</span>)
+                <span class="hljs-keyword">continue</span>;
+
+            <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> index = <span class="hljs-built_in">std</span>::min(<span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">int</span>&gt;(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">abs</span>(data_n[i]) / histogram_interval), <span class="hljs-number">2047</span>);
+
+            histogram[index]++;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+</code></pre>
+<p><strong>(5) 计算Scale</strong></p>
+<pre><code class="hljs cpp">    <span class="hljs-comment">// step4 kld</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;    ====&gt; step 4 : using kld to find the best threshold value.\n&quot;</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; net.conv_names.size(); i++)
+    &#123;
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> layer_name = net.conv_names[i];
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> blob_name = net.conv_bottom_blob_names[layer_name];
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;%-20s &quot;</span>, layer_name.c_str());
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> k = <span class="hljs-number">0</span>; k &lt; quantize_datas.size(); k++)
+        &#123;
+            <span class="hljs-keyword">if</span> (quantize_datas[k].name == layer_name)
+            &#123;
+                quantize_datas[k].get_data_blob_scale();
+                <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;bin : %-8d threshold : %-15f interval : %-10f scale : %-10f\n&quot;</span>,
+                        quantize_datas[k].threshold_bin,
+                        quantize_datas[k].threshold,
+                        quantize_datas[k].histogram_interval,
+                        quantize_datas[k].scale);
+
+                <span class="hljs-built_in">fprintf</span>(fp, <span class="hljs-string">&quot;%s %f\n&quot;</span>, layer_name.c_str(), quantize_datas[k].scale);
+
+                <span class="hljs-keyword">break</span>;
+            &#125;
+        &#125;
+    &#125;
+
+<span class="hljs-comment">// 被调函数 </span>
+<span class="hljs-function"><span class="hljs-keyword">float</span> <span class="hljs-title">QuantizeData::get_data_blob_scale</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;   
+    normalize_histogram();   <span class="hljs-comment">// 直方图归一化</span>
+    threshold_bin = threshold_distribution(histogram);   <span class="hljs-comment">// 计算最后有多少个bins</span>
+    threshold = (threshold_bin + <span class="hljs-number">0.5</span>) * histogram_interval;   <span class="hljs-comment">// 之后很容易就能找到Threshold</span>
+    scale = <span class="hljs-number">127</span> / threshold;   <span class="hljs-comment">// Scale也很简单就能z好到</span>
+    <span class="hljs-keyword">return</span> scale;
+&#125;</code></pre>
+<p>其实说了半天，<strong>最核心的就在get_data_blob_scale这个函数里，函数分为3步</strong>：</p>
+<p><strong>a. 直方图归一化</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">QuantizeData::normalize_histogram</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">size_t</span> length = histogram.size();
+    <span class="hljs-keyword">float</span> sum = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; length; i++)
+        sum += histogram[i];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; length; i++)
+        histogram[i] /= sum;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p><strong>b. 使用KL散度计算最后用多少个bins比较合适</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">QuantizeData::threshold_distribution</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; &amp;distribution, <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> target_bin = <span class="hljs-number">128</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    ...
+    <span class="hljs-comment">// 这里length就是原始分布Po的长度，NCNN默认2048。这里的threshold实际上是num_bins，可以换算成T</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> threshold = target_bin; threshold &lt; length; threshold++)   <span class="hljs-comment">// target_bin=128，length = 2048</span>
+    &#123;
+         <span class="hljs-comment">// ①. 计算截断的fp32分布P</span>
+         <span class="hljs-comment">// ②. 计算int8分布Q</span>
+         <span class="hljs-comment">// ③. 计算扩展分布Q_expand</span>
+        <span class="hljs-comment">// ④. 计算KL散度</span>
+        <span class="hljs-comment">// ⑤. 比大小</span>
+    &#125;
+&#125;</code></pre>
+<p>①. 计算截断的fp32分布P也很简单：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">float</span> threshold_sum = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> threshold=target_bin; threshold&lt;length; threshold++) 
+&#123;
+    threshold_sum += distribution[threshold];   <span class="hljs-comment">// 128以上的所有数据和</span>
+&#125;
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> threshold=target_bin; threshold&lt;length; threshold++) 
+&#123;
+
+    <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; <span class="hljs-title">t_distribution</span><span class="hljs-params">(distribution.begin(), distribution.begin()+threshold)</span></span>;
+    
+    t_distribution[threshold<span class="hljs-number">-1</span>] += threshold_sum;   <span class="hljs-comment">// P的最后一个bin加上被截断的所有概率，得到截断的fp32分布P</span>
+    threshold_sum -= distribution[threshold];       <span class="hljs-comment">// 是通过减法来保证数值正确性的，很巧秒</span>
+    ...</code></pre>
+<p>②. 计算int8分布Q，注意Q是从Po得来的，而不是从P得来的，大于T的部分并不会加进最后一个bin内（存疑，不理解）；另外，当发生了4舍5入时，会有特殊处理</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; <span class="hljs-title">quantize_distribution</span><span class="hljs-params">(target_bin)</span></span>;  <span class="hljs-comment">// 量化后分布Q，长度是128</span>
+ 
+fill(quantize_distribution.begin(), quantize_distribution.end(), <span class="hljs-number">0</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> num_per_bin = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">float</span>&gt;(threshold) / target_bin;  <span class="hljs-comment">// 其实就是当前T下的Scale </span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;target_bin; i++) 
+&#123;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> start = i * num_per_bin;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> end = start + num_per_bin;
+
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> left_upper = <span class="hljs-built_in">ceil</span>(start);
+    <span class="hljs-keyword">if</span> (left_upper &gt; start) 
+    &#123;   <span class="hljs-comment">// 这里的意思是，如果发生了5入，则需要将舍掉的那个bin按比例加进来</span>
+        <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> left_scale = left_upper - start;
+        quantize_distribution[i] += left_scale * distribution[left_upper - <span class="hljs-number">1</span>];
+    &#125;
+
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> right_lower = <span class="hljs-built_in">floor</span>(end);
+
+    <span class="hljs-keyword">if</span> (right_lower &lt; end) 
+    &#123;
+
+        <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> right_scale = end - right_lower;
+        quantize_distribution[i] += right_scale * distribution[right_lower];
+    &#125;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j=left_upper; j&lt;right_lower; j++) 
+    &#123;
+        quantize_distribution[i] += distribution[j];
+    &#125;
+&#125;</code></pre>
+<p>③. 计算Q_expand，统计count时0不算在内，注意不管是统计数量还是上采样的过程中，都有4舍5入相关的问题</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// get Q</span>
+<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; <span class="hljs-title">expand_distribution</span><span class="hljs-params">(threshold, <span class="hljs-number">0</span>)</span></span>;
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;target_bin; i++) 
+&#123;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> start = i * num_per_bin;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> end = start + num_per_bin;
+
+    <span class="hljs-keyword">float</span> count = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> left_upper = <span class="hljs-built_in">ceil</span>(start);
+    <span class="hljs-keyword">float</span> left_scale = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span> (left_upper &gt; start) 
+    &#123;
+        left_scale = left_upper - start;
+        <span class="hljs-keyword">if</span> (distribution[left_upper - <span class="hljs-number">1</span>] != <span class="hljs-number">0</span>) 
+        &#123;
+            count += left_scale;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> right_lower = <span class="hljs-built_in">floor</span>(end);
+    <span class="hljs-keyword">float</span> right_scale = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span> (right_lower &lt; end) 
+    &#123;
+        right_scale = end - right_lower;
+        <span class="hljs-keyword">if</span> (distribution[right_lower] != <span class="hljs-number">0</span>) 
+        &#123;
+            count += right_scale;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j=left_upper; j&lt;right_lower; j++) 
+    &#123;
+        <span class="hljs-keyword">if</span> (distribution[j] != <span class="hljs-number">0</span>) 
+        &#123;
+            count++;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> expand_value = quantize_distribution[i] / count;
+
+    <span class="hljs-keyword">if</span> (left_upper &gt; start) 
+    &#123;
+        <span class="hljs-keyword">if</span> (distribution[left_upper - <span class="hljs-number">1</span>] != <span class="hljs-number">0</span>) 
+        &#123;
+            expand_distribution[left_upper - <span class="hljs-number">1</span>] += expand_value * left_scale;  <span class="hljs-comment">// 上采样过程中一样有四舍五入的问题</span>
+        &#125;
+    &#125;
+    <span class="hljs-keyword">if</span> (right_lower &lt; end) 
+    &#123;
+        <span class="hljs-keyword">if</span> (distribution[right_lower] != <span class="hljs-number">0</span>) 
+        &#123;
+            expand_distribution[right_lower] += expand_value * right_scale;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j=left_upper; j&lt;right_lower; j++) 
+    &#123;
+        <span class="hljs-keyword">if</span> (distribution[j] != <span class="hljs-number">0</span>) 
+        &#123;
+            expand_distribution[j] += expand_value;
+        &#125;
+    &#125;
+&#125;</code></pre>
+<p>④. 计算KL散度，注意当Q为0时，KL散度只加一（存疑，不理解）</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">float</span> kl_divergence = compute_kl_divergence(t_distribution, expand_distribution);
+
+<span class="hljs-function"><span class="hljs-keyword">float</span> <span class="hljs-title">QuantizeData::compute_kl_divergence</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; &amp;dist_a, <span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; &amp;dist_b)</span> </span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> length = dist_a.size();
+    assert(dist_b.size() == length);
+    <span class="hljs-keyword">float</span> result = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;length; i++) 
+    &#123;
+        <span class="hljs-keyword">if</span> (dist_a[i] != <span class="hljs-number">0</span>) 
+        &#123;
+            <span class="hljs-keyword">if</span> (dist_b[i] == <span class="hljs-number">0</span>) 
+            &#123;
+                result += <span class="hljs-number">1</span>;   <span class="hljs-comment">// Q为0时，KL散度只加一</span>
+            &#125; 
+            <span class="hljs-keyword">else</span> 
+            &#123;
+                result += dist_a[i] * <span class="hljs-built_in">log</span>(dist_a[i] / dist_b[i]);
+            &#125;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">return</span> result;
+&#125;</code></pre>
+<p>⑤. 轻松愉悦的找最大值</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (kl_divergence &lt; min_kl_divergence) 
+&#123;
+    min_kl_divergence = kl_divergence;   
+    target_threshold = threshold;   <span class="hljs-comment">// 实际上是num_bins</span>
+&#125;</code></pre>
+<p><strong>c. 计算 Threshold 和 bins</strong></p>
+<p>至此，我们得到了KL散度最小的桶数num_bins，可以通过下述公式得到T和Scale，就三行：</p>
+<pre><code class="hljs cpp">threshold = (<span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">float</span>&gt;(threshold_bin) + <span class="hljs-number">0.5f</span>) * histogram_interval;
+scale = <span class="hljs-number">127</span> / threshold;
+<span class="hljs-keyword">return</span> scale;</code></pre>
+<p>最后就是将Scale数据存下来，得到量化表了。</p>
+<p><strong>总结一下以上的代码逻辑:</strong></p>
+<p><img src="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-4/4.png" srcset="/img/loading.gif" alt></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-5/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ncnn源码分析_5</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/18/rk3399%E7%B3%BB%E7%BB%9F%E7%83%A7%E5%86%99/">
+                        <span class="hidden-mobile">rk3399系统烧写</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "ncnn源码分析_4&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

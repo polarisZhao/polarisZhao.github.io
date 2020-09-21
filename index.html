@@ -160,6 +160,75 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-5/">ncnn源码分析_5</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-5/">
+          
+          
+            
+          
+          
+ncnn 提供了两种解析网络 layer 的方法：
+方法一: 在推理中进行解析模型转换之后，某些 layer 没有转换成功：(在转换的过程中)。 如 shufflenetv2 中，param 文件只转换到了 fc 这一个 layer。这时需要添加一层softmax，可以先对param文件中转换成功的layer做推理，然后手动添加一个softmax层：
+ncnn::Extractor ex = s
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-21 17:09" pubdate>
+              2020-09-21
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-4/">ncnn源码分析_4</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-4/">
+          
+          
+            
+          
+          ncnn源码分析-4 模型量化源码
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-21 11:20" pubdate>
+              2020-09-21
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/09/18/rk3399%E7%B3%BB%E7%BB%9F%E7%83%A7%E5%86%99/">rk3399系统烧写</a>
       </h1>
 
@@ -384,7 +453,7 @@ git clone https://github.com/rockchip-linux/rkbin.git
           
             
           
-          
+          借助 onnx 实现 pytorch 到 ncnn 的转换
         </a>
       </p>
 
@@ -435,86 +504,6 @@ git clone https://github.com/rockchip-linux/rkbin.git
             <i class="iconfont icon-category"></i>
             
               <a href="/categories/%E6%8E%A2%E7%B4%A2/">探索</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/17/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">图像处理基础知识</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/17/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-          
-          
-            
-          
-          
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-17 00:36" pubdate>
-              2020-09-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%9F%BA%E7%A1%80/">基础</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/17/%E6%9A%97%E5%85%89%E5%A2%9E%E5%BC%BA/">暗光增强</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/17/%E6%9A%97%E5%85%89%E5%A2%9E%E5%BC%BA/">
-          
-          
-            
-          
-          
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-17 00:31" pubdate>
-              2020-09-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%99%BA%E8%83%BD%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">智能图像处理</a>
             
           </div>
         
