@@ -1,0 +1,679 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>ncnn前向计算流程浅析 - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-21 22:10" pubdate>
+        September 21, 2020 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      32
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">ncnn前向计算流程浅析</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p><strong>1. 前向计算</strong></p>
+<p>​    使用ncnn进行前向计算的步骤很简单，就如下十几行代码即可完成。</p>
+<pre><code class="hljs groovy"><span class="hljs-comment">/* Step 1.1 : 加载.parma 文件 */</span>
+NSString *paramPath = [[NSBundle mainBundle] <span class="hljs-attr">pathForResource:</span>@<span class="hljs-string">&quot;squeezenet_v1.1&quot;</span> <span class="hljs-attr">ofType:</span>@<span class="hljs-string">&quot;param&quot;</span>];
+ncnn_net.load_param(paramPath.UTF8String);
+<span class="hljs-comment">/* Step 1.2 : 加载.bin 文件 */</span>
+NSString *binPath = [[NSBundle mainBundle] <span class="hljs-attr">pathForResource:</span>@<span class="hljs-string">&quot;squeezenet_v1.1&quot;</span> <span class="hljs-attr">ofType:</span>@<span class="hljs-string">&quot;bin&quot;</span>];
+ncnn_net.load_model(binPath.UTF8String);
+
+<span class="hljs-comment">/* Step 2.1 : 构建并配置 提取器 */</span>
+<span class="hljs-attr">ncnn:</span>:Extractor extractor = ncnn_net.create_extractor();
+extractor.set_light_mode(<span class="hljs-literal">true</span>);
+
+<span class="hljs-comment">/* Step 2.2 : 设置输入（将图片转换成ncnn::Mat结构作为输入） */</span>
+UIImage *srcImage = [UIImage <span class="hljs-attr">imageNamed:</span>@<span class="hljs-string">&quot;mouth&quot;</span>];
+<span class="hljs-attr">ncnn:</span>:Mat mat_src;
+ts_image2mat(mat_src, srcImage);
+extractor.input(<span class="hljs-string">&quot;data&quot;</span>, mat_src);
+
+<span class="hljs-comment">/* Step 2.3 : 提取输出 */</span>
+<span class="hljs-attr">ncnn:</span>:Mat mat_dst;
+extractor.extract(<span class="hljs-string">&quot;prob&quot;</span>, mat_dst);</code></pre>
+<p>​    如果你仅仅想使用ncnn，上面的参考足够了；但若你想要了解，甚至去更改一些其中的源代码，可以跟我一起看看上面这十多行代码的底层运作原理。</p>
+<p><strong>2 代码分析</strong></p>
+<p>我姑且将其分为：<strong>加载模型</strong>、前向检测、输出处理(半划水)、模型封装(全划水) 四个部分来加以分析。</p>
+<p><strong>2.1 加载模型</strong></p>
+<p>ncnn 在 iOS 端使用 <strong>.param</strong> 和 <strong>.bin</strong> 两个文件来描述一个神经网络模型，</p>
+<p>其中：</p>
+<p><strong>.param</strong>：描述神经网络的结构，包括层名称，层输入输出信息，层参数信息（如卷积层的kernal大小等）等。</p>
+<p><strong>.bin</strong> 文件则记录神经网络运算所需要的数据信息（比如卷积层的权重、偏置信息等）</p>
+<p><img src="/2020/09/21/ncnn%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E6%B5%85%E6%9E%90/1.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
+<p><strong>2.1.1 load_param 加载神经网络配置信息</strong></p>
+<pre><code class="hljs objective-c">&#x2F;* Step1.1 : 加载.parma 文件 *&#x2F;
+NSString *paramPath &#x3D; [[NSBundle mainBundle] pathForResource:@&quot;squeezenet_v1.1&quot; ofType:@&quot;param&quot;];
+ncnn_net.load_param(paramPath.UTF8String);</code></pre>
+<p>load_param 的根本目的是将.param文件的信息加载到目标神经网络（一个ncnn::Net结构）中</p>
+<p><strong>2.1.1.1 .param文件的结构</strong></p>
+<p>首先我们看一下 .param 文件的内容格式</p>
+<p><img src="/2020/09/21/ncnn%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E6%B5%85%E6%9E%90/2.png" srcset="/img/loading.gif" style="zoom:50%;"></p>
+<p><strong>一个.param文件由以下几部分组成：</strong></p>
+<p><strong>1）MagicNum</strong></p>
+<p>固定位7767517，为什么这个数字，不知道问倪神去吧</p>
+<p>2）layer、blob个数</p>
+<p>上图示例的文件两个数字分别为：75、83</p>
+<p><strong>layer：我们知道神经网络是一层一层向前推进计算的，每一层我们用一个layer表示；</strong></p>
+<p><strong>blob：每一个layer都可能会有输入、输出，在ncnn中，它们统一用一个多维（3维）向量表示，我们称每一个输入、输出的原子为一个blob，并为它起名</strong></p>
+<p>2.1.1.2 layer的描述</p>
+<p>layer 在 .param 中是一个相对复杂的元素（从第3行起的每一行描述一个layer），所以我们把它单独抽出来一小节进行说明。</p>
+<p><img src="/2020/09/21/ncnn%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E6%B5%85%E6%9E%90/3.png" srcset="/img/loading.gif" alt></p>
+<p>如图，<strong>每一行层描述的内容包括以下几部分</strong>：</p>
+<p><strong>1）层类型</strong>     比如<strong>Input、Convolution、ReLU</strong></p>
+<p><strong>2）层名</strong>       模型训练者为该层起得名字（毕竟相同类型的层可能多次使用，我们要区分它们）</p>
+<p><strong>3）层输入输出  包含：层输入blob数量，层输出blob数量，层输入、输出blob的名称</strong></p>
+<p><strong>4）层配置参数</strong></p>
+<p>比如 <strong>卷积层（Convolution Layer）的 卷积核大小、步长信息</strong> 等</p>
+<p>在 具体层里面都有一个函数: load_param, 从里面可以查询到相关信息。</p>
+<p><strong>data层： 0=长 1=宽 3=通道</strong></p>
+<p><strong>Convolution层 0=输出单元 1=卷积核大小  2=核膨胀[见膨胀卷积]    3=stride</strong>    </p>
+<p>​                                 <strong>4=padding    5=是否存在偏置    6=权重数量</strong></p>
+<p><strong>pooling 层    0=池化类型   1=卷积核大小   2=步长stride   3=padding   4=全局池化  5=padding类型</strong></p>
+<p><strong>ReLU 层 0=0.000000 无参数</strong></p>
+<p><strong>softmax 层 0=0 无参数</strong></p>
+<p><strong>Concat Split Dropout 无参数</strong></p>
+<p><strong>ConvolutionDepthWise    7=group 数目</strong></p>
+<p><strong>2.1.1.3 ncnn的加载的效果</strong></p>
+<p>​    其实了解了param文件的数据结构后，我们就大致知道ncnn做了哪些事情了。无非是 <strong>读取文件</strong>—&gt;<strong>解析神经网络信息</strong> —&gt; <strong>缓存神经网络信息</strong>，那么，信息缓存在哪里呢？</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">/* in net.h */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Net</span></span>
+<span class="hljs-class">&#123;</span>
+...
+<span class="hljs-keyword">protected</span>:
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;Blob&gt; blobs;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;Layer*&gt; layers;
+...
+&#125;;</code></pre>
+<p>​    原来，ncnn::Net 结构中有 <strong>blobs</strong> 和 <strong>layers</strong> 两个 vector，它们保存了 .param文件 中加载的信息。关于 Blob、Layer 的数据结构，在此暂不赘述。</p>
+<p><strong>2.1.2 load_model 加载模型训练数据</strong></p>
+<pre><code class="hljs objective-c">&#x2F;* Step1.2 : 加载.bin 文件 *&#x2F;
+NSString *binPath &#x3D; [[NSBundle mainBundle] pathForResource:@&quot;squeezenet_v1.1&quot; ofType:@&quot;bin&quot;];
+ncnn_net.load_model(binPath.UTF8String);</code></pre>
+<p>​    load_model的根本目的是将 .bin文件 的信息加载到 目标神经网络（一个ncnn::Net结构）中。</p>
+<p><strong>2.1.2.1 .bin文件的内容</strong></p>
+<p><strong>.bin 文件存储了对应模型中部分层的计算需求参数。</strong>比如2.1.1.1节中的第四行的Convolution层</p>
+<p><img src="/2020/09/21/ncnn%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E6%B5%85%E6%9E%90/4.png" srcset="/img/loading.gif" alt></p>
+<p>​    <strong>.bin 文件中就存储了其 1728(3 * 3 * 3 * 64) 个float类型的 权重数据(weight_data) 和 64个float类型的 偏置数据(bias_data)。</strong></p>
+<p>2.1.2.2 .bin文件的结构</p>
+<p>​    <strong>.bin 文件中就存储了其 1728(3 * 3 * 3 * 64) 个float类型的 权重数据(weight_data) 和 64个float类型的 偏置数据(bias_data)。</strong></p>
+<p>2.1.2.2 .bin文件的结构</p>
+<p><img src="/2020/09/21/ncnn%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E6%B5%85%E6%9E%90/5.png" srcset="/img/loading.gif" alt></p>
+<p>bin = binary，.bin 文件的基本结构就是 [二进制]。但这 并不代表我们失去了 [手动修改它] 的权利！</p>
+<p>惊不惊喜，意不意外？下节即揭晓！</p>
+<p><strong>2.1.2.3 手撕二进制</strong></p>
+<p>1）bin文件信息存储说明</p>
+<p>假设 bin 文件存储 0.3342, 0.4853, 0.2843, 0.1231 四个数字，这四个数字使用float32的数据结构来描述，分别为：3eab1c43、3ef8793e、3e918fc5、3dfc1bda，那么bin文件中的内容就是 3eab1c433ef8793e3e918fc53dfc1bda，我们进行读取的时候使用一个float的数组去承载这些二进制数据即可。</p>
+<p>2）手撕</p>
+<p>你当然也可以自己写一段bin文件数据的读取方法，比如这么一段</p>
+<pre><code class="hljs lsl">const void * __log_binInfo_conv1(const void *dataOffset) &#123;
+    printf(<span class="hljs-string">&quot;<span class="hljs-subst">\n</span> conv1 层类型为 Convolution(卷积层)<span class="hljs-subst">\n</span>&quot;</span>) 
+    printf(<span class="hljs-string">&quot;<span class="hljs-subst">\n</span> 加载weight_data数据类型标志（固定为自动类型）<span class="hljs-subst">\n</span>&quot;</span>);
+    unsigned char *p_load1_1 = (unsigned char *)dataOffset;
+    for (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) &#123;
+        printf(<span class="hljs-string">&quot;Flag %d : %d<span class="hljs-subst">\n</span>&quot;</span>, i, p_load1_1[i]);
+    &#125;
+    p_load1_1 += <span class="hljs-number">4</span>;
+    
+    printf(<span class="hljs-string">&quot;<span class="hljs-subst">\n</span> Load1_2: 加载weight_data数据（1728项，自动为float32类型）<span class="hljs-subst">\n</span>&quot;</span>);
+    <span class="hljs-type">float</span> *p_load1_2 = (<span class="hljs-type">float</span> *)p_load1_1;
+    for (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1728</span>; i++) &#123;
+        if (i &lt; <span class="hljs-number">10</span> || i &gt; <span class="hljs-number">1720</span>) &#123;
+            printf(<span class="hljs-string">&quot;Weight %d : %.9f<span class="hljs-subst">\n</span>&quot;</span>, i, p_load1_2[i]);
+        &#125;
+    &#125;
+    p_load1_2 += <span class="hljs-number">1728</span>;
+    
+    printf(<span class="hljs-string">&quot;<span class="hljs-subst">\n</span> Load3: 加载bias偏置数据（64项，固定为float32类型）<span class="hljs-subst">\n</span>&quot;</span>);
+    <span class="hljs-type">float</span> *p_load2 = (<span class="hljs-type">float</span> *)p_load1_2;
+    for (int i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">64</span>; i++) &#123;
+        if (i &lt; <span class="hljs-number">5</span> || i &gt; <span class="hljs-number">60</span>) &#123;
+            printf(<span class="hljs-string">&quot;Bias %d : %.9f<span class="hljs-subst">\n</span>&quot;</span>, i, p_load2[i]);
+        &#125;
+    &#125;
+    p_load2 += <span class="hljs-number">64</span>;
+    
+    return p_load2;
+&#125;</code></pre>
+<p><strong>Demo：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/chrisYooh/ncnnSrcDemo">https://github.com/chrisYooh/ncnnSrcDemo</a></p>
+<p>1）打开其下的 NcnnSrcDemo 工程</p>
+<p>2）进入 ViewController，解除 自定义bin文件加载测试的 注释</p>
+<p>/<em> 自定义 bin 文件加载测试 </em>/</p>
+<p>[self loadModel_myAnalysis];</p>
+<p>3）运行看看结果吧，也可以用 ncnn的loadModel 去跑，然后打断点看看解读的 .bin 文件数据一致不。</p>
+<p><img src="/2020/09/21/ncnn%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E6%B5%85%E6%9E%90/6.png" srcset="/img/loading.gif" alt></p>
+<p>​    了解了bin文件的信息存储形式，我们当然就可以进行信息修改咯！不同的框架模型进行转化时，就要做这样的事情。哇，那我们可以 自己写转模型的工具啦！从技术上说，完全没错！</p>
+<p><strong>2.2 Detect 检测</strong></p>
+<p>   完成了 网络初始化 <strong>load_param()</strong>、 <strong>load_bin()</strong>之后，我们可以填写一个输入并使用 网络提取器Extractor 计算输出了。</p>
+<p><strong>2.2.1 创建提取器 Extractor</strong></p>
+<pre><code class="hljs reasonml"><span class="hljs-comment">/* Step2.1 : 构建并配置 提取器 */</span>
+ncnn::Extractor extractor = ncnn_net.create<span class="hljs-constructor">_extractor()</span>;
+extractor.set<span class="hljs-constructor">_light_mode(<span class="hljs-params">true</span>)</span>;</code></pre>
+<p>   提取器 extractor 使用 目标网络 通过 友元函数 创建实例，因为它需要获取对应神经网络的信息；同时，extractor 还可以自定义部分配置信息。</p>
+<p>Extractor含3个关键类变量</p>
+<p>1）<strong>net： 指向对应网络的指针</strong></p>
+<p>2）<strong>blob_mats： 计算的过程中存储输入、输出的临时数据</strong></p>
+<p>3）<strong>opt： 配置参数</strong></p>
+<p><strong>2.2.2 extractor.input 配置输入</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-comment">/* Step2.2 : 设置输入（将图片转换成ncnn::Mat结构作为输入） */</span>
+UIImage *srcImage = [UIImage imageNamed:@<span class="hljs-string">&quot;mouth&quot;</span>];
+ncnn::Mat mat_src;
+ts_image2mat(mat_src, srcImage);
+extractor.input(<span class="hljs-string">&quot;data&quot;</span>, mat_src);</code></pre>
+<p>1）我们要 构造一个ncnn::Mat的结构，将我们的输入填入其中</p>
+<p>2）利用 Extractor的input()函数 将输入mat填入对应的位置。</p>
+<p>注意：input() 函数中的第一个字符串参数输入的是blob的名称 而不是layer的名称 哦！</p>
+<p><strong>2.2.3 extractor.extract 提取输出</strong></p>
+<pre><code class="hljs less"><span class="hljs-comment">/* Step2.3 : 提取输出 */</span>
+<span class="hljs-attribute">ncnn</span>::Mat mat_dst;
+<span class="hljs-selector-tag">extractor</span><span class="hljs-selector-class">.extract</span>(<span class="hljs-string">&quot;prob&quot;</span>, mat_dst);</code></pre>
+<p>1）我们要 构造一个ncnn::Mat的结构，用以承载输出；</p>
+<p>2）利用 Extractor的extract()函数 将计算结果填写到我们构造的输出mat中。</p>
+<p>注意：extract()函数中的第一个字符串参数输入的是 blob的名称 而不是 layer的名称 哦！</p>
+<p><strong>2.2.3.1 extract() 的递归流程图</strong></p>
+<p>ncnn 在进行 extract() 的时候，使用了递归的方式，这边将其 宏观逻辑进行抽象。（描绘所有的代码细节会使图过于复杂，不易阅读）</p>
+<p>递归实现.png</p>
+<p><strong>2.2.3.2 extract() 最简递归展开流程</strong></p>
+<p>之所以说最简，因为我们假设：</p>
+<p>1 目标网络的每层都只有 一个输入(blob) 和 一个输出(blob)，</p>
+<p>2 使用的extract是新创建的（即 无缓存数据）</p>
+<p><img src="/2020/09/21/ncnn%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E6%B5%85%E6%9E%90/7.png" srcset="/img/loading.gif" alt></p>
+<p>如图：</p>
+<p>1）每一层进行forward()的时候，需要一些输入参数，这些输入参数是 由上面的层的forward()运算输出的。</p>
+<p>2）只有 输入层的输入参数是我们填写的（2.2.2 节），也正是因为它的存在，递归得以有了终结。</p>
+<p>2.3 输出处理</p>
+  <pre><code class="hljs reasonml"><span class="hljs-comment">/* Step3.1 : 结果处理(获取检测概率最高的5种物品，认为存在) */</span>
+   NSArray *rstArray = ts<span class="hljs-constructor">_mat2array(<span class="hljs-params">mat_dst</span>)</span>;
+   NSArray *top5Array = ts<span class="hljs-constructor">_topN(<span class="hljs-params">rstArray</span>, 5)</span>;
+   
+   <span class="hljs-comment">/* Step3.2 : 打印输出 */</span>
+   <span class="hljs-constructor">NSLog(@<span class="hljs-string">&quot;%@&quot;</span>, <span class="hljs-params">top5Array</span>)</span>;
+   
+   <span class="hljs-comment">/* 说明：该Demo中发现输出的第一项是 index 为 673 的项目，</span>
+<span class="hljs-comment">    * 在result_info.json中查找下 &quot;index&quot; : &quot;673&quot; 发现对应的描述是 鼠标</span>
+<span class="hljs-comment">    * 也可以换其他图片进行检测，但要将图片规格化成 227 * 227 的大小才可以保证结果的准确性</span>
+<span class="hljs-comment">    */</span></code></pre>
+<p>​    输出处理是根据需求具体模型需求，很灵活的。比如我给予输出结果的每个数字以 概念（识别到某种物品的概率） ，并对输出结果进行排序后取其 概率最高的 五个值。</p>
+<p><strong>2.4 封装</strong></p>
+<p>​    玩一玩的话，12行代码足够了；但若真的要工程化的话，我们还是要将 面向过程 的思路 向 面向对象靠拢的。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-6/">
+                        <span class="hidden-mobile">ncnn源码分析_6</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "ncnn前向计算流程浅析&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

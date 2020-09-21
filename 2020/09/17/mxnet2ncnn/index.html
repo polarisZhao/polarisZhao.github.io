@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      108 字
+      952 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      13
        分钟
     </span>
   
@@ -210,7 +210,7 @@
             <div class="markdown-body" id="post-body">
               <p>mxnet2ncnn 部署方案</p>
 <a id="more"></a>
-<h4 id="1-首先下载并编译-ncnn-框架"><a href="#1-首先下载并编译-ncnn-框架" class="headerlink" title="1. 首先下载并编译 ncnn 框架"></a>1. 首先下载并编译 ncnn 框架</h4><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> install xcode and protobuf</span>
+<h4 id="1-下载并编译-ncnn-框架"><a href="#1-下载并编译-ncnn-框架" class="headerlink" title="1. 下载并编译 ncnn 框架"></a>1. 下载并编译 ncnn 框架</h4><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> install xcode and protobuf</span>
 <span class="hljs-meta">#</span><span class="bash"> install protobuf</span>
 <span class="hljs-meta">$</span><span class="bash"> brew install protobuf</span>
 
@@ -223,16 +223,105 @@
 
 <span class="hljs-meta">$</span><span class="bash"> make -j4</span>
 <span class="hljs-meta">$</span><span class="bash"> make install</span></code></pre>
-<h4 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h4><p>从如下地址下载 mobileface 的文件：</p>
+<h4 id="2-model-slim"><a href="#2-model-slim" class="headerlink" title="2. model slim"></a>2. model slim</h4><p>从如下地址下载 mobileface 的文件：</p>
 <p><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1If28BkHde4fiuweJrbicVA"><strong>https://pan.baidu.com/s/1If28BkHde4fiuweJrbicVA</strong></a></p>
-<p>解压可以得到三个文件：  log   model-0000.params   model-symbol.json</p>
-<p>执行：python model_slim.py  —model  ../models/model-y1-test2/model,0</p>
+<p>解压可以得到三个文件：  log、model-0000.params 和 model-symbol.json</p>
+<p>执行：</p>
+<pre><code class="hljs shell">python model_slim.py  --model  ../models/model-y1-test2/model,0</code></pre>
 <p>此时 会生成两个文件：../models/model-y1-test2/models-</p>
+<h4 id="3-使用-mxnet2ncnn-工具来转化模型"><a href="#3-使用-mxnet2ncnn-工具来转化模型" class="headerlink" title="3. 使用 mxnet2ncnn 工具来转化模型"></a>3. 使用 mxnet2ncnn 工具来转化模型</h4><pre><code class="hljs shell">cd ncnn/build/tools/mxnet
+./mxnet2ncnn models-symbol.json models-0000.params mobilefacenet.param mobilefacenet.bin</code></pre>
+<p>生成两个新的文件 mobilefacenet.param ，mobilefacenet.bin，这就是我们部署 ncnn 需要用到的文件。</p>
+<h4 id="4-项目构建"><a href="#4-项目构建" class="headerlink" title="4.  项目构建"></a>4.  项目构建</h4><pre><code class="hljs crystal">arcface 我们的主项目文件
+image  存储测试图像文件
+models  存储我们的转换完成的 人脸检测、人脸识别模型
+ncnn  存放 ncnn 的 <span class="hljs-class"><span class="hljs-keyword">lib</span> 和 <span class="hljs-title">include</span> 文件</span>
+Makefile 文件</code></pre>
+<p>其中 arcface 存放相关文件和 Makefile 文件。进入主项目文件 make 然后执行 ./main 即可。</p>
+<p>需要重点研究的文件：（1） model_slim.py   （2）arcface 下的 四个 文件 arcface/mtcnn/base/Makefile 文件。</p>
+<p>​    ncnn只是一个前向推断的库，利用它可以快速完成前向传播。在项目中，我们将图片传给MTCNN， 分别经过三个网络Pnet、RNet、ONet，然后产生待检测的人脸， 然后再将待检测的人脸送给facent， 最后比对产生的128D向量的距离。这样就可以完成人脸的识别。具体结合代码来说：</p>
+<p>下面这个函数是MTCNN的主要的接口文件：</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;FaceInfo&gt; <span class="hljs-title">MtcnnDetector::Detect</span><span class="hljs-params">(ncnn::Mat img)</span></span>&#123;
+    <span class="hljs-keyword">int</span> img_w = img.w;  <span class="hljs-comment">// 获取 宽度</span>
+    <span class="hljs-keyword">int</span> img_h = img.h; <span class="hljs-comment">// 获取高度</span>
+    <span class="hljs-built_in">vector</span>&lt;FaceInfo&gt; pnet_results = Pnet_Detect(img);  <span class="hljs-comment">// 让图片经过PNet</span>
+    doNms(pnet_results, <span class="hljs-number">0.7</span>, <span class="hljs-string">&quot;union&quot;</span>);  <span class="hljs-comment">// 对输出的结果进行nms</span>
+    refine(pnet_results, img_h, img_w, <span class="hljs-literal">true</span>);  <span class="hljs-comment">// refine，把结果放在 pnet_results 中</span>
+    <span class="hljs-built_in">vector</span>&lt;FaceInfo&gt; rnet_results = Rnet_Detect(img, pnet_results);  <span class="hljs-comment">// 让图片经过 RNet</span>
+    doNms(rnet_results, <span class="hljs-number">0.7</span>, <span class="hljs-string">&quot;union&quot;</span>); <span class="hljs-comment">// 对输出结果进行 nms</span>
+    refine(rnet_results, img_h, img_w, <span class="hljs-literal">true</span>); <span class="hljs-comment">// refine， 把结果放在 Rnet_results中</span>
+
+    <span class="hljs-built_in">vector</span>&lt;FaceInfo&gt; onet_results = Onet_Detect(img, rnet_results);  <span class="hljs-comment">// 把图片 经过 Onet</span>
+    refine(onet_results, img_h, img_w, <span class="hljs-literal">false</span>);  <span class="hljs-comment">// refine</span>
+    doNms(onet_results, <span class="hljs-number">0.7</span>, <span class="hljs-string">&quot;min&quot;</span>);  <span class="hljs-comment">//  对最后的结果进行refine</span>
+    Lnet_Detect(img, onet_results);  <span class="hljs-comment">// 后处理</span>
+    <span class="hljs-keyword">return</span> onet_results;  <span class="hljs-comment">// 返回检测结果</span>
+&#125;</code></pre>
+<p>这个文件是 facenet 的前向推断框架：</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; <span class="hljs-title">Arcface::getFeature</span><span class="hljs-params">(ncnn::Mat img)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; feature;
+    ncnn::Mat in = resize(img, <span class="hljs-number">112</span>, <span class="hljs-number">112</span>); <span class="hljs-comment">// 将人脸调整到 112x112</span>
+    in = bgr2rgb(in); <span class="hljs-comment">// 通道变幻</span>
+    ncnn::Extractor ex = net.create_extractor();  <span class="hljs-comment">// 设置提取器</span>
+    ex.set_light_mode(<span class="hljs-literal">true</span>);  
+    ex.input(<span class="hljs-string">&quot;data&quot;</span>, in);  <span class="hljs-comment">// 让图片进入网络</span>
+    ncnn::Mat out;
+    ex.extract(<span class="hljs-string">&quot;fc1&quot;</span>, out);  <span class="hljs-comment">// 提取出 fc1 层的结果</span>
+    feature.resize(<span class="hljs-keyword">this</span>-&gt;feature_dim);  <span class="hljs-comment">// 结果resize</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>-&gt;feature_dim; i++) 
+        feature[i] = out[i];  
+    normalize(feature); <span class="hljs-comment">// 正则化特征</span>
+    <span class="hljs-keyword">return</span> feature; <span class="hljs-comment">// 返回特征</span>
+&#125;</code></pre>
+<p>下面这个文件是 main.cpp， 现在看来非常简单了</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span>* argv[])</span></span>
+<span class="hljs-function"></span>&#123;
+    Mat img1;
+    Mat img2;
+
+    img1 = imread(<span class="hljs-string">&quot;../image/gyy1.jpeg&quot;</span>);  <span class="hljs-comment">// 读取图片</span>
+    img2 = imread(<span class="hljs-string">&quot;../image/gyy2.jpeg&quot;</span>);
+
+    ncnn::Mat ncnn_img1 = ncnn::Mat::from_pixels(img1.data, ncnn::Mat::PIXEL_BGR, img1.cols, img1.rows);  <span class="hljs-comment">// 转换为 ncnn 格式</span>
+    ncnn::Mat ncnn_img2 = ncnn::Mat::from_pixels(img2.data, ncnn::Mat::PIXEL_BGR, img2.cols, img2.rows);
+    <span class="hljs-comment">// 检测</span>
+    <span class="hljs-function">MtcnnDetector <span class="hljs-title">detector</span><span class="hljs-params">(<span class="hljs-string">&quot;../../models&quot;</span>)</span></span>; 
+
+    <span class="hljs-built_in">vector</span>&lt;FaceInfo&gt; results1 = detector.Detect(ncnn_img1);
+    <span class="hljs-built_in">vector</span>&lt;FaceInfo&gt; results2 = detector.Detect(ncnn_img2);
+    <span class="hljs-comment">// 处理检测结果，其实就是提取图片</span>
+    ncnn::Mat det1 = preprocess(ncnn_img1, results1[<span class="hljs-number">0</span>]);
+    ncnn::Mat det2 = preprocess(ncnn_img2, results2[<span class="hljs-number">0</span>]);
+ 
+    <span class="hljs-function">Arcface <span class="hljs-title">arc</span><span class="hljs-params">(<span class="hljs-string">&quot;../../models&quot;</span>)</span></span>;
+    <span class="hljs-comment">// 提取特征</span>
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; feature1 = arc.getFeature(det1);
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; feature2 = arc.getFeature(det2);
+
+    <span class="hljs-comment">// 特征比较</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;Similarity: &quot;</span> &lt;&lt; calcSimilar(feature1, feature2) &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;;
+
+    imshow(<span class="hljs-string">&quot;det1&quot;</span>, ncnn2cv(det1));
+    imshow(<span class="hljs-string">&quot;det2&quot;</span>, ncnn2cv(det2));
+
+    waitKey(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p>移动端部署要点</p>
+<p>主要的解决方案：将MTCNN 和 facenet 的接口组织成为一个人脸 face_reg 的接口，然后使用 objective-c 调用该C++ 代码，然后在使用swift 调用 objective-c 的代码。之所以这样做是因为，swift 不能调用 C++ 呀。</p>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/DL-Deploy/">DL_Deploy</a>
+                    
+                  </div>
                 
                 
               </div>
