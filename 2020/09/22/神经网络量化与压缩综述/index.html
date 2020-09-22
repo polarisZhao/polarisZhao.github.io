@@ -1,0 +1,617 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>神经网络量化与压缩综述 - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-22 21:12" pubdate>
+        September 22, 2020 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">神经网络量化与压缩综述</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h4 id="1-常见的数据集"><a href="#1-常见的数据集" class="headerlink" title="1. 常见的数据集"></a>1. 常见的数据集</h4><p><strong>分类任务(目前主流</strong>)：MNIST、CIFAR10、CIFAR100和 ImageNet等。</p>
+<p><strong>检测任务</strong>: PASCAL VOC、MS COCO</p>
+<h4 id="2-测试网络"><a href="#2-测试网络" class="headerlink" title="2. 测试网络"></a>2. 测试网络</h4><p><strong>分类</strong>:  VGG: -&gt; 该网络冗余度较高， 压缩比例较大</p>
+<p>​      ResNet34、ResNet50、DenseNet、SeNet:</p>
+<p>检测: YOLOV3、Faster RCNN、RetinaNet</p>
+<h4 id="3-评价指标"><a href="#3-评价指标" class="headerlink" title="3. 评价指标"></a>3. 评价指标</h4><p>对于模型加速方案: 通常有如下的评价指标:</p>
+<p>(1) 计算量(Flops)</p>
+<p>(2) 模型大小(Model size)</p>
+<p>(3) 推断时间(Inference)</p>
+<p>精度误差: 分类: Top1 acc、Top5 acc     检测: mAP_50</p>
+<h4 id="4-解决方案"><a href="#4-解决方案" class="headerlink" title="4. 解决方案"></a>4. 解决方案</h4><p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/1.png" srcset="/img/loading.gif" alt></p>
+<h5 id="4-1-算法"><a href="#4-1-算法" class="headerlink" title="4.1 算法"></a>4.1 算法</h5><h6 id="（1）轻量级网络设计"><a href="#（1）轻量级网络设计" class="headerlink" title="（1）轻量级网络设计"></a>（1）轻量级网络设计</h6><p>🌟 [SqueezeNet] SqueezeNet: AlexNet-level accuracy with 50x fewer parameters and &lt;0.5MB model size.</p>
+<p>🌟 [Mobilenet V1] MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications</p>
+<p>🌟 [Mobilenet V2] MobileNetV2: Inverted Residuals and Linear Bottlenecks</p>
+<p>🌟 [Mobilenet V3] Searching for MobileNetV3(nas for efficient conv neural network) </p>
+<p>🌟 [ShufflenetV1] ShuffleNet: An Extremely Efficient Convolutional Neural Network for Mobile Devices</p>
+<p>🌟 [ShufflenetV2] ShuffleNet V2: Practical Guidelines for Ecient CNN Architecture Design </p>
+<p>🌟 [Xception] Xception: Deep Learning with Depthwise Separable Convolutions</p>
+<p>-———————————————————————————————</p>
+<p>🌟 Mobilenets: Efficient convolutional neural networks for mobile vision applications</p>
+<p>🌟 Pelee: A Real-Time Object Detection System on Mobile Devices</p>
+<p>🌟 Tiny-dsod: Lightweight object detection for resource-restricted usages.</p>
+<p>🌟 Lighthead r-cnn: In defense of two-stage object detector</p>
+<p>🌟 ThunderNet: Towards Real-time Generic Object Detection</p>
+<h6 id="（2）剪枝（稀疏化）"><a href="#（2）剪枝（稀疏化）" class="headerlink" title="（2）剪枝（稀疏化）"></a>（2）剪枝（稀疏化）</h6><p><strong>基本思想:</strong> 通过对已有的训练好的神经网络模型移除冗余的、信息量少的权值，从而减少网络模型的参数，进而加速模型的计算和压缩模型的存储空间</p>
+<p><strong>A. 原始论文</strong></p>
+<p>🌟 OBD(optimal brain damage) &amp; OBS(optimal brain surgeon)</p>
+<p>🌟 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1510.00149">Deep Compression: Compressing Deep Neural Networks with Pruning, Trained Quantization and Huffman Coding</a></p>
+<p>   针对网络压缩提出了一个比较完整的方案  ICLR’16 best paper Song Han</p>
+<p><strong>B. 非结构化剪枝</strong></p>
+<p>🌟 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1506.02626">Learning both Weights and Connections for Efficient Neural Networks</a> [NIPS’15]</p>
+<p>   A. Metric: L1 norm   B.train -&gt; pruning -&gt; retrain 三阶段训练方法  C. iteratively pruning</p>
+<p><strong>C. 结构化剪枝</strong></p>
+<p>🌟 Learning Structured Sparsity in Deep Neural Networks [NIPS 2016] <a target="_blank" rel="noopener" href="https://github.com/wenwei202/caffe/tree/scnn">Code</a>  使用 group Lasso 给损失函数加入相应的惩罚，进行结构化稀疏</p>
+<p><strong>D. 滤波器或者通道的剪枝</strong>:主要的不同点是评价卷积核或者feature map的重要性</p>
+<p>🌟 [Weight sum]<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1608.08710">Pruning Filters for Efficient ConvNets</a> [ICLR’17]   </p>
+<p>​    衡量标准: Filter的L1 norm</p>
+<p>🌟 [APoZ(Average Percentage of Zeros)] Network trimming: A data-driven neuron pruning approach towards efficient deep architectures.   </p>
+<p>​    衡量标准: 激活层输出的feature map的的稀疏程度</p>
+<p>🌟 <strong>Learning Efficient Convolutional Networks through Network Slimming</strong> </p>
+<p>​    衡量标准: BN层的γ参数</p>
+<p>🌟 Pruning Convolutional Neural Networks for Resource Efficient Inference [ICLR 2017]  </p>
+<p>​    衡量标准: 修剪网络参数引起的损失函数的变化</p>
+<p>🌟  ThiNet： A Filter Level Pruning Method for Deep Neural Network Compression [ICCV 2017] </p>
+<p>​    衡量标准: 用输入子集代替原来的输入得到输出的相似度</p>
+<p>🌟  Channel Pruning for Accelerating Very Deep Neural Networks [ICCV 2017]</p>
+<p>​    衡量标准: 通过最小化裁剪后特征图和裁剪前特征图之间的误差</p>
+<p><strong>E. 其他改进</strong></p>
+<p> 🌟 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1710.01878">To prune, or not to prune: exploring the efficacy of pruning for model compression</a> [ICLR’18]  </p>
+<p> 🌟 Data-Driven Sparse Structure Selection for Deep Neural Networks</p>
+<p> 🌟 Channel Pruning for Accelerating Very Deep Neural Networks   [ICCV 2017]</p>
+<p> 🌟 Soft Filter Pruning for Accelerating Deep Convolutional Neural Networks    [IJCAI 2018]</p>
+<p><strong>F. 理论分析和讨论</strong></p>
+<p>🌟 <strong>Rethink the value of network pruning</strong> ICLR_2019</p>
+<p>​    这篇论文的作者实验过程中发现了模型修剪过后，微调得到的效果和重新从头训练几乎相同，于是便做了多组实验证明这一结论，推翻了包括自己的方法在内的很多方法，提出对参数修剪的一个新的认识：参数修剪的实际作用在于得到架构而非权值</p>
+<p>🌟 <strong>The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks</strong>  [ICLR 2019 best paper]</p>
+<h6 id="3-量化-8bit、二值、三值"><a href="#3-量化-8bit、二值、三值" class="headerlink" title="(3) 量化(8bit、二值、三值)"></a>(3) 量化(8bit、二值、三值)</h6><p>核心思想: 模型量化是指权重或激活输出可以被聚类到一些离散、低精度(reduced precision) 的数值点上，这通常依赖于特定算法库或硬件平台的支持：</p>
+<p><strong>二值网络</strong></p>
+<p><strong>Binary Weight</strong> (只对权重进行二值化)</p>
+<p>🌟 [BinaryConnect] BinaryConnect: Training Deep Neural Networks with binary weights during propagations</p>
+<p>🌟 [BWN]  Binary-Weights-Networks</p>
+<p><strong>Binary Weight &amp; activation</strong> (对权重和激活都进行二值化)</p>
+<p>🌟 [BNN] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1602.02830.pdf">Binarized Neural Networks: Training Neural Networks with Weights and Activations Constrained to +1 or −1</a></p>
+<p>🌟 [XNOR Net] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1603.05279.pdf">XNOR-Net: ImageNet Classification Using Binary Convolutional Neural Networks</a></p>
+<p>-&gt; [ABCNet] Towards Accurate Binary Convolutional Neural Network by Xiaofan Lin, Cong Zhao, and Wei Pan.</p>
+<p>-&gt; [Bi-Real Net] Enhancing the Performance of 1bit CNNs with Improved Representational Capacity and Advanced Training Algorithm</p>
+<p>-&gt; [HORQ]Performance Guaranteed Network Acceleration via High-Order Residual Quantization</p>
+<p><strong>三值化网络</strong></p>
+<p>🌟 [TWN] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1605.04711.pdf">Ternary weight networks</a></p>
+<p>[TNN] Ternary Neural Networks for Resource-Efficient AI Applications </p>
+<p>[TTQ] Trained Ternary Quantization </p>
+<p><strong>2bit - 8bit</strong></p>
+<p>🌟 [DOREFA-NET] DoReFa-Net: Training Low Bitwidth Convolutional Neural Networks with Low Bitwidth Gradients</p>
+<p><strong>int8 量化</strong></p>
+<p>🌟 <strong>8-bit Inference with TensorRT  [Nvidia]</strong></p>
+<p>🌟 Quantizing deep convolutional networks for efficient inference: A whitepaper [Google]</p>
+<p><strong>其他</strong></p>
+<p>🌟 [INQ] Incremental Network Quantization: Towards Lossless CNNs with Low-precision Weights</p>
+<p>[CNNPack] Packing Convolutional Neural Networks in the Frequency Domain</p>
+<p>[HWGQ]  Deep Learning with Low Precision by Half-wave Gaussian Quantization</p>
+<p>[FFN] Fixed-point Factorized Networks</p>
+<p>[QNN] Quantized Neural Networks: Training Neural Networks with Low Precision Weights and Activations </p>
+<p><strong>小结</strong></p>
+<p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/2.png" srcset="/img/loading.gif" alt></p>
+<p>若模型压缩之后，推理精度存在较大损失，可以通过fine-tuning予以恢复，并在训练过程中结合适当的Tricks，例如 Label Smoothing、Mix-up、Knowledge Distillation、Focal Loss等。 此外，模型压缩、优化加速策略可以联合使用，进而可获得更为极致的压缩比与加速比。</p>
+<h6 id="4-知识蒸馏"><a href="#4-知识蒸馏" class="headerlink" title="(4) 知识蒸馏"></a>(4) 知识蒸馏</h6><p>基本思想: 蒸馏模型采用的是迁移学习， 通过采用预先训练好的教师模型(teacher model) 的输出作为监督信号去训练另外一个轻量化的网络(student model)</p>
+<p>🌟 Distilling the knowledge in a neural network?</p>
+<p>🌟 Cross Model Distillation for Supervision Transfer</p>
+<p>🌟 FitNets: Hints for Thin Deep Nets</p>
+<h6 id="5-算子的实现-存储"><a href="#5-算子的实现-存储" class="headerlink" title="(5) 算子的实现/存储"></a>(5) 算子的实现/存储</h6><p><strong>A. op-level 的实现</strong></p>
+<p><strong>conv:</strong></p>
+<p>   im2col + gemm</p>
+<p>   FFT Conv2d (7x7, 9x9)</p>
+<p>   <strong>Winograd Conv2d (3x3, 5x5)</strong> </p>
+<p><strong>B. Layer-level</strong>的快速算法</p>
+<p>   Sparse-block net</p>
+<p>C. 存储</p>
+<p>   CSR</p>
+<h6 id="6-图优化"><a href="#6-图优化" class="headerlink" title="(6) 图优化"></a>(6) 图优化</h6><p>   conv 和 bn层的融合</p>
+<h5 id="4-2-硬件平台"><a href="#4-2-硬件平台" class="headerlink" title="4.2 硬件平台"></a>4.2 硬件平台</h5><p><strong>CPU、GPU、FPGA、DSP、加速器</strong></p>
+<h5 id="4-3-常见的部署方案"><a href="#4-3-常见的部署方案" class="headerlink" title="4.3 常见的部署方案"></a>4.3 常见的部署方案</h5><p><strong>(1)Server:</strong></p>
+<p>​       <strong>TensorRT</strong></p>
+<p>   <strong>Apex</strong>   Paper: Mixed Precision Training   github: <a target="_blank" rel="noopener" href="https://github.com/NVIDIA/apex">https://github.com/NVIDIA/apex</a></p>
+<p><strong>(2) Mobile:</strong> </p>
+<p>​    <strong>Tensorflow:</strong> Tensorflow-lite: <a target="_blank" rel="noopener" href="https://www.tensorflow.org/lite/performance/post_training_quantization">https://www.tensorflow.org/lite/performance/post_training_quantization</a></p>
+<p>​    Pytorch: <strong>Distiller</strong> (Intel)</p>
+<p>​             <strong>QNNpack</strong>: <a target="_blank" rel="noopener" href="https://github.com/pytorch/QNNPACK">https://github.com/pytorch/QNNPACK</a></p>
+<p>​    <strong>paddle-lite</strong> (Baidu) <a target="_blank" rel="noopener" href="https://github.com/PaddlePaddle/Paddle-Lite">https://github.com/PaddlePaddle/Paddle-Lite</a></p>
+<p>​    <strong>ncnn</strong> (Tencent) <a target="_blank" rel="noopener" href="https://github.com/Tencent/ncnn">https://github.com/Tencent/ncnn</a></p>
+<p> mace(Xiaomi)  <a target="_blank" rel="noopener" href="https://github.com/XiaoMi/mace">https://github.com/XiaoMi/mace</a></p>
+<p> mnn(Alibaba)   <a target="_blank" rel="noopener" href="https://github.com/alibaba/MNN">https://github.com/alibaba/MNN</a></p>
+<p>​    OpenVINO(opencv) <a target="_blank" rel="noopener" href="https://software.intel.com/en-us/openvino-toolkit">https://software.intel.com/en-us/openvino-toolkit</a></p>
+<p><strong>(3) Others:</strong></p>
+<p>TVM: <a target="_blank" rel="noopener" href="https://github.com/dmlc/tvm">https://github.com/dmlc/tvm</a></p>
+<p>TC: TensorComprehensions</p>
+<p>onnx: <a target="_blank" rel="noopener" href="https://github.com/onnx/onnx">https://github.com/onnx/onnx</a></p>
+<p>​    <strong>DABNN</strong></p>
+<p>​    Paper ：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1908.05858">https://arxiv.org/abs/1908.05858</a></p>
+<p>​    Project：<a target="_blank" rel="noopener" href="https://github.com/JDAI-CV/dabnn">https://github.com/JDAI-CV/dabnn</a></p>
+<p>​    Demo：<a target="_blank" rel="noopener" href="https://github.com/JDAI-CV/dabnn-example">https://github.com/JDAI-CV/dabnn-example</a></p>
+<h4 id="5-参考链接"><a href="#5-参考链接" class="headerlink" title="5. 参考链接"></a>5. 参考链接</h4><p><a target="_blank" rel="noopener" href="https://jackwish.net/2019/neural-network-quantization-resources.html">https://jackwish.net/2019/neural-network-quantization-resources.html</a></p>
+<h4 id="6-idea"><a href="#6-idea" class="headerlink" title="6. idea"></a>6. idea</h4><p>> Attention for distillation</p>
+<p>> knowledge distillation -&gt;(zero shot)</p>
+<p>> GNN -&gt; compression and accleration </p>
+<p>> model compression -&gt; 对抗攻击!</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/21/ncnn%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E6%B5%85%E6%9E%90/">
+                        <span class="hidden-mobile">ncnn前向计算流程浅析</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "神经网络量化与压缩综述&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
