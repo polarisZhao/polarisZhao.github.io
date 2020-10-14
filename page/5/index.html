@@ -160,6 +160,47 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2019/04/12/img2col/">img2col</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/12/img2col/">
+          
+          
+            
+          
+          1. im2col 基本原理(1) 对于图像的变换：
+首先将每个卷积所卷积的区域作为一行，所有的卷积区域纵向排列，作为右乘矩阵。需要注意的是多个通道应该堆叠在下面。如下图所示：
+单通道：
+
+多通道：
+
+输入特征图转化得到的矩阵尺度 = (卷积组输入通道数*卷积核高*卷积核宽) * (卷积层输出单通道特征图高 * 卷积层输出单通道特征图宽)
+(2) 对于卷积核的变换
+将一个卷积核拉伸为一个横行，作为
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-12 23:15" pubdate>
+              2019-04-12
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2019/04/10/Dev-tools/">常用开发工具</a>
       </h1>
 
@@ -535,51 +576,6 @@ Python 代码
               <a href="/tags/Toolbox/">Toolbox</a>
             
           </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2018/08/17/git%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">git常见问题</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2018/08/17/git%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">
-          
-          
-            
-          
-          1. Git 基本流程
-2. git commit 规范:常用的 Git commit 规范，没有强制的规定，主要是翻阅以前的日志会更清晰。
-基本格式:
-git commit -m &quot;type: description&quot;
-一个比较详细的格式:
-&lt;type&gt;: (If applied, this commit will...) &lt;subject&gt; (Max
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2018-08-17 16:02" pubdate>
-              2018-08-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
-            
-          </div>
-        
         
       </div>
     </article>
