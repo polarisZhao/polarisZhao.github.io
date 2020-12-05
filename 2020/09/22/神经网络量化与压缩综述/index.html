@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.5k 字
+      4.4k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      22
+      56
        分钟
     </span>
   
@@ -219,6 +219,156 @@
 <p>(3) 推断时间(Inference)</p>
 <p>精度误差: 分类: Top1 acc、Top5 acc     检测: mAP_50</p>
 <h4 id="4-解决方案"><a href="#4-解决方案" class="headerlink" title="4. 解决方案"></a>4. 解决方案</h4><p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/1.png" srcset="/img/loading.gif" alt></p>
+<p>基本概述</p>
+<p>剪枝:</p>
+<p>两种稀疏化:</p>
+<ul>
+<li>SSL （Learning Sparsity Learning）</li>
+</ul>
+<h3 id="1-最常见的三个方法"><a href="#1-最常见的三个方法" class="headerlink" title="1. 最常见的三个方法"></a>1. 最常见的三个方法</h3><h4 id="1-剪枝"><a href="#1-剪枝" class="headerlink" title="(1) 剪枝"></a>(1) 剪枝</h4><p><strong>剪枝可以分为结构化剪枝和非结构化剪枝。在非结构化剪枝中， 是将其置零的，并没有进行剪枝， 因此大多数并不可用。结构化剪枝现在还是具有一定的发展的，值得持续关注。这里的结构化剪枝是指在 filter 层面，通道层面，或者shape 层面的剪枝。</strong></p>
+<p> 裁减掉不重要的冗余的卷积参数，减少参数量，加快推理速度。</p>
+<p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/3.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>这里主要来介绍基于滤波器的剪枝：</p>
+<h3 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h3><p>1：剪裁一个 conv layer 的 filter，需要修改后续 conv layer 的 filter. 即剪掉 Xi 的一个 filter，会导致X<em>{i+1} 少一个 channel, X\</em>{i+1}​ 对应的 filter 在 input_channel 纬度上也要减 1.</p>
+<p>2: 剪裁完 Xi​之后，根据注意事项1我们从$X*{i+1}$的filter中删除了一行（图中蓝色行），在计算$X_{i+1}$的filters的l1_norm(图中绿色一列)的时候，有两种选择</p>
+<ul>
+<li>算上被删除的一行：independent pruning </li>
+<li>减去被删除的一行：greedy pruning</li>
+</ul>
+<p>3: 在对ResNet等复杂网络剪裁的时候，还要考虑到后当前卷积层的修改对上一层卷积层的影响。 如<strong>图6</strong>所示，在对residual block剪裁时，$X<em>{i+1}$层如何剪裁取决于project shortcut的剪裁结果，因为我们要保证project shortcut的output和$X</em>{i+1}$的output能被正确的concat.</p>
+<p>裁剪：</p>
+<p>（1）Uniform剪裁卷积网络</p>
+<p>每层剪裁一样比例的卷积核。 在剪裁一个卷积核之前，按l1_norm对filter从高到低排序，越靠后的filter越不重要，优先剪掉靠后的filter.</p>
+<p>（2）<strong>基于敏感度剪裁卷积网络</strong>：根据每个卷积层敏感度的不同，剪掉不同比例的卷积核。</p>
+<p>两个假设</p>
+<ul>
+<li>在一个conv layer的parameter内部，<strong>按l1_norm对filter从高到低排序，越靠后的filter越不重要</strong>。</li>
+<li>两个layer剪裁相同的比例的filters，我们称对模型精度影响更大的layer的敏感度相对高。</li>
+</ul>
+<p>剪裁filter的指导原则</p>
+<ul>
+<li>layer的剪裁比例与其敏感度成反比</li>
+<li>优先剪裁layer内l1_norm相对低的filter</li>
+</ul>
+<p>敏感度的理解</p>
+<p><img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleSlim/release/1.0.1/docs/images/algo/pruning_3.png" srcset="/img/loading.gif" style="zoom:33%;"></p>
+<p>如<strong>图7</strong>所示，横坐标是将filter剪裁掉的比例，竖坐标是精度的损失，每条彩色虚线表示的是网络中的一个卷积层。 以不同的剪裁比例<strong>单独</strong>剪裁一个卷积层，并观察其在验证数据集上的精度损失，并绘出<strong>图7</strong>中的虚线。虚线上升较慢的，对应的卷积层相对不敏感，我们优先剪不敏感的卷积层的filter.</p>
+<p>选择最优的剪裁率组合</p>
+<p>我们将<strong>图7</strong>中的折线拟合为<strong>图8</strong>中的曲线，每在竖坐标轴上选取一个精度损失值，就在横坐标轴上对应着一组剪裁率，如<strong>图8</strong>中黑色实线所示。 用户给定一个模型整体的剪裁率，我们通过移动<strong>图5</strong>中的黑色实线来找到一组满足条件的且合法的剪裁率。</p>
+<p><img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleSlim/release/1.0.1/docs/images/algo/pruning_4.png" srcset="/img/loading.gif" style="zoom:33%;"></p>
+<p>迭代剪裁</p>
+<p>考虑到多个卷积层间的相关性，一个卷积层的修改可能会影响其它卷积层的敏感度，我们采取了多次剪裁的策略，步骤如下：</p>
+<ul>
+<li>step1: 统计各卷积层的敏感度信息</li>
+<li>step2: 根据当前统计的敏感度信息，对每个卷积层剪掉少量filter, 并统计FLOPS，如果FLOPS已满足要求，进入step4，否则进行step3。</li>
+<li>step3: 对网络进行简单的fine-tune，进入step1</li>
+<li>step4: fine-tune训练至收敛</li>
+</ul>
+<p>稀疏训练只有几句话：</p>
+<pre><code class="hljs cpp"><span class="hljs-function">def <span class="hljs-title">updateBN</span><span class="hljs-params">()</span>:</span>
+    for m in model.modules():
+        <span class="hljs-function"><span class="hljs-keyword">if</span> <span class="hljs-title">isinstance</span><span class="hljs-params">(m, nn.BatchNorm2d)</span>:</span>
+            m.weight.grad.data.add_(args.s*torch.sign(m.weight.data))  # L1
+              
+<span class="hljs-function">def <span class="hljs-title">train</span><span class="hljs-params">(epoch)</span>:</span>
+    for batch_idx, (data, target) in enumerate(train_loader):
+        <span class="hljs-comment">// ...</span>
+        loss.backward()
+        <span class="hljs-keyword">if</span> args.sr:
+            updateBN()
+        <span class="hljs-comment">// ...</span></code></pre>
+<h4 id="2-量化"><a href="#2-量化" class="headerlink" title="(2) 量化"></a>(2) 量化</h4><p>首先说明，量化还有几个有意思的名称，定点化、离散化。</p>
+<p>​       <strong>低精度的量化：如2bit、4bit 的量化也是有一些进展的， 但是具体还需要结合硬件，这个之后再说， 现在比较成熟的解决方案是 8bit 量化。可以真实应用于实际场景中</strong></p>
+<p>1：对称量化算法</p>
+<p>对称算法就是指将待量化数据的绝对值的最大值映射到新数据范围内的最大值。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-005fcae44d9732a08c50958de2636d25_1440w.jpg" srcset="/img/loading.gif" alt="img"></p>
+<p>2：非对称量化算法</p>
+<p>非对称算法是指将待量化数据的最大值和最小值映射到新数据范围内的最大值最小值。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-376579c1f4b7e192b0592ae76a87d8f6_1440w.jpg" srcset="/img/loading.gif" alt="img"></p>
+<p><strong>量化最核心的内容是找到这个 scale。</strong></p>
+<p>​     将浮点数映射到低比特int， 从而减少模型的体积和计算量， 加快推理速度。目前，学术界主要讲量化分为两大类： Post Training Quantization 和 Quantization Aware Training。</p>
+<p>Quantization Aware Training 是在训练过程中对量化进行建模以确定量化参数。它可以提供更高的预测精度。</p>
+<p>Post Training Quantization： 使用 KL 散度， 滑动平均等方法确定量化参数且不需要重新训练的定点量化方法。</p>
+<p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/4.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>下面着重介绍训练后量化： 训练后量化是基于采样数据，采用KL散度等方法计算量化比例因子的方法。相比量化训练，训练后量化不需要重新训练，可以快速得到量化模型。</p>
+<p>​        训练后量化的目标是求取量化比例因子，主要有两种方法：</p>
+<ul>
+<li><p>非饱和量化方法 ( No Saturation) ：计算FP32类型Tensor中绝对值的最大值<code>abs_max</code>，将其映射为127，则量化比例因子等于<code>abs_max/127</code>。 ———&gt;  <strong>这种方式被称作 minmax 量化方式， Tensorflow 主要采用， 精度还是很差的</strong>。</p>
+<p>主要流程如下：</p>
+<p>（1）统计出网络某一层的最大值与最小值：</p>
+<p><img src="https://www.zhihu.com/equation?tex=x_%7Bfloat%7D%5Cepsilon+%5Bx_%7Bfloat%7D%5E%7Bmax%7D%2Cx_%7Bfloat%7D%5E%7Bmin%7D%5D" srcset="/img/loading.gif" alt="[公式]"></p>
+<p>（2）计算scale与zero_point</p>
+<p><img src="https://www.zhihu.com/equation?tex=x_%7Bscale%7D%3D%5Cfrac%7Bx_%7Bfloat%7D%5E%7Bmax%7D-x_%7Bfloat%7D%5E%7Bmin%7D%7D%7Bx_%7Bquantized%7D%5E%7Bmax%7D-x_%7Bquantized%7D%5E%7Bmin%7D%7D" srcset="/img/loading.gif" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=x_%7Bzeropoint%7D%3Dx_%7Bquantized%7D%5E%7Bmax%7D-%5Cfrac%7Bx_%7Bfloat%7D%5E%7Bmax%7D%7D%7Bx_%7Bscale%7D%7D" srcset="/img/loading.gif" alt="[公式]"></p>
+<p>（3）通过以下公式计算出任意float32量化后的int8结果</p>
+<p><img src="https://www.zhihu.com/equation?tex=x_%7Bquantized%7D%3D%7B%5Cfrac%7Bx_%7Bfloat%7D%7D%7Bx_%7Bscale%7D%7D%7D%2Bx_%7Bzeropoint%7D" srcset="/img/loading.gif" alt="[公式]"></p>
+<p>由公式可以看出量化中的精度损失不可避免的，当浮点数的分布均匀时，精度损失较小。但当浮点数分布不均匀时，按照最大最小值映射，则实际有效的int8动态范围就更小了，精度损失变大。</p>
+</li>
+<li><p>饱和量化方法 (Saturation)： 使用KL散度计算一个合适的阈值<code>T</code> (<code>0&lt;T&lt;mab_max</code>)，将其映射为127，则量化比例因子等于<code>T/127</code>。一般而言，对于待量化op的权重Tensor，采用非饱和量化方法，对于待量化op的激活Tensor（包括输入和输出），采用饱和量化方法 。       ——&gt;   <strong>这种方法主要是 Tensor RT 在采用， 量化效果还是不错的</strong></p>
+</li>
+</ul>
+<p>训练后量化的实现步骤如下:</p>
+<p>（1）读取样本数据，执行模型的前向推理， 保存激活 tensor 的数值。</p>
+<p>（2）基于激活 Tensor 的采样数据， 使用饱和量化方法计算出它的量化比例因子（用于量化输入和输出）</p>
+<p>（3）使用非饱和量化的方法计算每个通道的绝对值的最大值，作为每个通道的量化比例因子，对模型参数进行量化，将 fp32 模型转化成 int8模型进行保存。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-39ca2bcb271ae1b5a1c57cea11744735_1440w.jpg" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="https://pic2.zhimg.com/80/v2-9499fc56376449b20594274e3464fcb1_1440w.jpg" srcset="/img/loading.gif" alt="img"></p>
+<h6 id="3-量化-8bit、二值、三值"><a href="#3-量化-8bit、二值、三值" class="headerlink" title="(3) 量化(8bit、二值、三值)"></a>(3) 量化(8bit、二值、三值)</h6><p><strong>二值网络</strong></p>
+<p><strong>Binary Weight</strong> (只对权重进行二值化)</p>
+<p>🌟 [BinaryConnect] BinaryConnect: Training Deep Neural Networks with binary weights during propagations</p>
+<p>🌟 [BWN]  Binary-Weights-Networks</p>
+<p><strong>Binary Weight &amp; activation</strong> (对权重和激活都进行二值化)</p>
+<p>🌟 [BNN] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1602.02830.pdf">Binarized Neural Networks: Training Neural Networks with Weights and Activations Constrained to +1 or −1</a></p>
+<p>🌟 [XNOR Net] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1603.05279.pdf">XNOR-Net: ImageNet Classification Using Binary Convolutional Neural Networks</a></p>
+<p>-&gt; [ABCNet] Towards Accurate Binary Convolutional Neural Network by Xiaofan Lin, Cong Zhao, and Wei Pan.</p>
+<p>-&gt; [Bi-Real Net] Enhancing the Performance of 1bit CNNs with Improved Representational Capacity and Advanced Training Algorithm</p>
+<p>-&gt; [HORQ]Performance Guaranteed Network Acceleration via High-Order Residual Quantization</p>
+<p><strong>三值化网络</strong></p>
+<p>🌟 [TWN] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1605.04711.pdf">Ternary weight networks</a></p>
+<p>[TNN] Ternary Neural Networks for Resource-Efficient AI Applications </p>
+<p>[TTQ] Trained Ternary Quantization </p>
+<p><strong>2bit - 8bit</strong></p>
+<p>🌟 [DOREFA-NET] DoReFa-Net: Training Low Bitwidth Convolutional Neural Networks with Low Bitwidth Gradients</p>
+<p><strong>int8 量化</strong></p>
+<p>🌟 <strong>8-bit Inference with TensorRT  [NVIDIA]</strong></p>
+<p>🌟 Quantizing deep convolutional networks for efficient inference: A whitepaper [Google]</p>
+<p>🌟 ADMM</p>
+<p>🌟 ACIQ</p>
+<p>🌟 easyquant</p>
+<p><strong>其他</strong></p>
+<p>🌟 [INQ] Incremental Network Quantization: Towards Lossless CNNs with Low-precision Weights</p>
+<p>[CNNPack] Packing Convolutional Neural Networks in the Frequency Domain</p>
+<p>[HWGQ]  Deep Learning with Low Precision by Half-wave Gaussian Quantization</p>
+<p>[FFN] Fixed-point Factorized Networks</p>
+<p>[QNN] Quantized Neural Networks: Training Neural Networks with Low Precision Weights and Activations </p>
+<p>参考资料TBD：</p>
+<ul>
+<li>paddleslim</li>
+<li>各个库的实现(mnn、tnn、ncnn、tensorrt)</li>
+<li>pytorch 的实现 - qnnpack  -&gt; 以及如何在 pytorch 上实现 量化压缩</li>
+</ul>
+<h4 id="3-蒸馏"><a href="#3-蒸馏" class="headerlink" title="(3) 蒸馏"></a>(3) 蒸馏</h4><p>知识蒸馏是将复杂网络(老师模型)的知识迁移到小网络(学生模型) 中， 从而提高小网络的精度。具体的做法是使用老师模型的输出信息监督学生模型的训练。</p>
+<p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/5.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>第一种是传统的蒸馏方法（参考论文：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1503.02531.pdf">Distilling the Knowledge in a Neural Network</a>）: 用老师学习到的 soft label 来指导学生模型</p>
+<p>​        使用复杂的网络作为teacher模型去监督训练一个参数量和运算量更少的student模型。teacher模型可以是一个或者多个提前训练好的高性能模型。student 模型的训练有两个目标：<strong>一个是原始的目标函数，为 student 模型输出的类别概率和 label 的交叉熵</strong>，记为 hard-target；另一个是 <strong>student 模型输出的类别概率和 teacher 模型输出的类别概率的交叉熵</strong>，记为soft target，这两个loss加权后得到最终的训练loss，共同监督studuent模型的训练。 </p>
+<p>第二种是基于 FSP 的蒸馏方法（参考论文：<a target="_blank" rel="noopener" href="http://openaccess.thecvf.com/content_cvpr_2017/papers/Yim_A_Gift_From_CVPR_2017_paper.pdf">A Gift from Knowledge Distillation: Fast Optimization, Network Minimization and Transfer Learning</a>）: 用老师学习到的学习方法来指导学生模型</p>
+<p>​     该方法用小模型去拟合大模型不同层特征之间的转换关系，其用一个 FSP 矩阵（特征的内积）来表示不同层特征之间的关系，<strong>大模型和小模型不同层之间分别获得多个 FSP 矩阵，然后使用 L2 loss 让小模型的对应层 FSP 矩阵和大模型对应层的 FSP 矩阵尽量一致</strong>，具体如下图所示。这种方法的优势，通俗的解释是，比如将蒸馏类比成 teacher（大模型）教 student（小模型）解决一个问题，传统的蒸馏是直接告诉小模型问题的答案，让小模型学习，而<strong>学习 FSP 矩阵是让小模型学习解决问题的中间过程和方法，因此其学到的信息更多</strong>。</p>
+<p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/7.png" srcset="/img/loading.gif" style="zoom:45%;"></p>
+<h3 id="2-网络设计"><a href="#2-网络设计" class="headerlink" title="2. 网络设计"></a>2. 网络设计</h3><h4 id="1-轻量化网络设计"><a href="#1-轻量化网络设计" class="headerlink" title="(1) 轻量化网络设计"></a>(1) 轻量化网络设计</h4><h4 id="2-nas-network-architecture-search"><a href="#2-nas-network-architecture-search" class="headerlink" title="(2) nas(network architecture search)"></a>(2) nas(network architecture search)</h4><p>自动设计神经网络的技术，根据搜索空间使用一定的搜索算法来自动设计出高性能的网络结构。</p>
+<p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/6.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>搜索空间：</p>
+<p>搜索策略：</p>
+<p>常见的搜索方法包括：强化学习、贝叶斯优化、进化算法、基于梯度的算法。我们当前的实现以模拟退火算法为主。</p>
+<ul>
+<li>模型退火搜索策略： 需要的机器资源少， 收敛速度快， 耗时少</li>
+<li>强化学习搜索策略： 需要的机器资源多， 搜索效果相对比较好</li>
+</ul>
+<p>基于硬件延迟搜索</p>
+<p>由于同一个结构在不同硬件上的延迟表现不同， 可以搜索出在不同硬件上速度以及精度表现更优的网络:</p>
+<p>常见的步骤：建硬件延时表  -&gt; 根据模型查表  -&gt; 相加得到预估耗时</p>
+<h3 id="3-后端优化"><a href="#3-后端优化" class="headerlink" title="3. 后端优化"></a>3. 后端优化</h3><h4 id="1-图优化"><a href="#1-图优化" class="headerlink" title="(1) 图优化"></a>(1) 图优化</h4><h4 id="2-算子优化"><a href="#2-算子优化" class="headerlink" title="(2) 算子优化"></a>(2) 算子优化</h4><p>低秩分解</p>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleSlim/index.html">https://paddlepaddle.github.io/PaddleSlim/index.html</a></p>
 <h5 id="4-1-算法"><a href="#4-1-算法" class="headerlink" title="4.1 算法"></a>4.1 算法</h5><h6 id="（1）轻量级网络设计"><a href="#（1）轻量级网络设计" class="headerlink" title="（1）轻量级网络设计"></a>（1）轻量级网络设计</h6><p>🌟 [SqueezeNet] SqueezeNet: AlexNet-level accuracy with 50x fewer parameters and &lt;0.5MB model size.</p>
 <p>🌟 [Mobilenet V1] MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications</p>
 <p>🌟 [Mobilenet V2] MobileNetV2: Inverted Residuals and Linear Bottlenecks</p>
@@ -264,7 +414,7 @@
 <p>🌟 <strong>Rethink the value of network pruning</strong> ICLR_2019</p>
 <p>​    这篇论文的作者实验过程中发现了模型修剪过后，微调得到的效果和重新从头训练几乎相同，于是便做了多组实验证明这一结论，推翻了包括自己的方法在内的很多方法，提出对参数修剪的一个新的认识：参数修剪的实际作用在于得到架构而非权值</p>
 <p>🌟 <strong>The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks</strong>  [ICLR 2019 best paper]</p>
-<h6 id="3-量化-8bit、二值、三值"><a href="#3-量化-8bit、二值、三值" class="headerlink" title="(3) 量化(8bit、二值、三值)"></a>(3) 量化(8bit、二值、三值)</h6><p>核心思想: 模型量化是指权重或激活输出可以被聚类到一些离散、低精度(reduced precision) 的数值点上，这通常依赖于特定算法库或硬件平台的支持：</p>
+<h6 id="3-量化-8bit、二值、三值-1"><a href="#3-量化-8bit、二值、三值-1" class="headerlink" title="(3) 量化(8bit、二值、三值)"></a>(3) 量化(8bit、二值、三值)</h6><p>核心思想: 模型量化是指权重或激活输出可以被聚类到一些离散、低精度(reduced precision) 的数值点上，这通常依赖于特定算法库或硬件平台的支持：</p>
 <p><strong>二值网络</strong></p>
 <p><strong>Binary Weight</strong> (只对权重进行二值化)</p>
 <p>🌟 [BinaryConnect] BinaryConnect: Training Deep Neural Networks with binary weights during propagations</p>
