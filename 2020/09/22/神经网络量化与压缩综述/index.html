@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.7k 字
+      1.1k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      34
+      12
        分钟
     </span>
   
@@ -208,101 +208,20 @@
             <h1 style="display: none">神经网络量化与压缩综述</h1>
             
             <div class="markdown-body" id="post-body">
-              <h4 id="1-常见的数据集"><a href="#1-常见的数据集" class="headerlink" title="1. 常见的数据集"></a>1. 常见的数据集</h4><p><strong>分类任务(目前主流</strong>)：MNIST、CIFAR10、CIFAR100和 ImageNet等。</p>
-<p><strong>检测任务</strong>: PASCAL VOC、MS COCO</p>
-<h4 id="2-测试网络"><a href="#2-测试网络" class="headerlink" title="2. 测试网络"></a>2. 测试网络</h4><p><strong>分类</strong>:  VGG: -&gt; 该网络冗余度较高， 压缩比例较大</p>
-<p>​      ResNet34、ResNet50、DenseNet、SeNet:</p>
-<p>检测: YOLOV3、Faster RCNN、RetinaNet</p>
-<h4 id="3-评价指标"><a href="#3-评价指标" class="headerlink" title="3. 评价指标"></a>3. 评价指标</h4><p>对于模型加速方案: 通常有如下的评价指标:</p>
-<p>(1) 计算量(Flops)</p>
-<p>(2) 模型大小(Model size)</p>
-<p>(3) 推断时间(Inference)</p>
-<p>精度误差: 分类: Top1 acc、Top5 acc     检测: mAP_50</p>
-<h4 id="4-解决方案"><a href="#4-解决方案" class="headerlink" title="4. 解决方案"></a>4. 解决方案</h4><p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/1.png" srcset="/img/loading.gif" alt></p>
-<p>基本概述</p>
-<p>剪枝:</p>
-<p>两种稀疏化:</p>
-<ul>
-<li>SSL （Learning Sparsity Learning）</li>
-</ul>
-<h4 id="2-量化"><a href="#2-量化" class="headerlink" title="(2) 量化"></a>(2) 量化</h4><p>首先说明，量化还有几个有意思的名称，定点化、离散化。</p>
-<p>​       <strong>低精度的量化：如2bit、4bit 的量化也是有一些进展的， 但是具体还需要结合硬件，这个之后再说， 现在比较成熟的解决方案是 8bit 量化。可以真实应用于实际场景中</strong></p>
-<p>1：对称量化算法</p>
-<p>对称算法就是指将待量化数据的绝对值的最大值映射到新数据范围内的最大值。</p>
-<p><img src="https://pic2.zhimg.com/80/v2-005fcae44d9732a08c50958de2636d25_1440w.jpg" srcset="/img/loading.gif" alt="img"></p>
-<p>2：非对称量化算法</p>
-<p>非对称算法是指将待量化数据的最大值和最小值映射到新数据范围内的最大值最小值。</p>
-<p><img src="https://pic3.zhimg.com/80/v2-376579c1f4b7e192b0592ae76a87d8f6_1440w.jpg" srcset="/img/loading.gif" alt="img"></p>
-<p><strong>量化最核心的内容是找到这个 scale。</strong></p>
-<p>​     将浮点数映射到低比特int， 从而减少模型的体积和计算量， 加快推理速度。目前，学术界主要讲量化分为两大类： Post Training Quantization 和 Quantization Aware Training。</p>
-<p>Quantization Aware Training 是在训练过程中对量化进行建模以确定量化参数。它可以提供更高的预测精度。</p>
-<p>Post Training Quantization： 使用 KL 散度， 滑动平均等方法确定量化参数且不需要重新训练的定点量化方法。</p>
-<p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/4.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<p>下面着重介绍训练后量化： 训练后量化是基于采样数据，采用KL散度等方法计算量化比例因子的方法。相比量化训练，训练后量化不需要重新训练，可以快速得到量化模型。</p>
-<p>​        训练后量化的目标是求取量化比例因子，主要有两种方法：</p>
-<ul>
-<li><p>非饱和量化方法 ( No Saturation) ：计算FP32类型Tensor中绝对值的最大值<code>abs_max</code>，将其映射为127，则量化比例因子等于<code>abs_max/127</code>。 ———&gt;  <strong>这种方式被称作 minmax 量化方式， Tensorflow 主要采用， 精度还是很差的</strong>。</p>
-<p>主要流程如下：</p>
-<p>（1）统计出网络某一层的最大值与最小值：</p>
-<p><img src="https://www.zhihu.com/equation?tex=x_%7Bfloat%7D%5Cepsilon+%5Bx_%7Bfloat%7D%5E%7Bmax%7D%2Cx_%7Bfloat%7D%5E%7Bmin%7D%5D" srcset="/img/loading.gif" alt="[公式]"></p>
-<p>（2）计算scale与zero_point</p>
-<p><img src="https://www.zhihu.com/equation?tex=x_%7Bscale%7D%3D%5Cfrac%7Bx_%7Bfloat%7D%5E%7Bmax%7D-x_%7Bfloat%7D%5E%7Bmin%7D%7D%7Bx_%7Bquantized%7D%5E%7Bmax%7D-x_%7Bquantized%7D%5E%7Bmin%7D%7D" srcset="/img/loading.gif" alt="[公式]"></p>
-<p><img src="https://www.zhihu.com/equation?tex=x_%7Bzeropoint%7D%3Dx_%7Bquantized%7D%5E%7Bmax%7D-%5Cfrac%7Bx_%7Bfloat%7D%5E%7Bmax%7D%7D%7Bx_%7Bscale%7D%7D" srcset="/img/loading.gif" alt="[公式]"></p>
-<p>（3）通过以下公式计算出任意float32量化后的int8结果</p>
-<p><img src="https://www.zhihu.com/equation?tex=x_%7Bquantized%7D%3D%7B%5Cfrac%7Bx_%7Bfloat%7D%7D%7Bx_%7Bscale%7D%7D%7D%2Bx_%7Bzeropoint%7D" srcset="/img/loading.gif" alt="[公式]"></p>
-<p>由公式可以看出量化中的精度损失不可避免的，当浮点数的分布均匀时，精度损失较小。但当浮点数分布不均匀时，按照最大最小值映射，则实际有效的int8动态范围就更小了，精度损失变大。</p>
-</li>
-<li><p>饱和量化方法 (Saturation)： 使用KL散度计算一个合适的阈值<code>T</code> (<code>0&lt;T&lt;mab_max</code>)，将其映射为127，则量化比例因子等于<code>T/127</code>。一般而言，对于待量化op的权重Tensor，采用非饱和量化方法，对于待量化op的激活Tensor（包括输入和输出），采用饱和量化方法 。       ——&gt;   <strong>这种方法主要是 Tensor RT 在采用， 量化效果还是不错的</strong></p>
-</li>
-</ul>
-<p>训练后量化的实现步骤如下:</p>
-<p>（1）读取样本数据，执行模型的前向推理， 保存激活 tensor 的数值。</p>
-<p>（2）基于激活 Tensor 的采样数据， 使用饱和量化方法计算出它的量化比例因子（用于量化输入和输出）</p>
-<p>（3）使用非饱和量化的方法计算每个通道的绝对值的最大值，作为每个通道的量化比例因子，对模型参数进行量化，将 fp32 模型转化成 int8模型进行保存。</p>
-<p><img src="https://pic2.zhimg.com/80/v2-39ca2bcb271ae1b5a1c57cea11744735_1440w.jpg" srcset="/img/loading.gif" alt="img"></p>
-<p><img src="https://pic2.zhimg.com/80/v2-9499fc56376449b20594274e3464fcb1_1440w.jpg" srcset="/img/loading.gif" alt="img"></p>
-<h6 id="3-量化-8bit、二值、三值"><a href="#3-量化-8bit、二值、三值" class="headerlink" title="(3) 量化(8bit、二值、三值)"></a>(3) 量化(8bit、二值、三值)</h6><p><strong>二值网络</strong></p>
-<p><strong>Binary Weight</strong> (只对权重进行二值化)</p>
-<p>🌟 [BinaryConnect] BinaryConnect: Training Deep Neural Networks with binary weights during propagations</p>
-<p>🌟 [BWN]  Binary-Weights-Networks</p>
-<p><strong>Binary Weight &amp; activation</strong> (对权重和激活都进行二值化)</p>
-<p>🌟 [BNN] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1602.02830.pdf">Binarized Neural Networks: Training Neural Networks with Weights and Activations Constrained to +1 or −1</a></p>
-<p>🌟 [XNOR Net] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1603.05279.pdf">XNOR-Net: ImageNet Classification Using Binary Convolutional Neural Networks</a></p>
-<p>-&gt; [ABCNet] Towards Accurate Binary Convolutional Neural Network by Xiaofan Lin, Cong Zhao, and Wei Pan.</p>
-<p>-&gt; [Bi-Real Net] Enhancing the Performance of 1bit CNNs with Improved Representational Capacity and Advanced Training Algorithm</p>
-<p>-&gt; [HORQ]Performance Guaranteed Network Acceleration via High-Order Residual Quantization</p>
-<p><strong>三值化网络</strong></p>
-<p>🌟 [TWN] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1605.04711.pdf">Ternary weight networks</a></p>
-<p>[TNN] Ternary Neural Networks for Resource-Efficient AI Applications </p>
-<p>[TTQ] Trained Ternary Quantization </p>
-<p><strong>2bit - 8bit</strong></p>
-<p>🌟 [DOREFA-NET] DoReFa-Net: Training Low Bitwidth Convolutional Neural Networks with Low Bitwidth Gradients</p>
-<p><strong>int8 量化</strong></p>
-<p>🌟 <strong>8-bit Inference with TensorRT  [NVIDIA]</strong></p>
-<p>🌟 Quantizing deep convolutional networks for efficient inference: A whitepaper [Google]</p>
-<p>🌟 ADMM</p>
-<p>🌟 ACIQ</p>
-<p>🌟 easyquant</p>
-<p><strong>其他</strong></p>
-<p>🌟 [INQ] Incremental Network Quantization: Towards Lossless CNNs with Low-precision Weights</p>
-<p>[CNNPack] Packing Convolutional Neural Networks in the Frequency Domain</p>
-<p>[HWGQ]  Deep Learning with Low Precision by Half-wave Gaussian Quantization</p>
-<p>[FFN] Fixed-point Factorized Networks</p>
-<p>[QNN] Quantized Neural Networks: Training Neural Networks with Low Precision Weights and Activations </p>
-<p>参考资料TBD：</p>
-<ul>
-<li>paddleslim</li>
-<li>各个库的实现(mnn、tnn、ncnn、tensorrt)</li>
-<li>pytorch 的实现 - qnnpack  -&gt; 以及如何在 pytorch 上实现 量化压缩</li>
-</ul>
-<h4 id="3-蒸馏"><a href="#3-蒸馏" class="headerlink" title="(3) 蒸馏"></a>(3) 蒸馏</h4><p>知识蒸馏是将复杂网络(老师模型)的知识迁移到小网络(学生模型) 中， 从而提高小网络的精度。具体的做法是使用老师模型的输出信息监督学生模型的训练。</p>
+              <h3 id="一-前端算法设计"><a href="#一-前端算法设计" class="headerlink" title="一. 前端算法设计"></a>一. 前端算法设计</h3><h4 id="1-剪枝"><a href="#1-剪枝" class="headerlink" title="(1) 剪枝"></a>(1) 剪枝</h4><h4 id="2-量化"><a href="#2-量化" class="headerlink" title="(2) 量化"></a>(2) 量化</h4><h4 id="3-蒸馏"><a href="#3-蒸馏" class="headerlink" title="(3) 蒸馏"></a>(3) 蒸馏</h4><p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleSlim/index.html">https://paddlepaddle.github.io/PaddleSlim/index.html</a></p>
+<h6 id="4-知识蒸馏"><a href="#4-知识蒸馏" class="headerlink" title="(4) 知识蒸馏"></a>(4) 知识蒸馏</h6><p>基本思想: 蒸馏模型采用的是迁移学习， 通过采用预先训练好的教师模型(teacher model) 的输出作为监督信号去训练另外一个轻量化的网络(student model)</p>
+<p>🌟 Distilling the knowledge in a neural network?</p>
+<p>🌟 Cross Model Distillation for Supervision Transfer</p>
+<p>🌟 FitNets: Hints for Thin Deep Nets</p>
+<p>知识蒸馏是将复杂网络(老师模型)的知识迁移到小网络(学生模型) 中， 从而提高小网络的精度。具体的做法是使用老师模型的输出信息监督学生模型的训练。</p>
 <p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/5.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
 <p>第一种是传统的蒸馏方法（参考论文：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1503.02531.pdf">Distilling the Knowledge in a Neural Network</a>）: 用老师学习到的 soft label 来指导学生模型</p>
 <p>​        使用复杂的网络作为teacher模型去监督训练一个参数量和运算量更少的student模型。teacher模型可以是一个或者多个提前训练好的高性能模型。student 模型的训练有两个目标：<strong>一个是原始的目标函数，为 student 模型输出的类别概率和 label 的交叉熵</strong>，记为 hard-target；另一个是 <strong>student 模型输出的类别概率和 teacher 模型输出的类别概率的交叉熵</strong>，记为soft target，这两个loss加权后得到最终的训练loss，共同监督studuent模型的训练。 </p>
 <p>第二种是基于 FSP 的蒸馏方法（参考论文：<a target="_blank" rel="noopener" href="http://openaccess.thecvf.com/content_cvpr_2017/papers/Yim_A_Gift_From_CVPR_2017_paper.pdf">A Gift from Knowledge Distillation: Fast Optimization, Network Minimization and Transfer Learning</a>）: 用老师学习到的学习方法来指导学生模型</p>
 <p>​     该方法用小模型去拟合大模型不同层特征之间的转换关系，其用一个 FSP 矩阵（特征的内积）来表示不同层特征之间的关系，<strong>大模型和小模型不同层之间分别获得多个 FSP 矩阵，然后使用 L2 loss 让小模型的对应层 FSP 矩阵和大模型对应层的 FSP 矩阵尽量一致</strong>，具体如下图所示。这种方法的优势，通俗的解释是，比如将蒸馏类比成 teacher（大模型）教 student（小模型）解决一个问题，传统的蒸馏是直接告诉小模型问题的答案，让小模型学习，而<strong>学习 FSP 矩阵是让小模型学习解决问题的中间过程和方法，因此其学到的信息更多</strong>。</p>
 <p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/7.png" srcset="/img/loading.gif" style="zoom:45%;"></p>
-<h3 id="2-网络设计"><a href="#2-网络设计" class="headerlink" title="2. 网络设计"></a>2. 网络设计</h3><h4 id="1-轻量化网络设计"><a href="#1-轻量化网络设计" class="headerlink" title="(1) 轻量化网络设计"></a>(1) 轻量化网络设计</h4><h4 id="2-nas-network-architecture-search"><a href="#2-nas-network-architecture-search" class="headerlink" title="(2) nas(network architecture search)"></a>(2) nas(network architecture search)</h4><p>自动设计神经网络的技术，根据搜索空间使用一定的搜索算法来自动设计出高性能的网络结构。</p>
+<h4 id="4-低秩分解"><a href="#4-低秩分解" class="headerlink" title="(4) 低秩分解"></a>(4) 低秩分解</h4><h4 id="5-轻量级网络设计"><a href="#5-轻量级网络设计" class="headerlink" title="(5) 轻量级网络设计"></a>(5) 轻量级网络设计</h4><h5 id="NAS-network-architecture-search"><a href="#NAS-network-architecture-search" class="headerlink" title="NAS (network architecture search)"></a>NAS (network architecture search)</h5><p>自动设计神经网络的技术，根据搜索空间使用一定的搜索算法来自动设计出高性能的网络结构。</p>
 <p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/6.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
 <p>搜索空间：</p>
 <p>搜索策略：</p>
@@ -314,43 +233,8 @@
 <p>基于硬件延迟搜索</p>
 <p>由于同一个结构在不同硬件上的延迟表现不同， 可以搜索出在不同硬件上速度以及精度表现更优的网络:</p>
 <p>常见的步骤：建硬件延时表  -&gt; 根据模型查表  -&gt; 相加得到预估耗时</p>
-<h3 id="3-后端优化"><a href="#3-后端优化" class="headerlink" title="3. 后端优化"></a>3. 后端优化</h3><h4 id="1-图优化"><a href="#1-图优化" class="headerlink" title="(1) 图优化"></a>(1) 图优化</h4><h4 id="2-算子优化"><a href="#2-算子优化" class="headerlink" title="(2) 算子优化"></a>(2) 算子优化</h4><p>低秩分解</p>
-<p>参考资料：</p>
-<p><a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleSlim/index.html">https://paddlepaddle.github.io/PaddleSlim/index.html</a></p>
-<h5 id="4-1-算法"><a href="#4-1-算法" class="headerlink" title="4.1 算法"></a>4.1 算法</h5><h6 id="3-量化-8bit、二值、三值-1"><a href="#3-量化-8bit、二值、三值-1" class="headerlink" title="(3) 量化(8bit、二值、三值)"></a>(3) 量化(8bit、二值、三值)</h6><p>核心思想: 模型量化是指权重或激活输出可以被聚类到一些离散、低精度(reduced precision) 的数值点上，这通常依赖于特定算法库或硬件平台的支持：</p>
-<p><strong>二值网络</strong></p>
-<p><strong>Binary Weight</strong> (只对权重进行二值化)</p>
-<p>🌟 [BinaryConnect] BinaryConnect: Training Deep Neural Networks with binary weights during propagations</p>
-<p>🌟 [BWN]  Binary-Weights-Networks</p>
-<p><strong>Binary Weight &amp; activation</strong> (对权重和激活都进行二值化)</p>
-<p>🌟 [BNN] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1602.02830.pdf">Binarized Neural Networks: Training Neural Networks with Weights and Activations Constrained to +1 or −1</a></p>
-<p>🌟 [XNOR Net] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1603.05279.pdf">XNOR-Net: ImageNet Classification Using Binary Convolutional Neural Networks</a></p>
-<p>-&gt; [ABCNet] Towards Accurate Binary Convolutional Neural Network by Xiaofan Lin, Cong Zhao, and Wei Pan.</p>
-<p>-&gt; [Bi-Real Net] Enhancing the Performance of 1bit CNNs with Improved Representational Capacity and Advanced Training Algorithm</p>
-<p>-&gt; [HORQ]Performance Guaranteed Network Acceleration via High-Order Residual Quantization</p>
-<p><strong>三值化网络</strong></p>
-<p>🌟 [TWN] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1605.04711.pdf">Ternary weight networks</a></p>
-<p>[TNN] Ternary Neural Networks for Resource-Efficient AI Applications </p>
-<p>[TTQ] Trained Ternary Quantization </p>
-<p><strong>2bit - 8bit</strong></p>
-<p>🌟 [DOREFA-NET] DoReFa-Net: Training Low Bitwidth Convolutional Neural Networks with Low Bitwidth Gradients</p>
-<p><strong>int8 量化</strong></p>
-<p>🌟 <strong>8-bit Inference with TensorRT  [Nvidia]</strong></p>
-<p>🌟 Quantizing deep convolutional networks for efficient inference: A whitepaper [Google]</p>
-<p><strong>其他</strong></p>
-<p>🌟 [INQ] Incremental Network Quantization: Towards Lossless CNNs with Low-precision Weights</p>
-<p>[CNNPack] Packing Convolutional Neural Networks in the Frequency Domain</p>
-<p>[HWGQ]  Deep Learning with Low Precision by Half-wave Gaussian Quantization</p>
-<p>[FFN] Fixed-point Factorized Networks</p>
-<p>[QNN] Quantized Neural Networks: Training Neural Networks with Low Precision Weights and Activations </p>
-<p><strong>小结</strong></p>
-<p><img src="/2020/09/22/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%87%8F%E5%8C%96%E4%B8%8E%E5%8E%8B%E7%BC%A9%E7%BB%BC%E8%BF%B0/2.png" srcset="/img/loading.gif" alt></p>
-<p>若模型压缩之后，推理精度存在较大损失，可以通过fine-tuning予以恢复，并在训练过程中结合适当的Tricks，例如 Label Smoothing、Mix-up、Knowledge Distillation、Focal Loss等。 此外，模型压缩、优化加速策略可以联合使用，进而可获得更为极致的压缩比与加速比。</p>
-<h6 id="4-知识蒸馏"><a href="#4-知识蒸馏" class="headerlink" title="(4) 知识蒸馏"></a>(4) 知识蒸馏</h6><p>基本思想: 蒸馏模型采用的是迁移学习， 通过采用预先训练好的教师模型(teacher model) 的输出作为监督信号去训练另外一个轻量化的网络(student model)</p>
-<p>🌟 Distilling the knowledge in a neural network?</p>
-<p>🌟 Cross Model Distillation for Supervision Transfer</p>
-<p>🌟 FitNets: Hints for Thin Deep Nets</p>
-<h6 id="5-算子的实现-存储"><a href="#5-算子的实现-存储" class="headerlink" title="(5) 算子的实现/存储"></a>(5) 算子的实现/存储</h6><p><strong>A. op-level 的实现</strong></p>
+<h3 id="二-后端优化"><a href="#二-后端优化" class="headerlink" title="二. 后端优化"></a>二. 后端优化</h3><h4 id="1-图优化"><a href="#1-图优化" class="headerlink" title="(1) 图优化"></a>(1) 图优化</h4><p>conv 和 bn 融合 </p>
+<h4 id="2-算子优化"><a href="#2-算子优化" class="headerlink" title="(2) 算子优化"></a>(2) 算子优化</h4><p><strong>A. op-level 的实现</strong></p>
 <p><strong>conv:</strong></p>
 <p>   im2col + gemm</p>
 <p>   FFT Conv2d (7x7, 9x9)</p>
@@ -359,7 +243,6 @@
 <p>   Sparse-block net</p>
 <p>C. 存储</p>
 <p>   CSR</p>
-<h6 id="6-图优化"><a href="#6-图优化" class="headerlink" title="(6) 图优化"></a>(6) 图优化</h6><p>   conv 和 bn层的融合</p>
 <h5 id="4-2-硬件平台"><a href="#4-2-硬件平台" class="headerlink" title="4.2 硬件平台"></a>4.2 硬件平台</h5><p><strong>CPU、GPU、FPGA、DSP、加速器</strong></p>
 <h5 id="4-3-常见的部署方案"><a href="#4-3-常见的部署方案" class="headerlink" title="4.3 常见的部署方案"></a>4.3 常见的部署方案</h5><p><strong>(1)Server:</strong></p>
 <p>​       <strong>TensorRT</strong></p>
@@ -382,10 +265,6 @@
 <p>​    Project：<a target="_blank" rel="noopener" href="https://github.com/JDAI-CV/dabnn">https://github.com/JDAI-CV/dabnn</a></p>
 <p>​    Demo：<a target="_blank" rel="noopener" href="https://github.com/JDAI-CV/dabnn-example">https://github.com/JDAI-CV/dabnn-example</a></p>
 <h4 id="5-参考链接"><a href="#5-参考链接" class="headerlink" title="5. 参考链接"></a>5. 参考链接</h4><p><a target="_blank" rel="noopener" href="https://jackwish.net/2019/neural-network-quantization-resources.html">https://jackwish.net/2019/neural-network-quantization-resources.html</a></p>
-<h4 id="6-idea"><a href="#6-idea" class="headerlink" title="6. idea"></a>6. idea</h4><p>> Attention for distillation</p>
-<p>> knowledge distillation -&gt;(zero shot)</p>
-<p>> GNN -&gt; compression and accleration </p>
-<p>> model compression -&gt; 对抗攻击!</p>
 
             </div>
             <hr>

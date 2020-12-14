@@ -153,8 +153,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2019-04-15 15:28" pubdate>
-        April 15, 2019 pm
+      <time datetime="2020-04-15 15:28" pubdate>
+        April 15, 2020 pm
       </time>
     </span>
   
@@ -212,7 +212,7 @@
 <a id="more"></a>
 <h4 id="1-Mobilenet-v1"><a href="#1-Mobilenet-v1" class="headerlink" title="1. Mobilenet v1"></a>1. Mobilenet v1</h4><p>MobileNet模型的核心就是<strong>将原本标准的卷积操作因式分解成一个depthwise convolution和一个1*1的卷积（文中叫pointwise convolution）操作。简单讲就是将原来一个卷积层分成两个卷积层，其中前面一个卷积层的每个filter都只跟input的每个channel进行卷积，然后后面一个卷积层则负责combining，即将上一层卷积的结果进行合并。 </strong></p>
 <h5 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h5><p>(1) 传统的卷积计算：假设M表示input的channel个数，N表示output的channel个数（也是本层的卷积核个数）。因此如果假设卷积核大小是<code>DK*DK*M*N</code>，输出是<code>DF*DF*N</code>，那么标准卷积的计算量是<code>DK*DK*M*N*DF*DF</code>。如下图(a)所示。</p>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/1.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/1.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
 <ul>
 <li><p>首先使用<code>M</code>个<code>Dk*Dk</code>的卷积核对输入(<code>M*DF*DF</code>)进行卷积,这里要注意的是每个filter只跟输入的一个通道进行卷积(也就是说，卷积核的通道数为1)，将不同卷积核的结果进行组合，可以得到大小为：<code>M*DF*DF</code>的输出。其计算量为 <code>M*DK*DK*DF*DF</code>。(这里使用的3*3的卷积核，padding为1)。如上图(b)所示。</p>
 </li>
@@ -220,9 +220,9 @@
 </li>
 </ul>
 <p>所以其总的计算量相比传统的卷积计算减少了：</p>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/2.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/2.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
 <p>（2）标准卷积（左边）和因式分解后的卷积（右边）的差别如下所示。注意到卷积操作后都会跟一个Batchnorm和ReLU操作。</p>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/3.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/3.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
 <p>​      总的来说，由于采用 depth-wise convolution 会有一个问题，就是导致「信息流通不畅」，即<strong>输出的 feature map 仅包含输入的 feature map 的一部分</strong>，MobileNet 用 point-wise convolution 解决这个问题。在后来，ShuffleNet 采用同样的思想对网络进行改进，只不过把 point-wise convolution 换成了 channel shuffle。</p>
 <h4 id="2-Shufflenet-v1"><a href="#2-Shufflenet-v1" class="headerlink" title="2. Shufflenet v1"></a>2. Shufflenet v1</h4><p>​    Shufflenet v1 主要采用<strong>channel shuffle、pointwise group convolutions 和 depthwise convolution来修改原来的ResNet单元</strong>。从而大幅度降低深度网络计算量。</p>
 <ul>
@@ -233,7 +233,7 @@
 <h5 id="具体实现：-1"><a href="#具体实现：-1" class="headerlink" title="具体实现："></a>具体实现：</h5><p>（1）a 图是一个带有 depthwise convolution 的resnet 结果，所谓的 depthwise convolution 可以参见</p>
 <p>（2）a 图 —&gt; b 图，用带group的 1 <em> 1卷积(2个)代替原来的1 </em> 1卷积，同时添加一个channel shuffle 操作。</p>
 <p>（3）b 图 —&gt; c 图，添加了一个步长为2的 Average pooling，将Resnet最后的Add操作c改为concat操作，也就是按channel合并，类似googleNet的Inception操作。</p>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/5.png" srcset="/img/loading.gif" alt="x" style="zoom:38%;"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/5.png" srcset="/img/loading.gif" alt="x" style="zoom:38%;"></p>
 <p>​    shuffle 具体来说是 channel shuffle，将各部分的 feature map 的 channel 进行有序的打乱，构成新的 feature map，以解决 group convolution 带来的「信息流通不畅」问题。（MobileNet 用 pointwise convolution 解决）因此可知道 shuffle 不是什么网络都需要用的，有一个前提，就是采用了 group convolution。采用 shuffle 替换掉 1<em>1 卷积，可以减少权值参数，而且是大量减少。<em>*文中提到两次，对于小型网络，多多使用通道会比较好。所以，以后若涉及小型网络，可考虑如何提升通道使用效率。</em></em></p>
 <p>ShuffleNet V1 与 Mobilenet V1的区别：</p>
 <ol>
@@ -248,10 +248,10 @@
 <li>v2在原有的 dw 之前加了一个 pw 专门用来升维。这么做是因为不能改变通道数量，先加 pw 升维后，dw就能在高维提特征了。</li>
 <li>v2 把原本 dw 之后用来降维的 pw 后的激活函数给去掉了。这么做是因为他认为非线性在高维有益处，但在低维（例如pw降维后的空间）不如线性好。<strong>ReLU 会对 channel 数低的张量造成较大的信息损耗。ReLU 会使负值置零，channel 数较低时会有相对高的概率使某一维度的张量值全为 0，即张量的维度减小了，而且这一过程无法恢复。</strong></li>
 </ul>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/8.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/8.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
 <p>如下图是 Resnet 与 mobilenet v2 的对比图。可以看到两者的结果很相似。不过ResNet是先降维（0.25倍）、提特征、再升维。而v2则是先升维（6倍）、提特征、再降维。另外 v2 也用 DW 代替了标准卷积来做特征提取。why ? <strong>原始的 ResNet block 之所以 1x1 卷积降通道，是为了减少计算量，不然中间的 3x3 卷积计算量太大。所以是两边宽中间窄的沙漏形。但现在中间的 3x3 卷积为 Depthwise 的，计算量很少了，所以通道多一点效果更好，所以通过 1x1 卷积先提升通道数。</strong>两端的通道数都很小，所以 1x1 卷积升通道或降通道计算量都不大，而中间通道数虽然多，但 Depthwise 的卷积计算量也不大。是两边窄中间宽的柳叶形。</p>
 <p>注：示意表达式省略了Shortcut。</p>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/7.png" srcset="/img/loading.gif" alt="x"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/7.png" srcset="/img/loading.gif" alt="x"></p>
 <h4 id="4-shufflenet-V2"><a href="#4-shufflenet-V2" class="headerlink" title="4. shufflenet V2"></a>4. shufflenet V2</h4><h5 id="shufflenetV2-提出了一种channel-split操作-1-将输入channels分为两部分，-2-一部分保持不变，另一部分由三个卷积组成-3-卷积之后，将两部分拼接起来-4-最后在通过channel-shuffle操作来保持两个分支间的信息交流。"><a href="#shufflenetV2-提出了一种channel-split操作-1-将输入channels分为两部分，-2-一部分保持不变，另一部分由三个卷积组成-3-卷积之后，将两部分拼接起来-4-最后在通过channel-shuffle操作来保持两个分支间的信息交流。" class="headerlink" title="shufflenetV2 提出了一种channel split操作, (1) 将输入channels分为两部分， (2) 一部分保持不变，另一部分由三个卷积组成  (3) 卷积之后，将两部分拼接起来 (4) 最后在通过channel shuffle操作来保持两个分支间的信息交流。"></a><strong>shufflenetV2 提出了一种channel split操作, (1) 将输入channels分为两部分， (2) 一部分保持不变，另一部分由三个卷积组成  (3) 卷积之后，将两部分拼接起来 (4) 最后在通过channel shuffle操作来保持两个分支间的信息交流。</strong></h5><h5 id="具体实现：-2"><a href="#具体实现：-2" class="headerlink" title="具体实现："></a>具体实现：</h5><p><strong>(1) 基本单元</strong></p>
 <p>如下左图所示</p>
 <p>(1) 在每个单元的开始，<code>c</code> 特征通道的输入被分为两支，分别带有 <code>c−c&#39;</code> 和 <code>c&#39;</code>个通道。</p>
@@ -261,7 +261,7 @@
 <p>注意，! ShuﬄeNet V1 [15] 中的「加法」操作不再存在。! 像 ReLU 和深度卷积这样的操作只存在一个分支中。另外，! 三个连续的操作「拼接」、「Channel Shuﬄe」和「通道分割」合并成一个操作。</p>
 <p><strong>空间下采样单元：</strong></p>
 <p>对于空间下采样，该单元经过稍微修改，详见下图右， 通道分割运算被移除。因此，输出通道数量翻了一倍。</p>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/9.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/9.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
 <p>ShuffleNet V2 对高效的网络架构设计得出了 4 个实用的指导原则：</p>
 <ol>
 <li>卷积的输入通道 c1 和输出通道 c2 相同时，有最小的内存访问成本 (MAC)</li>
@@ -279,7 +279,7 @@
 <li>修改 MobileNet V2 网络端部最后阶段为 1x1 卷积，减小计算。作者认为， V2 模型中的倒残差结构使用 1×1 卷积来构建最后层，以扩展到高维特征空间，可以提取更多更丰富的特征，但同时也引入了额外的计算成本与延时。所以，需要在保留高维特征的前提下减小延时。方法是将 1×1 层放到最终的平均池化之后。这样的话最后一组特征由 <strong>avgpool 7x7</strong> 变为 <strong>pool 7x7+conv2d 1x1</strong>。</li>
 </ol>
 <p>综合以上，V3 的 block 结构如下所示：</p>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/11.png" srcset="/img/loading.gif" alt="x" style="zoom:60%;"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/11.png" srcset="/img/loading.gif" alt="x" style="zoom:60%;"></p>
 <h4 id="6-ShuffleNetV2"><a href="#6-ShuffleNetV2" class="headerlink" title="6. ShuffleNetV2+"></a>6. ShuffleNetV2+</h4><p>没有相关论文， 只是旷视提出的一个简单的 shufflenetv2 的加强版本， 发布在 github 上。主要的操作是替换其中的激活函数为 h-swish， 并且添加了 SE 模块。</p>
 <p>参考网址：<a target="_blank" rel="noopener" href="https://github.com/megvii-model/ShuffleNet-Series/tree/master/ShuffleNetV2%2B">https://github.com/megvii-model/ShuffleNet-Series/tree/master/ShuffleNetV2%2B</a></p>
 <h4 id="7-MobileNeXt"><a href="#7-MobileNeXt" class="headerlink" title="7. MobileNeXt"></a>7. MobileNeXt</h4><p>​        本文主要针对MobileNetV2中倒置残差块（inverted residual block）的设计和不足进行了分析，并基于分析结果提出了新颖的sandglass模块，这种轻量级模块有原生残差块和倒置残差块的影子，是一种正向残差设计。</p>
@@ -290,7 +290,7 @@
 </li>
 </ul>
 <p>​        本文作者认为逆残差模块会削弱梯度跨层传播的能力，将特征从高维空间压缩到低维空间，会造成信息丢失，同时这也容易引起梯度混淆问题(特指梯度消失或梯度爆炸)，从而影响训练的收敛和最终模型的性能。本文提出的sandglass模块如下图所示：</p>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/15.png" srcset="/img/loading.gif" alt="x" style="zoom:35%;"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/15.png" srcset="/img/loading.gif" alt="x" style="zoom:35%;"></p>
 <p>​        sandglass 模块是在轻量级的残差块上依据逆残差块所存在的问题所改进的，同时这个模块还用到了MobileNetV2中的线性瓶颈设计，即只在第一个 3x3 卷积后边和第二个 1x1 卷积后边使用非线性激活函数 relu6，其他层后边使用线性激活函数(y=x), 这有助于避免零化现象的出现，进而减少信息损失</p>
 <h4 id="8-GhostNet"><a href="#8-GhostNet" class="headerlink" title="8. GhostNet"></a>8. GhostNet</h4><h5 id="1-出发点："><a href="#1-出发点：" class="headerlink" title="(1) 出发点："></a>(1) 出发点：</h5><p>​      通过对比分析 ResNet-50 网络第一个残差组( Residual group )输出的特征图可视化结果，发现一些特征图高度相似。如果按照传统的思考方式，可能认为这些相似的特征图存在冗余，是多余信息，想办法避免产生这些高度相似的特征图。本文的思路是<strong>不去刻意的避免产生这种Ghost对，而是尝试利用简单的线性操作来获得更多的Ghost对。</strong></p>
 <p>其基本操作如下：</p>
@@ -299,9 +299,9 @@
 <li>通过一个线性操作(这里使用的是 depthwise 操作)对本征特征层进行线性变化，获得 ghost 特征层。</li>
 <li>将 ghost 特征层和 ghost 特征层进行拼接。</li>
 </ul>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/13.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/13.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
 <p>通过将 ResNet 中的 Residual Block 中的卷积操作用 Ghost Module 替换就可以得到 Ghost BottleNeck。图下图所示:</p>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/14.png" srcset="/img/loading.gif" style="zoom:50%;"></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/14.png" srcset="/img/loading.gif" style="zoom:50%;"></p>
 <h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><ul>
 <li><p>关于网络结构的变迁， 如下图所示(所有 conv 层之后，都使用了 BN 层， 且 BN 层在激活函数之前)</p>
 <ul>
@@ -312,7 +312,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="/2019/04/15/lightweight-cnn-architecture-design/17.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/04/15/lightweight-cnn-architecture-design/17.png" srcset="/img/loading.gif" alt></p>
 <ul>
 <li><p>一些小经验</p>
 <ul>
@@ -359,6 +359,13 @@
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/DL-Deploy/">DL_Deploy</a>
+                    
+                  </div>
+                
                 
               </div>
               
@@ -369,9 +376,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2019/04/17/pytorch%E5%B8%B8%E8%A7%81%E5%B7%A5%E5%85%B7%E7%AE%B1/">
+                      <a href="/2020/09/13/leetcode/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">pytorch常见工具箱</span>
+                        <span class="hidden-mobile">leetcode</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -379,8 +386,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2019/04/15/Face-recog-loss-fun/">
-                        <span class="hidden-mobile">人脸识别损失函数</span>
+                      <a href="/2020/02/07/int8-quantize/">
+                        <span class="hidden-mobile">int8_quantize</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="zhichao zhao">
   <meta name="keywords" content="">
-  <title>pytorch常见工具箱 - 假欢畅 又何妨 无人共享</title>
+  <title>quantizing - 假欢畅 又何妨 无人共享</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -153,8 +153,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2019-04-17 00:09" pubdate>
-        April 17, 2019 am
+      <time datetime="2020-12-14 15:02" pubdate>
+        December 14, 2020 pm
       </time>
     </span>
   
@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      586 字
+      1.2k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      14
        分钟
     </span>
   
@@ -205,98 +205,69 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">pytorch常见工具箱</h1>
+            <h1 style="display: none">quantizing</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>收集整理了一些常见的可以用到的深度学习网址、工具</p>
-<a id="more"></a>
-<h3 id="1-预训练模型"><a href="#1-预训练模型" class="headerlink" title="1. 预训练模型"></a>1. 预训练模型</h3><p><a target="_blank" rel="noopener" href="https://github.com/Cadene/pretrained-models.pytorch">https://github.com/Cadene/pretrained-models.pytorch</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/rwightman/pytorch-image-models">https://github.com/rwightman/pytorch-image-models</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/welkin-feng/ComputerVision">https://github.com/welkin-feng/ComputerVision</a></p>
-<h3 id="2-数据增强"><a href="#2-数据增强" class="headerlink" title="2. 数据增强"></a>2. 数据增强</h3><p><a target="_blank" rel="noopener" href="https://github.com/albumentations-team/albumentations">https://github.com/albumentations-team/albumentations</a></p>
-<h3 id="3-标记工具"><a href="#3-标记工具" class="headerlink" title="3. 标记工具"></a>3. 标记工具</h3><p><a target="_blank" rel="noopener" href="https://github.com/wkentaro/labelme"><strong>Labelme:</strong></a> Image Polygonal Annotation with Python</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/tzutalin/labelImg"><strong>LabelImg</strong></a>：LabelImg is a graphical image annotation tool and label object bounding boxes in images</p>
-<h3 id="4-数据集查找"><a href="#4-数据集查找" class="headerlink" title="4. 数据集查找"></a>4. 数据集查找</h3><p><strong>! ! !  You can find datasets in Paper Beachmark</strong></p>
-<p><a target="_blank" rel="noopener" href="https://www.kaggle.com/"><strong>Kaggle</strong></a></p>
-<p><a target="_blank" rel="noopener" href="https://toolbox.google.com/datasetsearch"><strong>Google Datasets Search Engine</strong></a></p>
-<p><a target="_blank" rel="noopener" href="https://msropendata.com/"><strong>Microsoft Datasets</strong></a></p>
-<p><a target="_blank" rel="noopener" href="https://www.visualdata.io/"><strong>Computer Vision Datasets</strong></a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/awesomedata/awesome-public-datasets"><strong>Github awesomedata</strong></a></p>
-<p><a target="_blank" rel="noopener" href="https://archive.ics.uci.edu/ml/datasets.html"><strong>UCI Machine Learning Repository.</strong></a></p>
-<p><a target="_blank" rel="noopener" href="https://registry.opendata.aws/"><strong>Amazon Datasets</strong></a></p>
-<p><strong>Government Datasets:</strong> <a target="_blank" rel="noopener" href="https://data.europa.eu/euodp/data/dataset"><strong>EU</strong></a> <a target="_blank" rel="noopener" href="https://www.data.gov/"><strong>US</strong></a> <a target="_blank" rel="noopener" href="https://catalogue.data.govt.nz/dataset"><strong>NZL</strong></a> <a target="_blank" rel="noopener" href="https://data.gov.in/"><strong>IND</strong></a></p>
-<h3 id="5-模型分析工具"><a href="#5-模型分析工具" class="headerlink" title="5. 模型分析工具"></a>5. 模型分析工具</h3><h5 id="1-卷积层输出大小计算"><a href="#1-卷积层输出大小计算" class="headerlink" title="(1) 卷积层输出大小计算"></a>(1) 卷积层输出大小计算</h5><h5 id="https-ezyang-github-io-convolution-visualizer-index-html"><a href="#https-ezyang-github-io-convolution-visualizer-index-html" class="headerlink" title="https://ezyang.github.io/convolution-visualizer/index.html"></a><a target="_blank" rel="noopener" href="https://ezyang.github.io/convolution-visualizer/index.html">https://ezyang.github.io/convolution-visualizer/index.html</a></h5><h5 id="2-计算模型参数量"><a href="#2-计算模型参数量" class="headerlink" title="(2) 计算模型参数量"></a>(2) 计算模型参数量</h5><p><a target="_blank" rel="noopener" href="https://github.com/sksq96/pytorch-summary">https://github.com/sksq96/pytorch-summary</a></p>
-<h5 id="3-模型可视化工具"><a href="#3-模型可视化工具" class="headerlink" title="(3) 模型可视化工具"></a>(3) 模型可视化工具</h5><p><a target="_blank" rel="noopener" href="https://github.com/lutzroeder/Netron"><strong>Netron:</strong></a> now supports <strong>ONNX</strong>, <strong>Keras</strong>, <strong>CoreML</strong>, <strong>Caffe2</strong>, <strong>Mxnet</strong>, <strong>Pytorch</strong> and <strong>Tensorflow</strong>.</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/szagoruyko/pytorchviz"><strong>Graphviz:</strong></a> <strong>Pytorch</strong></p>
-<h3 id="6-可视化工具"><a href="#6-可视化工具" class="headerlink" title="6. 可视化工具"></a>6. 可视化工具</h3><p><a target="_blank" rel="noopener" href="https://github.com/facebookresearch/visdom">visdom</a></p>
-<pre><code class="hljs python"><span class="hljs-comment"># Example using Visdom.</span>
-vis = visdom.Visdom(env=<span class="hljs-string">&#x27;Learning curve&#x27;</span>, use_incoming_socket=<span class="hljs-literal">False</span>)
-<span class="hljs-keyword">assert</span> self._visdom.check_connection()
-self._visdom.close()
-options = collections.namedtuple(<span class="hljs-string">&#x27;Options&#x27;</span>, [<span class="hljs-string">&#x27;loss&#x27;</span>, <span class="hljs-string">&#x27;acc&#x27;</span>, <span class="hljs-string">&#x27;lr&#x27;</span>])(
-    loss=&#123;<span class="hljs-string">&#x27;xlabel&#x27;</span>: <span class="hljs-string">&#x27;Epoch&#x27;</span>, <span class="hljs-string">&#x27;ylabel&#x27;</span>: <span class="hljs-string">&#x27;Loss&#x27;</span>, <span class="hljs-string">&#x27;showlegend&#x27;</span>: <span class="hljs-literal">True</span>&#125;,
-    acc=&#123;<span class="hljs-string">&#x27;xlabel&#x27;</span>: <span class="hljs-string">&#x27;Epoch&#x27;</span>, <span class="hljs-string">&#x27;ylabel&#x27;</span>: <span class="hljs-string">&#x27;Accuracy&#x27;</span>, <span class="hljs-string">&#x27;showlegend&#x27;</span>: <span class="hljs-literal">True</span>&#125;,
-    lr=&#123;<span class="hljs-string">&#x27;xlabel&#x27;</span>: <span class="hljs-string">&#x27;Epoch&#x27;</span>, <span class="hljs-string">&#x27;ylabel&#x27;</span>: <span class="hljs-string">&#x27;Learning rate&#x27;</span>, <span class="hljs-string">&#x27;showlegend&#x27;</span>: <span class="hljs-literal">True</span>&#125;)
-
-<span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> epoch(<span class="hljs-number">80</span>):
-    tran(...)
-    val(...)
-    vis.line(X=torch.Tensor([t + <span class="hljs-number">1</span>]), Y=torch.Tensor([train_loss]),
-             name=<span class="hljs-string">&#x27;train&#x27;</span>, win=<span class="hljs-string">&#x27;Loss&#x27;</span>, update=<span class="hljs-string">&#x27;append&#x27;</span>, opts=options.loss)
-    vis.line(X=torch.Tensor([t + <span class="hljs-number">1</span>]), Y=torch.Tensor([val_loss]),
-             name=<span class="hljs-string">&#x27;val&#x27;</span>, win=<span class="hljs-string">&#x27;Loss&#x27;</span>, update=<span class="hljs-string">&#x27;append&#x27;</span>, opts=options.loss)
-    vis.line(X=torch.Tensor([t + <span class="hljs-number">1</span>]), Y=torch.Tensor([train_acc]),
-             name=<span class="hljs-string">&#x27;train&#x27;</span>, win=<span class="hljs-string">&#x27;Accuracy&#x27;</span>, update=<span class="hljs-string">&#x27;append&#x27;</span>, opts=options.acc)
-    vis.line(X=torch.Tensor([t + <span class="hljs-number">1</span>]), Y=torch.Tensor([val_acc]),
-             name=<span class="hljs-string">&#x27;val&#x27;</span>, win=<span class="hljs-string">&#x27;Accuracy&#x27;</span>, update=<span class="hljs-string">&#x27;append&#x27;</span>, opts=options.acc)
-    vis.line(X=torch.Tensor([t + <span class="hljs-number">1</span>]), Y=torch.Tensor([lr]),
-             win=<span class="hljs-string">&#x27;Learning rate&#x27;</span>, update=<span class="hljs-string">&#x27;append&#x27;</span>, opts=options.lr)</code></pre>
-<p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensorboard.html">Tensorboard</a></p>
+              <p>​        模型量化是指权重或激活输出可以被聚类到一些离散、低精度(reduced precision) 的数值点上，这通常依赖于特定算法库或硬件平台的支持：</p>
+<h4 id="1-二值网络"><a href="#1-二值网络" class="headerlink" title="1. 二值网络"></a>1. 二值网络</h4><p><strong>Binary Weight</strong> (只对权重进行二值化)</p>
+<p>🌟 [BinaryConnect] BinaryConnect: Training Deep Neural Networks with binary weights during propagations</p>
+<p>🌟 [BWN]  Binary-Weights-Networks</p>
+<p><strong>Binary Weight &amp; activation</strong> (对权重和激活都进行二值化)</p>
+<p>🌟 [BNN] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1602.02830.pdf">Binarized Neural Networks: Training Neural Networks with Weights and Activations Constrained to +1 or −1</a></p>
+<p>🌟 [XNOR Net] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1603.05279.pdf">XNOR-Net: ImageNet Classification Using Binary Convolutional Neural Networks</a></p>
+<p>-&gt; [ABCNet] Towards Accurate Binary Convolutional Neural Network by Xiaofan Lin, Cong Zhao, and Wei Pan.</p>
+<p>-&gt; [Bi-Real Net] Enhancing the Performance of 1bit CNNs with Improved Representational Capacity and Advanced Training Algorithm</p>
+<p>-&gt; [HORQ]Performance Guaranteed Network Acceleration via High-Order Residual Quantization</p>
+<h4 id="2-三值化网络"><a href="#2-三值化网络" class="headerlink" title="2. 三值化网络"></a>2. 三值化网络</h4><p>🌟 [TWN] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1605.04711.pdf">Ternary weight networks</a></p>
+<p>[TNN] Ternary Neural Networks for Resource-Efficient AI Applications </p>
+<p>[TTQ] Trained Ternary Quantization </p>
+<h4 id="3-2bit-8bit"><a href="#3-2bit-8bit" class="headerlink" title="3. 2bit - 8bit"></a>3. 2bit - 8bit</h4><p>🌟 [DOREFA-NET] DoReFa-Net: Training Low Bitwidth Convolutional Neural Networks with Low Bitwidth Gradients</p>
+<p><img src="/Users/zhichaozhao/Documents/hexo-blog/source/_posts/神经网络量化与压缩综述/2.png" srcset="/img/loading.gif" alt></p>
+<h4 id="4-int8-量化"><a href="#4-int8-量化" class="headerlink" title="4. int8 量化"></a>4. int8 量化</h4><p>🌟 <strong>8-bit Inference with TensorRT  [Nvidia]</strong></p>
+<p>🌟 Quantizing deep convolutional networks for efficient inference: A whitepaper [Google]</p>
+<h4 id="2-量化"><a href="#2-量化" class="headerlink" title="(2) 量化"></a>(2) 量化</h4><p>首先说明，量化还有几个有意思的名称，定点化、离散化。</p>
+<p>​       <strong>低精度的量化：如2bit、4bit 的量化也是有一些进展的， 但是具体还需要结合硬件，这个之后再说， 现在比较成熟的解决方案是 8bit 量化。可以真实应用于实际场景中</strong>。</p>
+<p>1：对称量化算法</p>
+<p>对称算法就是指将待量化数据的绝对值的最大值映射到新数据范围内的最大值。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-005fcae44d9732a08c50958de2636d25_1440w.jpg" srcset="/img/loading.gif" alt="img"></p>
+<p>2：非对称量化算法</p>
+<p>非对称算法是指将待量化数据的最大值和最小值映射到新数据范围内的最大值最小值。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-376579c1f4b7e192b0592ae76a87d8f6_1440w.jpg" srcset="/img/loading.gif" alt="img"></p>
+<p><strong>量化最核心的内容是找到这个 scale。</strong></p>
+<p>​     将浮点数映射到低比特int， 从而减少模型的体积和计算量， 加快推理速度。目前，学术界主要讲量化分为两大类： Post Training Quantization 和 Quantization Aware Training。</p>
+<p>Quantization Aware Training 是在训练过程中对量化进行建模以确定量化参数。它可以提供更高的预测精度。</p>
+<p>Post Training Quantization： 使用 KL 散度， 滑动平均等方法确定量化参数且不需要重新训练的定点量化方法。</p>
+<p><img src="/2020/12/14/quantizing/4.png" srcset="/img/loading.gif" style="zoom:30%;"></p>
+<p>下面着重介绍训练后量化： 训练后量化是基于采样数据，采用KL散度等方法计算量化比例因子的方法。相比量化训练，训练后量化不需要重新训练，可以快速得到量化模型。</p>
+<p>​        训练后量化的目标是求取量化比例因子，主要有两种方法：</p>
 <ul>
-<li><strong>acc / loss</strong></li>
+<li><p>非饱和量化方法 ( No Saturation) ：计算FP32类型Tensor中绝对值的最大值<code>abs_max</code>，将其映射为127，则量化比例因子等于<code>abs_max/127</code>。 ———&gt;  <strong>这种方式被称作 minmax 量化方式， Tensorflow 主要采用， 精度还是很差的</strong>。</p>
+<p>主要流程如下：</p>
+<p>（1）统计出网络某一层的最大值与最小值：</p>
+<p><img src="https://www.zhihu.com/equation?tex=x_%7Bfloat%7D%5Cepsilon+%5Bx_%7Bfloat%7D%5E%7Bmax%7D%2Cx_%7Bfloat%7D%5E%7Bmin%7D%5D" srcset="/img/loading.gif" alt="[公式]"></p>
+<p>（2）计算scale与zero_point</p>
+<p><img src="https://www.zhihu.com/equation?tex=x_%7Bscale%7D%3D%5Cfrac%7Bx_%7Bfloat%7D%5E%7Bmax%7D-x_%7Bfloat%7D%5E%7Bmin%7D%7D%7Bx_%7Bquantized%7D%5E%7Bmax%7D-x_%7Bquantized%7D%5E%7Bmin%7D%7D" srcset="/img/loading.gif" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=x_%7Bzeropoint%7D%3Dx_%7Bquantized%7D%5E%7Bmax%7D-%5Cfrac%7Bx_%7Bfloat%7D%5E%7Bmax%7D%7D%7Bx_%7Bscale%7D%7D" srcset="/img/loading.gif" alt="[公式]"></p>
+<p>（3）通过以下公式计算出任意float32量化后的int8结果</p>
+<p><img src="https://www.zhihu.com/equation?tex=x_%7Bquantized%7D%3D%7B%5Cfrac%7Bx_%7Bfloat%7D%7D%7Bx_%7Bscale%7D%7D%7D%2Bx_%7Bzeropoint%7D" srcset="/img/loading.gif" alt="[公式]"></p>
+<p>由公式可以看出量化中的精度损失不可避免的，当浮点数的分布均匀时，精度损失较小。但当浮点数分布不均匀时，按照最大最小值映射，则实际有效的int8动态范围就更小了，精度损失变大。</p>
+</li>
+<li><p>饱和量化方法 (Saturation)： 使用KL散度计算一个合适的阈值<code>T</code> (<code>0&lt;T&lt;mab_max</code>)，将其映射为127，则量化比例因子等于<code>T/127</code>。一般而言，对于待量化op的权重Tensor，采用非饱和量化方法，对于待量化op的激活Tensor（包括输入和输出），采用饱和量化方法 。       ——&gt;   <strong>这种方法主要是 Tensor RT 在采用， 量化效果还是不错的</strong></p>
+</li>
 </ul>
-<pre><code class="hljs python"><span class="hljs-keyword">from</span> tensorboard <span class="hljs-keyword">import</span> SummaryWriter
-writer = SummaryWriter()
-<span class="hljs-keyword">for</span> n_iter <span class="hljs-keyword">in</span> range(<span class="hljs-number">100</span>):
-    dummy_s1 = torch.rand(<span class="hljs-number">1</span>)
-    writer.add_scalar(<span class="hljs-string">&#x27;data/scalar1&#x27;</span>, dummy_s1[<span class="hljs-number">0</span>], n_iter)
-writer.close()</code></pre>
-<ul>
-<li><strong>img</strong></li>
-</ul>
-<pre><code class="hljs python"><span class="hljs-keyword">from</span> tensorboard <span class="hljs-keyword">import</span> SummaryWriter
-<span class="hljs-keyword">import</span> torchvision.utils <span class="hljs-keyword">as</span> vutils
-writer = SummaryWriter()
-<span class="hljs-keyword">if</span> n_iter % <span class="hljs-number">10</span> == <span class="hljs-number">0</span>:
-    x = vutils.make_grid(dummy_img, normalize=<span class="hljs-literal">True</span>, scale_each=<span class="hljs-literal">True</span>)
-    writer.add_image(<span class="hljs-string">&#x27;Image&#x27;</span>, x, n_iter)
-writer.close()</code></pre>
-<ul>
-<li>在一张图中加入两条曲线</li>
-</ul>
-<pre><code class="hljs python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">100</span>):
-    writer.add_scalars(<span class="hljs-string">&#x27;run_14h&#x27;</span>, &#123;<span class="hljs-string">&#x27;xsinx&#x27;</span>:i*np.sin(i/r),
-                                    <span class="hljs-string">&#x27;xcosx&#x27;</span>:i*np.cos(i/r),
-                                    <span class="hljs-string">&#x27;tanx&#x27;</span>: np.tan(i/r)&#125;, i)</code></pre>
-<h3 id="7-Pytorch-加速"><a href="#7-Pytorch-加速" class="headerlink" title="7. Pytorch 加速"></a>7. Pytorch 加速</h3><p><strong>NVIDIA/DLAI:</strong> <a target="_blank" rel="noopener" href="https://github.com/NVIDIA/DALI">https://github.com/NVIDIA/DALI</a></p>
-<p><strong>Efficient-Pytorch:</strong> <a target="_blank" rel="noopener" href="https://github.com/Lyken17/Efficient-PyTorch">https://github.com/Lyken17/Efficient-PyTorch</a></p>
-<p><strong>NVIDIA/APEX:</strong> <a target="_blank" rel="noopener" href="https://github.com/nvidia/apex">https://github.com/nvidia/apex</a></p>
-<h3 id="8-性能分析工具"><a href="#8-性能分析工具" class="headerlink" title="8. 性能分析工具"></a>8. 性能分析工具</h3><ul>
-<li>nvidia-smi</li>
-<li>htop</li>
-<li>iotop</li>
-<li>nvtop</li>
-<li>py-spy</li>
-<li>strace</li>
-</ul>
-<h3 id="9-深度学习绘图"><a href="#9-深度学习绘图" class="headerlink" title="9. 深度学习绘图"></a>9. 深度学习绘图</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/dair-ai/ml-visuals"><strong>ML Visuals</strong></a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/HarisIqbal88/PlotNeuralNet"><strong>PlotNeuralNet</strong></a></li>
-</ul>
-<h3 id="10-其他辅助工具"><a href="#10-其他辅助工具" class="headerlink" title="10. 其他辅助工具"></a>10. 其他辅助工具</h3><ul>
-<li><strong>byobu</strong></li>
-<li><strong>screen</strong></li>
-</ul>
+<p>训练后量化的实现步骤如下:</p>
+<p>（1）读取样本数据，执行模型的前向推理， 保存激活 tensor 的数值。</p>
+<p>（2）基于激活 Tensor 的采样数据， 使用饱和量化方法计算出它的量化比例因子（用于量化输入和输出）</p>
+<p>（3）使用非饱和量化的方法计算每个通道的绝对值的最大值，作为每个通道的量化比例因子，对模型参数进行量化，将 fp32 模型转化成 int8模型进行保存。</p>
+<p> ADMM</p>
+<p>🌟 ACIQ</p>
+<p>🌟 easyquant</p>
+<p>​     若模型压缩之后，推理精度存在较大损失，可以通过fine-tuning予以恢复，并在训练过程中结合适当的Tricks，例如 Label Smoothing、Mix-up、Knowledge Distillation、Focal Loss等。 此外，模型压缩、优化加速策略可以联合使用，进而可获得更为极致的压缩比与加速比。</p>
+<h4 id="5-其他"><a href="#5-其他" class="headerlink" title="5. 其他"></a>5. 其他</h4><p>🌟 [INQ] Incremental Network Quantization: Towards Lossless CNNs with Low-precision Weights</p>
+<p>[CNNPack] Packing Convolutional Neural Networks in the Frequency Domain</p>
+<p>[HWGQ]  Deep Learning with Low Precision by Half-wave Gaussian Quantization</p>
+<p>[FFN] Fixed-point Factorized Networks</p>
+<p>[QNN] Quantized Neural Networks: Training Neural Networks with Low Precision Weights and Activations </p>
 
             </div>
             <hr>
@@ -306,7 +277,7 @@ writer.close()</code></pre>
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Pytorch/">Pytorch</a>
+                      <a class="hover-with-bg" href="/categories/DL-Deploy/">DL_Deploy</a>
                     
                   </div>
                 
@@ -320,18 +291,12 @@ writer.close()</code></pre>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2019/04/18/awesome-face/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">awesome-face</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2019/04/15/Face-recog-loss-fun/">
-                        <span class="hidden-mobile">人脸识别损失函数</span>
+                      <a href="/2020/12/14/%E6%B5%85%E8%B0%88DeepLearning%E8%90%BD%E5%9C%B0%E4%B8%8E%E5%B7%A5%E7%A8%8B%E9%83%A8%E7%BD%B2/">
+                        <span class="hidden-mobile">浅谈DeepLearning落地与工程部署</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -474,7 +439,7 @@ writer.close()</code></pre>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "pytorch常见工具箱&nbsp;",
+        "quantizing&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
