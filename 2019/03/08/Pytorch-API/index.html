@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.6k 字
+      4.7k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      74
+      75
        分钟
     </span>
   
@@ -458,7 +458,7 @@ cumsum/cumprd <span class="hljs-comment"># 累加/累乘</span></code></pre>
 <li>view 和 reshape 可以使用 -1 自动计算维度</li>
 <li>共享内存</li>
 </ul>
-<p>!!!  <code>view()</code> 操作是需要 Tensor 在内存中连续的， 这种情况下需要使用 <code>contiguous()</code> 操作先将内存变为连续。 对于reshape 操作， 可以看做是 <code>Tensor.contiguous().view()</code>.</p>
+<p>!!!  <code>view()</code> 操作是需要 Tensor 在内存中连续的， 这种情况下需要使用 <code>contiguous()</code> 操作先将内存变为连续。 对于reshape 操作， 可以看做是 <code>Tensor.contiguous().view()</code>.   🌟</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>a = torch.Tensor(<span class="hljs-number">2</span>,<span class="hljs-number">2</span>)
 <span class="hljs-meta">&gt;&gt;&gt; </span>a
 tensor([[<span class="hljs-number">6.0000e+00</span>, <span class="hljs-number">8.0000e+00</span>],
@@ -468,7 +468,7 @@ tensor([[<span class="hljs-number">6.0000e+00</span>],
         [<span class="hljs-number">8.0000e+00</span>],
         [<span class="hljs-number">1.0000e+00</span>],
         [<span class="hljs-number">1.8367e-40</span>]])</code></pre>
-<h5 id="transpose-permute-各维度之间的变换，"><a href="#transpose-permute-各维度之间的变换，" class="headerlink" title="transpose / permute  各维度之间的变换，"></a>transpose / permute  各维度之间的变换，</h5><p>transpose 可以将指定的两个维度的元素进行转置， permute 则可以按照指定的维度进行维度变换</p>
+<h5 id="transpose-permute-各维度之间的变换"><a href="#transpose-permute-各维度之间的变换" class="headerlink" title="transpose / permute  各维度之间的变换"></a>transpose / permute  各维度之间的变换</h5><p>transpose 可以将指定的两个维度的元素进行转置， permute 则可以按照指定的维度进行维度变换</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>x
 tensor([[[<span class="hljs-number">-0.9699</span>, <span class="hljs-number">-0.3375</span>, <span class="hljs-number">-0.0178</span>]],
         [[ <span class="hljs-number">1.4260</span>, <span class="hljs-number">-0.2305</span>, <span class="hljs-number">-0.2883</span>]]])
@@ -482,7 +482,7 @@ tensor([[[<span class="hljs-number">-0.9699</span>, <span class="hljs-number">-0
 tensor([[[<span class="hljs-number">-0.9699</span>, <span class="hljs-number">-0.3375</span>, <span class="hljs-number">-0.0178</span>],
          [ <span class="hljs-number">1.4260</span>, <span class="hljs-number">-0.2305</span>, <span class="hljs-number">-0.2883</span>]]])
 <span class="hljs-meta">&gt;&gt;&gt; </span></code></pre>
-<h5 id="squeeze-dim-unsquence-dim"><a href="#squeeze-dim-unsquence-dim" class="headerlink" title="squeeze(dim) / unsquence(dim)"></a>squeeze(dim) / unsquence(dim)</h5><p>处理size为1的维度， 前者用于去除size为1的维度， 而后者则是将指定的维度的size变为1</p>
+<h5 id="squeeze-dim-unsquence-dim-🌟"><a href="#squeeze-dim-unsquence-dim-🌟" class="headerlink" title="squeeze(dim) / unsquence(dim)   🌟"></a>squeeze(dim) / unsquence(dim)   🌟</h5><p>处理 size 为 1 的维度， 前者用于去除 size 为 1 的维度， 而后者则是将指定的维度的size变为1</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>a = torch.arange(<span class="hljs-number">1</span>, <span class="hljs-number">4</span>)
 <span class="hljs-meta">&gt;&gt;&gt; </span>a
 tensor([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]) <span class="hljs-comment"># shape =&gt; torch.Size([3])</span>
@@ -515,7 +515,7 @@ tensor([[[<span class="hljs-number">0.3094</span>],
          [<span class="hljs-number">0.8652</span>],
          [<span class="hljs-number">0.0950</span>],
          [<span class="hljs-number">0.8652</span>]]])</code></pre>
-<h5 id="使用切片操作扩展多个维度"><a href="#使用切片操作扩展多个维度" class="headerlink" title="使用切片操作扩展多个维度"></a>使用切片操作扩展多个维度</h5><pre><code class="hljs fortran">b = a[:,<span class="hljs-keyword">None</span>, <span class="hljs-keyword">None</span>,:] # <span class="hljs-keyword">None</span> 处的维度为１</code></pre>
+<h5 id="使用切片操作扩展多个维度-🌟"><a href="#使用切片操作扩展多个维度-🌟" class="headerlink" title="使用切片操作扩展多个维度 🌟"></a>使用切片操作扩展多个维度 🌟</h5><pre><code class="hljs fortran">b = a[:,<span class="hljs-keyword">None</span>, <span class="hljs-keyword">None</span>,:] # <span class="hljs-keyword">None</span> 处的维度为１</code></pre>
 <h3 id="7-组合与分块"><a href="#7-组合与分块" class="headerlink" title="7. 组合与分块"></a>7. 组合与分块</h3><p><strong>组合操作</strong> 是将不同的 Tensor 叠加起来。 主要有 <code>cat()</code> 和 <code>torch.stack()</code> 两个函数，cat 即 concatenate 的意思， 是指沿着已有的数据的某一维度进行拼接， 操作后的数据的总维数不变， 在进行拼接时， 除了拼接的维度之外， 其他维度必须相同。 而<code>torch. stack()</code> 函数会新增一个维度， 并按照指定的维度进行叠加。</p>
 <pre><code class="hljs shell">torch.cat(list_of_tensors, dim=0)　  # k 个 (m,n) -&gt; (k*m, n)
 torch.stack(list_of_tensors, dim=0)   # k 个 (m,n) -&gt; (k*m*n)</code></pre>
@@ -534,7 +534,9 @@ torch.stack(list_of_tensors, dim=0)   # k 个 (m,n) -&gt; (k*m*n)</code></pre>
 (tensor([[<span class="hljs-number">1.</span>],
         [<span class="hljs-number">4.</span>]]), tensor([[<span class="hljs-number">2.</span>, <span class="hljs-number">3.</span>],
         [<span class="hljs-number">5.</span>, <span class="hljs-number">6.</span>]]))</code></pre>
-<h3 id="8-linear-algebra"><a href="#8-linear-algebra" class="headerlink" title="8. linear algebra"></a>8. linear algebra</h3><pre><code class="hljs python">trace  <span class="hljs-comment"># 对角线元素之和(矩阵的迹)</span>
+<h3 id="8-聚合-与-分散"><a href="#8-聚合-与-分散" class="headerlink" title="8.  聚合 与 分散"></a>8.  聚合 与 分散</h3><pre><code class="hljs python">torch.gather(input, dim, index, out=<span class="hljs-literal">None</span>)  <span class="hljs-comment"># 根据 index 和 dim, 寻找 input 对应的索引位置, 得到 output</span>
+Tensor.scatter_(dim, index, src)   <span class="hljs-comment"># 根据 dim 和 index, 将 src 指定位置上的值， 分配给 output 对应索引位置。</span></code></pre>
+<h3 id="9-linear-algebra"><a href="#9-linear-algebra" class="headerlink" title="9. linear algebra"></a>9. linear algebra</h3><pre><code class="hljs python">trace  <span class="hljs-comment"># 对角线元素之和(矩阵的迹)</span>
 diag  <span class="hljs-comment"># 对角线元素</span>
 triu/tril  <span class="hljs-comment"># 矩阵的上三角/下三角</span>
 addmm/addbmm/addmv/addr/badbmm...  <span class="hljs-comment"># 矩阵运算</span>
@@ -547,7 +549,7 @@ torch.mm(tensor1, tensor2)   <span class="hljs-comment"># 矩阵乘法  (m*n) * 
 torch.bmm(tensor1, tensor2) <span class="hljs-comment"># batch的矩阵乘法: (b*m*n) * (b*n*p) -&gt; (b*m*p).</span>
 torch.mv(tensor, vec) <span class="hljs-comment">#　矩阵向量乘法 (m*n) * (n) = (m)</span>
 tensor1 * tensor2 <span class="hljs-comment"># Element-wise multiplication.</span></code></pre>
-<h3 id="9-基本机制"><a href="#9-基本机制" class="headerlink" title="9. 基本机制"></a>9. 基本机制</h3><h5 id="广播机制"><a href="#广播机制" class="headerlink" title="广播机制"></a>广播机制</h5><p>不同形状的 Tensor 进行计算时， 可以自动扩展到较大的相同形状再进行计算。 广播机制的前提是一个 Tensor  至少有一个维度，且从尾部遍历 Tensor 时，两者维度必须相等， 其中七个要么是1， 要么不存在</p>
+<h3 id="10-基本机制"><a href="#10-基本机制" class="headerlink" title="10. 基本机制"></a>10. 基本机制</h3><h5 id="广播机制"><a href="#广播机制" class="headerlink" title="广播机制"></a>广播机制</h5><p>不同形状的 Tensor 进行计算时， 可以自动扩展到较大的相同形状再进行计算。 广播机制的前提是一个 Tensor  至少有一个维度，且从尾部遍历 Tensor 时，两者维度必须相等， 其中七个要么是1， 要么不存在</p>
 <h5 id="向量化操作"><a href="#向量化操作" class="headerlink" title="向量化操作"></a>向量化操作</h5><p>可以在同一时间进行批量地并行计算，例如矩阵运算，以达到更高的计算效率的一种方式:</p>
 <h5 id="共享内存机制"><a href="#共享内存机制" class="headerlink" title="共享内存机制"></a>共享内存机制</h5><p>(1) 直接通过 Tensor 来初始化另一个 Tensor， 或者通过 Tensor 的组合、分块、索引、变形来初始化另一个Tensor， 则这两个 Tensor 共享内存:</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>a = torch.randn(<span class="hljs-number">2</span>,<span class="hljs-number">3</span>)
@@ -570,7 +572,7 @@ tensor([[ <span class="hljs-number">0.0000</span>,  <span class="hljs-number">0.
 b = a.numpy() # tensor -&gt; numpy
 a = torch.from_numpy(a) # numpy -&gt; tensor</code></pre>
 <p>!!! 需要注意的是，<code>torch.tensor()</code> 总是会进行数据拷贝，新 tensor 和原来的数据不再共享内存。所以如果你想共享内存的话，建议使用 <code>torch.from_numpy()</code> 或者 <code>tensor.detach()</code> 来新建一个 tensor, 二者共享内存。</p>
-<h3 id="10-nn"><a href="#10-nn" class="headerlink" title="10. nn"></a>10. nn</h3><pre><code class="hljs python"><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> nn
+<h3 id="11-nn"><a href="#11-nn" class="headerlink" title="11. nn"></a>11. nn</h3><pre><code class="hljs python"><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> nn
 <span class="hljs-keyword">import</span> torch.nn.functional <span class="hljs-keyword">as</span> F</code></pre>
 <h5 id="pad-填充"><a href="#pad-填充" class="headerlink" title="pad 填充"></a>pad 填充</h5><pre><code class="hljs python">nn.ConstantPad2d(padding, value)</code></pre>
 <h5 id="卷积和反卷积"><a href="#卷积和反卷积" class="headerlink" title="卷积和反卷积"></a>卷积和反卷积</h5><pre><code class="hljs python">nn.Conv2d(in_channels, out_channels, kernel_size, stride=<span class="hljs-number">1</span>, padding=<span class="hljs-number">0</span>, dilation=<span class="hljs-number">1</span>, groups=<span class="hljs-number">1</span>, bias=<span class="hljs-literal">True</span>)
@@ -615,7 +617,7 @@ nn.SmoothL1Loss(size_average=<span class="hljs-literal">True</span>, reduce=<spa
 nn.SoftMarginLoss(size_average=<span class="hljs-literal">True</span>, reduce=<span class="hljs-literal">True</span>)
 nn.TripletMarginLoss(margin=<span class="hljs-number">1.0</span>, p=<span class="hljs-number">2</span>, eps=<span class="hljs-number">1e-06</span>, swap=<span class="hljs-literal">False</span>, size_average=<span class="hljs-literal">True</span>, reduce=<span class="hljs-literal">True</span>)
 nn.CosineEmbeddingLoss(margin=<span class="hljs-number">0</span>, size_average=<span class="hljs-literal">True</span>, reduce=<span class="hljs-literal">True</span>)</code></pre>
-<h5 id="functional"><a href="#functional" class="headerlink" title="functional"></a>functional</h5><pre><code class="hljs python">nn.functional <span class="hljs-comment"># nn中的大多数layer，在functional中都有一个与之相对应的函数。</span>
+<h5 id="functional-🌟"><a href="#functional-🌟" class="headerlink" title="functional    🌟"></a>functional    🌟</h5><pre><code class="hljs python">nn.functional <span class="hljs-comment"># nn中的大多数layer，在functional中都有一个与之相对应的函数。</span>
               <span class="hljs-comment"># nn.functional中的函数和nn.Module的主要区别在于，</span>
               <span class="hljs-comment"># 用nn.Module实现的layers是一个特殊的类，都是由 class layer(nn.Module)定义，</span>
               <span class="hljs-comment"># 会自动提取可学习的参数。而nn.functional中的函数更像是纯函数，</span>
@@ -640,7 +642,7 @@ net.parameters()   <span class="hljs-comment"># 获取参数 </span>
 net.named_parameters  <span class="hljs-comment"># 获取参数及名称</span>
 net.zero_grad()  <span class="hljs-comment"># 网络所有梯度清零, grad 在反向传播过程中是累加的(accumulated)，</span>
                  <span class="hljs-comment"># 这意味着每一次运行反向传播，梯度都会累加之前的梯度，所以反向传播之前需把梯度清零。</span></code></pre>
-<h3 id="11-optim-gt-form-torch-import-optim"><a href="#11-optim-gt-form-torch-import-optim" class="headerlink" title="11. optim -&gt; form torch import optim"></a>11. optim -&gt; form torch import optim</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch.optim <span class="hljs-keyword">as</span> optim
+<h3 id="12-optim-gt-form-torch-import-optim"><a href="#12-optim-gt-form-torch-import-optim" class="headerlink" title="12. optim -&gt; form torch import optim"></a>12. optim -&gt; form torch import optim</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch.optim <span class="hljs-keyword">as</span> optim
 
 optim.SGD(params, lr=<span class="hljs-number">0.01</span>, momentum=<span class="hljs-number">0</span>, dampening=<span class="hljs-number">0</span>, weight_decay=<span class="hljs-number">0</span>, nesterov=<span class="hljs-literal">False</span>)
 optim.ASGD(params, lr=<span class="hljs-number">0.01</span>, lambd=<span class="hljs-number">0.0001</span>, alpha=<span class="hljs-number">0.75</span>, t0=<span class="hljs-number">1000000.0</span>, weight_decay=<span class="hljs-number">0</span>)
@@ -656,7 +658,7 @@ optim.Optimizer(params, defaults)
 
 optimizer.zero_grad()  <span class="hljs-comment"># 等价于 net.zero_grad() </span>
 optimizer.step()</code></pre>
-<h3 id="12-learning-rate"><a href="#12-learning-rate" class="headerlink" title="12.  learning rate"></a>12.  learning rate</h3><pre><code class="hljs python"><span class="hljs-comment"># Reduce learning rate when validation accuarcy plateau.</span>
+<h3 id="13-learning-rate"><a href="#13-learning-rate" class="headerlink" title="13.  learning rate"></a>13.  learning rate</h3><pre><code class="hljs python"><span class="hljs-comment"># Reduce learning rate when validation accuarcy plateau.</span>
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode=<span class="hljs-string">&#x27;max&#x27;</span>, patience=<span class="hljs-number">5</span>, verbose=<span class="hljs-literal">True</span>)
 <span class="hljs-comment"># Cosine annealing learning rate.</span>
 scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=<span class="hljs-number">80</span>)
@@ -668,7 +670,7 @@ scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=<span class="
 <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>):
     scheduler.step()
     train(...); val(...)</code></pre>
-<h3 id="12-save-and-load-model"><a href="#12-save-and-load-model" class="headerlink" title="12. save and load model"></a>12. save and load model</h3><pre><code class="hljs python">torch.save(model.state_dict(), <span class="hljs-string">&#x27;xxxx_params.pth&#x27;</span>)
+<h3 id="14-save-and-load-model"><a href="#14-save-and-load-model" class="headerlink" title="14. save and load model"></a>14. save and load model</h3><pre><code class="hljs python">torch.save(model.state_dict(), <span class="hljs-string">&#x27;xxxx_params.pth&#x27;</span>)
 model.load_state_dict(t.load(<span class="hljs-string">&#x27;xxxx_params.pth&#x27;</span>))
 
 torch.save(model, <span class="hljs-string">&#x27;xxxx.pth&#x27;</span>)
@@ -683,7 +685,7 @@ all_data = dict(
 t.save(all_data, <span class="hljs-string">&#x27;xxx.pth&#x27;</span>)
 all_data = t.load(<span class="hljs-string">&#x27;xxx.pth&#x27;</span>)
 all_data.keys()</code></pre>
-<h3 id="13-torchvision"><a href="#13-torchvision" class="headerlink" title="13. torchvision"></a>13. torchvision</h3><h5 id="models"><a href="#models" class="headerlink" title="models"></a>models</h5><pre><code class="hljs python"><span class="hljs-keyword">from</span> torchvision <span class="hljs-keyword">import</span> models
+<h3 id="15-torchvision"><a href="#15-torchvision" class="headerlink" title="15. torchvision"></a>15. torchvision</h3><h5 id="models"><a href="#models" class="headerlink" title="models"></a>models</h5><pre><code class="hljs python"><span class="hljs-keyword">from</span> torchvision <span class="hljs-keyword">import</span> models
 resnet34 = models.resnet34(pretrained=<span class="hljs-literal">True</span>, num_classes=<span class="hljs-number">1000</span>)</code></pre>
 <h5 id="data-augmentation"><a href="#data-augmentation" class="headerlink" title="data augmentation"></a>data augmentation</h5><pre><code class="hljs python"><span class="hljs-keyword">from</span> torchvision <span class="hljs-keyword">import</span> transforms
 
@@ -700,10 +702,10 @@ resnet34 = models.resnet34(pretrained=<span class="hljs-literal">True</span>, nu
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">my_data</span>(<span class="hljs-params">Dataset</span>):</span>
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, image_path, annotation_path, transform=None</span>):</span>
-        <span class="hljs-comment"># 初始化， 读取数据集</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__len__</span>(<span class="hljs-params">self</span>):</span>
-        <span class="hljs-comment"># 获取数据集的总大小</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__getitem__</span>(<span class="hljs-params">self, id</span>):</span>
+        <span class="hljs-comment"># 初始化， 读取数据集  🌟</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__len__</span>(<span class="hljs-params">self</span>):</span>  
+        <span class="hljs-comment"># 获取数据集的总大小  🌟</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__getitem__</span>(<span class="hljs-params">self, id</span>):</span>  🌟
         <span class="hljs-comment"># 对于制定的 id, 读取该数据并返回    </span></code></pre>
 <p><strong>datasets</strong></p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> torch.utils.data <span class="hljs-keyword">import</span> Dataset, Dataloader
@@ -725,7 +727,7 @@ show = ToPILImage()  <span class="hljs-comment"># 可以把Tensor转成Image，�
 
 (data, label) = trainset[<span class="hljs-number">100</span>]
 show((data + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>).resize((<span class="hljs-number">100</span>, <span class="hljs-number">100</span>))  <span class="hljs-comment"># 应该会自动乘以 255 的</span></code></pre>
-<h3 id="14-Code-Samples"><a href="#14-Code-Samples" class="headerlink" title="14. Code Samples"></a>14. Code Samples</h3><pre><code class="hljs python"><span class="hljs-comment"># torch.device object used throughout this script</span>
+<h3 id="16-Code-Samples"><a href="#16-Code-Samples" class="headerlink" title="16. Code Samples"></a>16. Code Samples</h3><pre><code class="hljs python"><span class="hljs-comment"># torch.device object used throughout this script</span>
 device = torch.device(<span class="hljs-string">&quot;cuda&quot;</span> <span class="hljs-keyword">if</span> use_cuda <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;cpu&quot;</span>)
 
 model = MyRNN().to(device)
@@ -742,7 +744,7 @@ total_loss = <span class="hljs-number">0</span>
 <span class="hljs-keyword">with</span> torch.no_grad():                   <span class="hljs-comment"># operations inside don&#x27;t track history</span>
     <span class="hljs-keyword">for</span> input, target <span class="hljs-keyword">in</span> test_loader:
         ...</code></pre>
-<h3 id="15-jit-amp-torchscript"><a href="#15-jit-amp-torchscript" class="headerlink" title="15. jit &amp; torchscript"></a>15. jit &amp; torchscript</h3><pre><code class="hljs python"><span class="hljs-keyword">from</span> torch.jit <span class="hljs-keyword">import</span> script, trace
+<h3 id="17-jit-amp-torchscript"><a href="#17-jit-amp-torchscript" class="headerlink" title="17. jit &amp; torchscript"></a>17. jit &amp; torchscript</h3><pre><code class="hljs python"><span class="hljs-keyword">from</span> torch.jit <span class="hljs-keyword">import</span> script, trace
 torch.jit.trace(model, torch.rand(<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">224</span>,<span class="hljs-number">224</span>)) 　<span class="hljs-comment"># export model</span>
 <span class="hljs-meta">@torch.jit.script</span></code></pre>
 <pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;torch/torch.h&gt;</span></span>
@@ -757,13 +759,13 @@ img_tensor = img_tensor.div(<span class="hljs-number">255</span>);
 <span class="hljs-built_in">std</span>::<span class="hljs-built_in">shared_ptr</span>&lt;torch::jit::script::Module&gt; <span class="hljs-keyword">module</span> = torch::jit::load(<span class="hljs-string">&quot;resnet.pt&quot;</span>);
 <span class="hljs-meta"># forward</span>
 torch::Tensor output = <span class="hljs-keyword">module</span>-&gt;forward(&#123;img_tensor&#125;).toTensor();</code></pre>
-<h3 id="16-onnx"><a href="#16-onnx" class="headerlink" title="16. onnx"></a>16. onnx</h3><pre><code class="hljs python">torch.onnx.export(model, dummy data, xxxx.proto) <span class="hljs-comment"># exports an ONNX formatted</span>
+<h3 id="18-onnx"><a href="#18-onnx" class="headerlink" title="18. onnx"></a>18. onnx</h3><pre><code class="hljs python">torch.onnx.export(model, dummy data, xxxx.proto) <span class="hljs-comment"># exports an ONNX formatted</span>
 
 model = onnx.load(<span class="hljs-string">&quot;alexnet.proto&quot;</span>)               <span class="hljs-comment"># load an ONNX model</span>
 onnx.checker.check_model(model)                  <span class="hljs-comment"># check that the model</span>
 
 onnx.helper.printable_graph(model.graph)         <span class="hljs-comment"># print a human readable　representation of the graph</span></code></pre>
-<h3 id="17-Distributed-Training"><a href="#17-Distributed-Training" class="headerlink" title="17. Distributed Training"></a>17. Distributed Training</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch.distributed <span class="hljs-keyword">as</span> dist          <span class="hljs-comment"># distributed communication</span>
+<h3 id="19-Distributed-Training"><a href="#19-Distributed-Training" class="headerlink" title="19. Distributed Training"></a>19. Distributed Training</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch.distributed <span class="hljs-keyword">as</span> dist          <span class="hljs-comment"># distributed communication</span>
 <span class="hljs-keyword">from</span> multiprocessing <span class="hljs-keyword">import</span> Process       <span class="hljs-comment"># memory sharing processes</span></code></pre>
 
             </div>

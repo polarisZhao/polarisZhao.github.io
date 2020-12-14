@@ -220,7 +220,7 @@
 <li>训练、调试和测评</li>
 <li>模型的部署</li>
 </ol>
-<p>注意，不要将所有层和模型放在同一个文件中。最佳做法是将最终网络分离为单独的文件（networks.py），并将层、损耗和 ops 保存在各自的文件（layers.py、losses.py、ops.py）中。完成的模型（由一个或多个网络组成）应在一个文件中引用，文件名为 yolov3.py、dcgan.py 这样。</p>
+<p>注意，不要将所有层和模型放在同一个文件中。最佳做法是将最终网络分离为单独的文件（networks.py），并将layers 、loss 和 ops 保存在各自的文件（layers.py、losses.py、ops.py）中。完成的模型（由一个或多个网络组成）应在一个文件中引用，文件名为 yolov3.py、dcgan.py 这样。</p>
 <h5 id="1-构建神经网络"><a href="#1-构建神经网络" class="headerlink" title="(1) 构建神经网络"></a>(1) 构建神经网络</h5><p>​    自定义的网络继承自一般继承自　<code>nn.Module</code> 类，　必须有一个 <code>forward</code> 方法来实现各个层或操作的 forward 传递，　</p>
 <p>对于具有<strong>单个输入</strong>和<strong>单个输出</strong>的简单网络，请使用以下模式：</p>
 <pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConvBlock</span>(<span class="hljs-params">nn.Module</span>):</span>

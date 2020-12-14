@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      22.4k 字
+      22.5k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      384
+      385
        分钟
     </span>
   
@@ -729,8 +729,14 @@ n &amp; <span class="hljs-number">1</span> &lt;&lt; bit   <span class="hljs-comm
 <h3 id="3-链表"><a href="#3-链表" class="headerlink" title="3. 链表"></a>3. 链表</h3><p><img src="/2020/09/13/leetcode/linklist.png" srcset="/img/loading.gif" alt></p>
 <h4 id="1-常用技巧总结"><a href="#1-常用技巧总结" class="headerlink" title="(1) 常用技巧总结"></a>(1) 常用技巧总结</h4><ul>
 <li><p>添加哑节点</p>
-<pre><code class="hljs haxe">ListNode * <span class="hljs-keyword">new</span><span class="hljs-type">head</span> = <span class="hljs-keyword">new</span> <span class="hljs-type">ListNode</span>(<span class="hljs-number">0</span>);
-<span class="hljs-keyword">new</span><span class="hljs-type">head</span> -&gt; next = head;</code></pre>
+<pre><code class="hljs c++"><span class="hljs-comment">// 建立</span>
+ListNode * dummy = <span class="hljs-keyword">new</span> ListNode(<span class="hljs-number">0</span>);
+dummy -&gt; next = head;
+
+<span class="hljs-comment">// 释放:</span>
+ListNode * res = dummy -&gt; next;
+<span class="hljs-keyword">delete</span> dummy;
+<span class="hljs-keyword">return</span> res;</code></pre>
 </li>
 <li><p>头指针一般不可以随意改变， 可以申请一个指向头指针的指针</p>
 <pre><code class="hljs abnf">ListNode * p = head<span class="hljs-comment">;</span></code></pre>
@@ -746,41 +752,40 @@ n &amp; <span class="hljs-number">1</span> &lt;&lt; bit   <span class="hljs-comm
 </ul>
 <h4 id="2-典型例题-2"><a href="#2-典型例题-2" class="headerlink" title="(2) 典型例题"></a>(2) 典型例题</h4><h5 id="①-性质判定"><a href="#①-性质判定" class="headerlink" title="① 性质判定"></a>① 性质判定</h5><h6 id="141-https-leetcode-com-problems-linked-list-cycle"><a href="#141-https-leetcode-com-problems-linked-list-cycle" class="headerlink" title="[141] https://leetcode.com/problems/linked-list-cycle/"></a>[141] <a target="_blank" rel="noopener" href="https://leetcode.com/problems/linked-list-cycle/">https://leetcode.com/problems/linked-list-cycle/</a></h6><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">hasCycle</span><span class="hljs-params">(ListNode *head)</span> </span>&#123;
     <span class="hljs-keyword">if</span>(head == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-    ListNode * fast = head -&gt; next;
-    ListNode * slow = head;
-    <span class="hljs-keyword">while</span>(fast != <span class="hljs-literal">NULL</span> &amp;&amp; fast -&gt; next != <span class="hljs-literal">NULL</span>)&#123;
-        <span class="hljs-keyword">if</span>(fast == slow) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-        fast = fast -&gt; next -&gt; next;
+
+    ListNode * slow = head;  <span class="hljs-comment">// (1) 两个节点初始时候均指向 head</span>
+    ListNode * fast = head;
+    <span class="hljs-keyword">while</span>(fast &amp;&amp; fast -&gt; next)&#123;
+        <span class="hljs-comment">// (2) 先移动， 再判断</span>
         slow = slow -&gt; next;
+        fast = fast -&gt; next -&gt; next;
+        <span class="hljs-keyword">if</span>(slow == fast) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     &#125;
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 &#125;</code></pre>
 <h6 id="142-https-leetcode-cn-com-problems-linked-list-cycle-ii-🌟🌟"><a href="#142-https-leetcode-cn-com-problems-linked-list-cycle-ii-🌟🌟" class="headerlink" title="[142] https://leetcode-cn.com/problems/linked-list-cycle-ii/    🌟🌟"></a>[142] <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/linked-list-cycle-ii/">https://leetcode-cn.com/problems/linked-list-cycle-ii/</a>    🌟🌟</h6><pre><code class="hljs cpp"><span class="hljs-function">ListNode *<span class="hljs-title">detectCycle</span><span class="hljs-params">(ListNode *head)</span> </span>&#123;
-    <span class="hljs-keyword">if</span>(head == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> head;
+    <span class="hljs-keyword">if</span>(head == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
 
-    ListNode * slow = head;
-    ListNode * fast = head; <span class="hljs-comment">// fast 等于 head </span>
+    ListNode * slow = head; 
+    ListNode * fast = head;
 
-    <span class="hljs-keyword">bool</span> hasCycle = <span class="hljs-literal">false</span>;
     <span class="hljs-keyword">while</span>(fast &amp;&amp; fast -&gt; next)&#123;
-        <span class="hljs-comment">// 先移动指针，再判断</span>
+        slow = slow -&gt; next;
         fast = fast -&gt; next -&gt; next;
-        slow = slow -&gt; next;
-        <span class="hljs-keyword">if</span>(fast == slow)&#123;
-            hasCycle = <span class="hljs-literal">true</span>;
-            <span class="hljs-keyword">break</span>;
-        &#125; 
+        <span class="hljs-keyword">if</span>(fast == slow) <span class="hljs-keyword">break</span>;
     &#125;
+
+    <span class="hljs-keyword">if</span>(fast == <span class="hljs-literal">NULL</span> || fast -&gt; next == <span class="hljs-literal">NULL</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
   
-    <span class="hljs-comment">// 一个指针从相遇节点开始， 另一个指针从头开始，两者如果相遇</span>
+    <span class="hljs-comment">// (3) 一个指针从相遇节点开始， 另一个指针从头开始，两者如果相遇</span>
     <span class="hljs-comment">// 则该节点即为入环节点</span>
-    <span class="hljs-keyword">if</span>(!hasCycle) <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
     slow = head;
-    <span class="hljs-keyword">while</span>(fast != slow)&#123;
-        fast = fast -&gt; next;
+    <span class="hljs-keyword">while</span>(slow != fast)&#123;
         slow = slow -&gt; next;
+        fast = fast -&gt; next;
     &#125;
-    <span class="hljs-keyword">return</span> fast;    
+    <span class="hljs-keyword">return</span> fast;  
 &#125;</code></pre>
 <h6 id="234-https-leetcode-cn-com-problems-palindrome-linked-list"><a href="#234-https-leetcode-cn-com-problems-palindrome-linked-list" class="headerlink" title="[234] https://leetcode-cn.com/problems/palindrome-linked-list/"></a>[234] <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/palindrome-linked-list/">https://leetcode-cn.com/problems/palindrome-linked-list/</a></h6><pre><code class="hljs cpp"><span class="hljs-function">ListNode * <span class="hljs-title">reverseLinkList</span><span class="hljs-params">(ListNode * head)</span></span>&#123;
     <span class="hljs-keyword">if</span>(head == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> head;
@@ -796,7 +801,8 @@ n &amp; <span class="hljs-number">1</span> &lt;&lt; bit   <span class="hljs-comm
 &#125;
 
 <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isPalindrome</span><span class="hljs-params">(ListNode* head)</span> </span>&#123;
-    ListNode * p = head; <span class="hljs-comment">// 找到中间节点</span>
+    <span class="hljs-comment">// (1) 找到中间节点</span>
+    ListNode * p = head; 
     <span class="hljs-keyword">int</span> cnt = <span class="hljs-number">0</span>;
     <span class="hljs-keyword">while</span>(p)&#123;
         cnt += <span class="hljs-number">1</span>;
@@ -805,9 +811,11 @@ n &amp; <span class="hljs-number">1</span> &lt;&lt; bit   <span class="hljs-comm
     cnt /= <span class="hljs-number">2</span>;
     p = head;
     <span class="hljs-keyword">while</span>(cnt--)  p = p -&gt; next;     
-    ListNode * q = reverseLinkList(p); <span class="hljs-comment">// 翻转后半部分</span>
+    <span class="hljs-comment">// (2) 翻转后半部分</span>
+    ListNode * q = reverseLinkList(p); 
   
-    <span class="hljs-keyword">while</span>(q &amp;&amp; head)&#123; <span class="hljs-comment">// 判断是否相等</span>
+    <span class="hljs-comment">// (3) 判断是否相等</span>
+    <span class="hljs-keyword">while</span>(q &amp;&amp; head)&#123; 
         <span class="hljs-keyword">if</span>(head -&gt; val != q -&gt; val) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         q = q -&gt; next;
         head = head -&gt; next;
@@ -815,12 +823,13 @@ n &amp; <span class="hljs-number">1</span> &lt;&lt; bit   <span class="hljs-comm
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 &#125;</code></pre>
 <h5 id="②获取指定节点"><a href="#②获取指定节点" class="headerlink" title="②获取指定节点"></a>②获取指定节点</h5><h6 id="19-https-leetcode-com-problems-remove-nth-node-from-end-of-list-🌟🌟"><a href="#19-https-leetcode-com-problems-remove-nth-node-from-end-of-list-🌟🌟" class="headerlink" title="[19] https://leetcode.com/problems/remove-nth-node-from-end-of-list/     🌟🌟"></a>[19] <a target="_blank" rel="noopener" href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/">https://leetcode.com/problems/remove-nth-node-from-end-of-list/</a>     🌟🌟</h6><pre><code class="hljs cpp"><span class="hljs-function">ListNode* <span class="hljs-title">removeNthFromEnd</span><span class="hljs-params">(ListNode* head, <span class="hljs-keyword">int</span> n)</span> </span>&#123;
-    ListNode * newhead = <span class="hljs-keyword">new</span> ListNode(<span class="hljs-number">0</span>);
-    newhead -&gt; next = head;
-    ListNode * fast = newhead;
-    ListNode * slow = newhead;
+    ListNode * dummy = <span class="hljs-keyword">new</span> ListNode(<span class="hljs-number">0</span>);
+    dummy -&gt; next = head;
+    ListNode * fast = dummy;
+    ListNode * slow = dummy;
 
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n+<span class="hljs-number">1</span>; i++)&#123;
+    <span class="hljs-comment">// (1) fast 多走一步, slow 少走一步</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n+<span class="hljs-number">1</span>; i++)&#123; 
         fast = fast -&gt; next;    
     &#125;
 
@@ -829,35 +838,48 @@ n &amp; <span class="hljs-number">1</span> &lt;&lt; bit   <span class="hljs-comm
         slow = slow -&gt; next;
     &#125;
 
+    <span class="hljs-comment">// (2) 释放删除节点</span>
+    ListNode * del = slow -&gt; next;
     slow -&gt; next = slow -&gt; next -&gt; next;
+    <span class="hljs-keyword">delete</span> del;
 
-    <span class="hljs-keyword">return</span> newhead -&gt; next;
+    <span class="hljs-comment">// (3) 释放申请的 ListNode</span>
+    ListNode * res = dummy -&gt; next;
+    <span class="hljs-keyword">delete</span> dummy;
+
+    <span class="hljs-keyword">return</span> res;
 &#125;</code></pre>
-<h6 id="160-https-leetcode-cn-com-problems-intersection-of-two-linked-lists-🌟🌟"><a href="#160-https-leetcode-cn-com-problems-intersection-of-two-linked-lists-🌟🌟" class="headerlink" title="[160] https://leetcode-cn.com/problems/intersection-of-two-linked-lists/    🌟🌟"></a>[160] <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists/">https://leetcode-cn.com/problems/intersection-of-two-linked-lists/</a>    🌟🌟</h6><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getLinkedListLength</span><span class="hljs-params">(ListNode *head)</span></span>&#123;
+<h6 id="160-https-leetcode-cn-com-problems-intersection-of-two-linked-lists-🌟🌟"><a href="#160-https-leetcode-cn-com-problems-intersection-of-two-linked-lists-🌟🌟" class="headerlink" title="[160] https://leetcode-cn.com/problems/intersection-of-two-linked-lists/    🌟🌟"></a>[160] <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists/">https://leetcode-cn.com/problems/intersection-of-two-linked-lists/</a>    🌟🌟</h6><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getLengh</span><span class="hljs-params">(ListNode * head)</span></span>&#123;
+    ListNode * cur = head;
     <span class="hljs-keyword">int</span> cnt = <span class="hljs-number">0</span>;
-    ListNode * p = head;
-    <span class="hljs-keyword">while</span>(p)&#123;
-        p = p -&gt; next;
-        cnt++;
+    <span class="hljs-keyword">while</span>(cur)&#123;
+        cnt += <span class="hljs-number">1</span>;
+        cur = cur -&gt; next;
     &#125;
     <span class="hljs-keyword">return</span> cnt;
 &#125;
 
 <span class="hljs-function">ListNode *<span class="hljs-title">getIntersectionNode</span><span class="hljs-params">(ListNode *headA, ListNode *headB)</span> </span>&#123;
-    <span class="hljs-keyword">int</span> length_A = getLinkedListLength(headA);
-    <span class="hljs-keyword">int</span> length_B = getLinkedListLength(headB);
+    <span class="hljs-keyword">int</span> lenA = getLengh(headA);
+    <span class="hljs-keyword">int</span> lenB = getLengh(headB);
+    <span class="hljs-keyword">int</span> diff = <span class="hljs-built_in">abs</span>(lenB - lenA);
 
-    <span class="hljs-keyword">int</span> diff = <span class="hljs-built_in">abs</span>(length_A - length_B);
-    <span class="hljs-keyword">if</span>(length_A &gt; length_B) 
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; diff; i++)  headA = headA -&gt; next;
-    <span class="hljs-keyword">else</span>
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;  i &lt; diff; i++)  headB = headB -&gt; next;
+    ListNode * pA = headA;
+    ListNode * pB = headB;
 
-    <span class="hljs-keyword">while</span>(headA != headB)&#123;
-        headA  = headA -&gt; next;
-        headB = headB -&gt; next;
+    <span class="hljs-keyword">if</span>(lenA &gt; lenB)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; diff; i++)  pA = pA -&gt; next;
+    &#125;<span class="hljs-keyword">else</span>&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; diff; i++) pB = pB -&gt; next;
     &#125;
-    <span class="hljs-keyword">return</span> headA;
+
+    <span class="hljs-keyword">while</span>(pA &amp;&amp; pB &amp;&amp; pA != pB)&#123;
+        pA = pA -&gt; next;
+        pB = pB -&gt; next;
+    &#125;
+
+    <span class="hljs-keyword">if</span>(pA == <span class="hljs-literal">NULL</span> || pB == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    <span class="hljs-keyword">return</span> pA;   
 &#125;</code></pre>
 <h5 id="③-链表节点顺序的调整"><a href="#③-链表节点顺序的调整" class="headerlink" title="③ 链表节点顺序的调整"></a>③ 链表节点顺序的调整</h5><h6 id="206-https-leetcode-com-problems-reverse-linked-list-🌟🌟"><a href="#206-https-leetcode-com-problems-reverse-linked-list-🌟🌟" class="headerlink" title="[206] https://leetcode.com/problems/reverse-linked-list  🌟🌟"></a>[206] <a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-linked-list">https://leetcode.com/problems/reverse-linked-list</a>  🌟🌟</h6><pre><code class="hljs cpp"><span class="hljs-function">ListNode* <span class="hljs-title">reverseList</span><span class="hljs-params">(ListNode* head)</span> </span>&#123;
     ListNode * prev = <span class="hljs-literal">NULL</span>;
@@ -874,6 +896,7 @@ n &amp; <span class="hljs-number">1</span> &lt;&lt; bit   <span class="hljs-comm
     <span class="hljs-keyword">if</span>(head == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> head;
     ListNode * oddhead = <span class="hljs-keyword">new</span> ListNode(<span class="hljs-number">0</span>);
     ListNode * evenhead = <span class="hljs-keyword">new</span> ListNode(<span class="hljs-number">0</span>);
+  
     ListNode * p_odd = oddhead;
     ListNode * p_even = evenhead;
     ListNode * p = head;
@@ -892,7 +915,12 @@ n &amp; <span class="hljs-number">1</span> &lt;&lt; bit   <span class="hljs-comm
     &#125;
 
     p_even -&gt; next = oddhead -&gt; next;
-    p_odd -&gt; next = <span class="hljs-literal">NULL</span>;  <span class="hljs-comment">// 不要忘记将这个链表置零 &lt;--- 否则会产生死循环! 计算超时</span>
+    p_odd -&gt; next = <span class="hljs-literal">NULL</span>;    <span class="hljs-comment">// !! 不要忘记将这个链表 next 置零 &lt;--- 否则会产生死循环! 计算超时</span>
+  
+    <span class="hljs-comment">// ! 删除申请的结点</span>
+    <span class="hljs-keyword">delete</span> evenhead;
+    ListNode * res = oddhead -&gt; next;
+    <span class="hljs-keyword">delete</span> oddhead;
     <span class="hljs-keyword">return</span> evenhead -&gt; next; 
 &#125;</code></pre>
 <h6 id="86-https-leetcode-cn-com-problems-partition-list-🌟🌟"><a href="#86-https-leetcode-cn-com-problems-partition-list-🌟🌟" class="headerlink" title="[86] https://leetcode-cn.com/problems/partition-list/    🌟🌟"></a>[86] <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/partition-list/">https://leetcode-cn.com/problems/partition-list/</a>    🌟🌟</h6><pre><code class="hljs cpp"><span class="hljs-function">ListNode* <span class="hljs-title">partition</span><span class="hljs-params">(ListNode* head, <span class="hljs-keyword">int</span> x)</span> </span>&#123;

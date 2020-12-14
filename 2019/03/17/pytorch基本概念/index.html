@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.2k 字
+      1.9k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      18
+      27
        分钟
     </span>
   
@@ -210,7 +210,7 @@
             <div class="markdown-body" id="post-body">
               <p>Pytorch几个基本概念的区分</p>
 <a id="more"></a>
-<h3 id="1-numpy-array-和-Tensor-CPU-amp-GPU"><a href="#1-numpy-array-和-Tensor-CPU-amp-GPU" class="headerlink" title="1. numpy array 和 Tensor(CPU &amp; GPU)"></a>1. numpy array 和 Tensor(CPU &amp; GPU)</h3><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; import torch</span>
+<h3 id="1-numpy-array-和-Tensor-CPU-amp-GPU"><a href="#1-numpy-array-和-Tensor-CPU-amp-GPU" class="headerlink" title="1. numpy array 和 Tensor (CPU &amp; GPU)"></a>1. numpy array 和 Tensor (CPU &amp; GPU)</h3><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; import torch</span>
 <span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; import numpy as np</span>
 <span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; a = np.ones(5)</span>
 <span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; a</span>
@@ -230,10 +230,10 @@ array([1., 1., 1., 1., 1.])
 
 device = torch.device(&quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;)
 <span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; y = torch.from_numpy(y)</span>
-<span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; y.to(device) <span class="hljs-comment"># 这里 x.to(device) 等价于 x.cuda()</span></span>
+<span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; y.to(device)   <span class="hljs-comment"># 这里 x.to(device) 等价于 x.cuda()</span></span>
 tensor([1., 1., 1., 1., 1.], device=&#x27;cuda:0&#x27;, dtype=torch.float64)</code></pre>
 <p>索引、 view 是不会开辟新内存的，而像 y = x + y 这样的运算是会新开内存的，然后将 y 指向新内存。</p>
-<h3 id="2-Variable-和-Tensor-require-grad-True"><a href="#2-Variable-和-Tensor-require-grad-True" class="headerlink" title="2. Variable 和　Tensor (require_grad=True)"></a>2. Variable 和　Tensor (require_grad=True)</h3><p>​    Pytorch 0.4 之前的模式为:　<strong>Tensor 没有梯度计算，加上梯度更新等操作后可以变为Variable</strong>.  Pytorch0.4 将 Tensor 和Variable 合并。默认 Tensor 的 require_grad 为 false，可以通过修改 requires_grad 来为其添加梯度更新操作。</p>
+<h3 id="2-Variable-和-Tensor-require-grad-True"><a href="#2-Variable-和-Tensor-require-grad-True" class="headerlink" title="2. Variable 和 Tensor (require_grad=True)"></a>2. Variable 和 Tensor (require_grad=True)</h3><p>​    Pytorch 0.4 之前的模式为:　<strong>Tensor 没有梯度计算，加上梯度更新等操作后可以变为Variable</strong>.  Pytorch0.4 将 Tensor 和Variable 合并。默认 Tensor 的 require_grad 为 false，可以通过修改 requires_grad 来为其添加梯度更新操作。</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>y
 tensor([<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>], dtype=torch.float64)  
 <span class="hljs-meta">&gt;&gt;&gt; </span>y.requires_grad
@@ -257,8 +257,12 @@ tensor([<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>
 </li>
 </ul>
 </blockquote>
-<p><code>model.eval()</code>和<code>torch.no_grad()</code>的区别在于，<code>model.eval()</code>是将网络切换为测试状态，例如BN和随机失活（dropout）在训练和测试阶段使用不同的计算方法。<code>torch.no_grad()</code>是关闭PyTorch张量的自动求导机制，以减少存储使用和加速计算，得到的结果无法进行<code>loss.backward()</code></p>
-<h3 id="5-xx-data-和-xx-detach"><a href="#5-xx-data-和-xx-detach" class="headerlink" title="5. xx.data 和 xx.detach()"></a>5. xx.data 和 xx.detach()</h3><p>​      在 0.4.0 版本之前,  .data 的语义是 获取 Variable 的 内部 Tensor, 在 0.4.0 版本将 Variable 和 Tensor merge 之后,  <code>.data</code> 和之前有类似的语义， 也是内部的 Tensor 的概念。<code>x.data</code> 与 <code>x.detach()</code> 返回的 tensor 有相同的地方, 也有不同的地方:</p>
+<p><code>model.eval()</code>和<code>torch.no_grad()</code>的区别在于，<code>model.eval()</code>是将网络切换为测试状态，例如 BN 和随机失活（dropout）在训练和测试阶段使用不同的计算方法。<code>torch.no_grad()</code>是关闭PyTorch张量的自动求导机制，以减少存储使用和加速计算，得到的结果无法进行<code>loss.backward()</code></p>
+<h3 id="5-model-train-和-model-eval-的不同"><a href="#5-model-train-和-model-eval-的不同" class="headerlink" title="5. model.train() 和 model.eval() 的不同"></a>5. model.train() 和 model.eval() 的不同</h3><ul>
+<li><code>model.train()</code>  ——  训练时候启用， 会计算对应 Tensor 的梯度<br>启用 BatchNormalization 和 Dropout，将 BatchNormalization 和 Dropout 置为 True</li>
+<li><code>model.eval()</code>  ——  验证和测试时候启用， 不会计算对应 Tensor 的梯度<br>不启用 BatchNormalization 和 Dropout，将 BatchNormalization 和 Dropout 置为 False</li>
+</ul>
+<h3 id="6-xx-data-和-xx-detach"><a href="#6-xx-data-和-xx-detach" class="headerlink" title="6. xx.data 和 xx.detach()"></a>6. xx.data 和 xx.detach()</h3><p>​      在 0.4.0 版本之前,  .data 的语义是 获取 Variable 的 内部 Tensor, 在 0.4.0 版本将 Variable 和 Tensor merge 之后,  <code>.data</code> 和之前有类似的语义， 也是内部的 Tensor 的概念。<code>x.data</code> 与 <code>x.detach()</code> 返回的 tensor 有相同的地方, 也有不同的地方:</p>
 <p><strong>相同:</strong></p>
 <ul>
 <li>都和 x 共享同一块数据</li>
@@ -281,7 +285,7 @@ tensor([<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>
 <span class="hljs-meta">&gt;&gt;&gt; </span>d_[:] = <span class="hljs-number">1</span>
 <span class="hljs-meta">&gt;&gt;&gt; </span>f.backward()</code></pre>
 <p><strong>如果需要获取其值，可以使用  xx.cpu().numpy() 或者 xx.cpu().detach().numpy() 然后进行操作，不建议再使用 volatile和  xx.data操作。</strong></p>
-<h3 id="6-ToTensor-amp-ToPILImage-各自都做了什么"><a href="#6-ToTensor-amp-ToPILImage-各自都做了什么" class="headerlink" title="6. ToTensor &amp; ToPILImage 各自都做了什么?"></a>6. ToTensor &amp; ToPILImage 各自都做了什么?</h3><p><strong>ToTensor:</strong></p>
+<h3 id="7-ToTensor-amp-ToPILImage-各自都做了什么"><a href="#7-ToTensor-amp-ToPILImage-各自都做了什么" class="headerlink" title="7. ToTensor &amp; ToPILImage 各自都做了什么?"></a>7. ToTensor &amp; ToPILImage 各自都做了什么?</h3><p><strong>ToTensor:</strong></p>
 <ul>
 <li>取值范围：   [0, 255]  —&gt;  [0, 1.0]</li>
 <li>NHWC  —&gt; NCHW</li>
@@ -303,11 +307,42 @@ image = PIL.Image.fromarray(torch.clamp(tensor * <span class="hljs-number">255</
     ).byte().permute(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>).cpu().numpy())
 <span class="hljs-comment">#　等价于</span>
 image = torchvision.transforms.functional.to_pil_image(tensor)</code></pre>
-<h3 id="7-torch-nn-xxx-与-torch-nn-functional-xxx"><a href="#7-torch-nn-xxx-与-torch-nn-functional-xxx" class="headerlink" title="7. torch.nn.xxx 与 torch.nn.functional.xxx"></a>7. torch.nn.xxx 与 torch.nn.functional.xxx</h3><p>建议统一使用　<code>torch.nn.xxx</code>　模块，<code>torch.functional.xxx</code> 可能会在下一个版本中去掉。</p>
+<h3 id="8-torch-nn-xxx-与-torch-nn-functional-xxx"><a href="#8-torch-nn-xxx-与-torch-nn-functional-xxx" class="headerlink" title="8. torch.nn.xxx 与 torch.nn.functional.xxx"></a>8. torch.nn.xxx 与 torch.nn.functional.xxx</h3><p>建议统一使用　<code>torch.nn.xxx</code>　模块，<code>torch.functional.xxx</code> 可能会在下一个版本中去掉。</p>
 <p><code>torch.nn</code>　模块和　<code>torch.nn.functional</code>　的区别在于，<code>torch.nn</code>　模块在计算时底层调用了<code>torch.nn.functional</code>，但　<code>torch.nn</code>　模块包括该层参数，还可以应对训练和测试两种网络状态。使用　<code>torch.nn.functional</code>　时要注意网络状态，如:</p>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">forward</span>(<span class="hljs-params">self, x</span>):</span>
     ...
     x = torch.nn.functional.dropout(x, p=<span class="hljs-number">0.5</span>, training=self.training)</code></pre>
+<h3 id="9-pytorch-中-torch-Tensor-和-torch-tensor-有什么相同点和区别"><a href="#9-pytorch-中-torch-Tensor-和-torch-tensor-有什么相同点和区别" class="headerlink" title="9. pytorch 中 torch.Tensor() 和 torch.tensor() 有什么相同点和区别?"></a>9. pytorch 中 torch.Tensor() 和 torch.tensor() 有什么相同点和区别?</h3><ul>
+<li><p>相同点 </p>
+<p>都能用于生成新的张量</p>
+</li>
+<li><p>不同点：</p>
+</li>
+</ul>
+<p>torch.Tensor()是 python类，更明确地说，是默认张量类型torch.FloatTensor() 的别名，torch.Tensor([1,2])会调用Tensor类的构造函数 _<em>init_</em>，生成单精度浮点类型的张量。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>a=torch.Tensor([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>a.type()
+<span class="hljs-string">&#x27;torch.FloatTensor&#x27;</span>
+<span class="hljs-number">123</span></code></pre>
+<p>而 torch.tensor()  是 python 函数：<a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/torch.html#torch.tensor">https://pytorch.org/docs/stable/torch.html#torch.tensor</a> ，函数原型是：</p>
+<pre><code class="hljs python">torch.tensor(data, dtype=<span class="hljs-literal">None</span>, device=<span class="hljs-literal">None</span>, requires_grad=<span class="hljs-literal">False</span>)</code></pre>
+<p>其中 data 可以是：list, tuple, NumPy ndarray, scalar 和其他类型。<br>torch.tensor 会从 data 中的数据部分做拷贝，根据原始数据类型生成相应的torch.LongTensor、torch.FloatTensor 和torch.DoubleTensor。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>a=torch.tensor([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>a.type()
+<span class="hljs-string">&#x27;torch.LongTensor&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>a=torch.tensor([<span class="hljs-number">1.</span>,<span class="hljs-number">2.</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>a.type()
+<span class="hljs-string">&#x27;torch.FloatTensor&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>a=np.zeros(<span class="hljs-number">2</span>,dtype=np.float64)
+<span class="hljs-meta">&gt;&gt;&gt; </span>a=torch.tensor(a)
+<span class="hljs-meta">&gt;&gt;&gt; </span>a.type()
+<span class="hljs-string">&#x27;torch.DoubleTensor&#x27;</span></code></pre>
+<h3 id="10-tensorflow-和-pytorch-构建网络的差异"><a href="#10-tensorflow-和-pytorch-构建网络的差异" class="headerlink" title="10. tensorflow 和 pytorch 构建网络的差异"></a>10. tensorflow 和 pytorch 构建网络的差异</h3><p>[如果是比较 Tensorflow 和 Pytorch 的差异， 可以从: 上手难易程度、静态图vs动态图、调试、可视化、部署等方面进行分析]</p>
+<p> <strong>图的动态定义 vs 静态定义</strong></p>
+<p>​      两个框架都是在张量上进行运算，并将任意一个模型看成是有向非循环图（DAG），但是它们在其定义方面有很大的区别。</p>
+<p>​      Tensorflow 基于静态图。 TensorFlow遵循“数据即代码，代码即数据”的理念。在TensorFlow中，你可以<strong>在模型能够运行之前静态地定义图， 然后在运行时将 数据 feed 到计算图中。</strong>与外部世界的<strong>所有通信都通过tf.Session对象和tf.Placeholder来执行</strong>，这两个张量在运行时会被外部数据替代。<strong>静态计算允许编译器进行更大程度的优化，但是其调试相对比较困难。</strong></p>
+<p>​      Pytorch 基于动态图， 在PyTorch中，图的定义则更为重要和动态化：<strong>你可以随时定义、随时更改、随时执行节点，并且没有特殊的会话接口或占位符</strong>。总体而言，该框架与Python语言集成地更为紧密，并且在大多数时候用起来感觉<strong>更加本地化，更加容易将大脑中的想法转化为程序.</strong></p>
+<p>​     近年来的发展， tf 引入了 eager 模式实现动态图··， pytorch 也可以借助于 onnx、caffe2和 torchscript 来实现静态图， tensorflow 和 pytorch 的之间静态图和动态图的界限也逐渐变的模糊。</p>
 
             </div>
             <hr>

@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="zhichao zhao">
   <meta name="keywords" content="">
-  <title>principlesof-neural-network-design - 假欢畅 又何妨 无人共享</title>
+  <title>network-pruning - 假欢畅 又何妨 无人共享</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -153,8 +153,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-10-21 17:23" pubdate>
-        October 21, 2020 pm
+      <time datetime="2020-12-14 12:17" pubdate>
+        December 14, 2020 pm
       </time>
     </span>
   
@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      577 字
+      1.2k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      15
        分钟
     </span>
   
@@ -205,57 +205,131 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">principlesof-neural-network-design</h1>
+            <h1 style="display: none">network-pruning</h1>
             
             <div class="markdown-body" id="post-body">
-              <h4 id="一-网络主题框架"><a href="#一-网络主题框架" class="headerlink" title="一. 网络主题框架"></a>一. 网络主题框架</h4><h5 id="1-检测网络"><a href="#1-检测网络" class="headerlink" title="1. 检测网络"></a>1. 检测网络</h5><p>一般分为三个部分： backbone、neck(用于进行特征融合)、head</p>
-<h6 id="（1）backbone"><a href="#（1）backbone" class="headerlink" title="（1）backbone"></a>（1）backbone</h6><p>backbone 的常见的设计方案有：</p>
+              <p>模型剪枝的相关工作记录</p>
+<a id="more"></a>
+<p> 剪枝是指裁减掉不重要的冗余的卷积参数，减少参数量，加快推理速。剪枝可以分为结构化剪枝和非结构化剪枝。在非结构化剪枝中， 是将其置零的，并没有进行剪枝，通常需要搭配固定的硬件。结构化剪枝则是指在 filter 层面，通道层面，或者 shape 层面的剪枝。</p>
+<p><img src="/Users/zhichaozhao/Documents/hexo-blog/source/_posts/神经网络量化与压缩综述/3.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>本文主要关注与结构化剪枝的相关工作</p>
+<h3 id="一-解决方案"><a href="#一-解决方案" class="headerlink" title="一. 解决方案"></a>一. 解决方案</h3><h5 id="1-基于度量"><a href="#1-基于度量" class="headerlink" title="1. 基于度量"></a>1. 基于度量</h5><p><strong>(1) 基于权重</strong></p>
 <ul>
-<li>resnet 及其相应的扩展系列、efficientnet、hrnet 等网络</li>
-<li>轻量级别网络：shufflenet、mobilenet、ghostnet 等网络</li>
+<li><strong>Pruning Filters for Efficient ConvNets  ——  l1 norm</strong> 🌟</li>
 </ul>
-<p>可以尝试的一些解决方案：</p>
+<p>衡量标准: Filter的L1 norm</p>
 <ul>
-<li><p>SPP 模块、RFB 模块</p>
-</li>
-<li><p>注意力机制（通道和空间）</p>
-</li>
+<li><strong>Filter pruning via geometric median for deep convolutional neural networks acceleration</strong>    🌟</li>
 </ul>
-<h6 id="2-neck"><a href="#2-neck" class="headerlink" title="(2) neck"></a>(2) neck</h6><p>主要用于进行特征融合， 常见的方案有： fpn、panet 和 bifpn 这几种</p>
-<h6 id="3-head"><a href="#3-head" class="headerlink" title="(3) head"></a>(3) head</h6><p>主要是用于输出结果，一般为常见的卷积层。</p>
-<h5 id="2-暗光增强网络"><a href="#2-暗光增强网络" class="headerlink" title="2. 暗光增强网络"></a>2. 暗光增强网络</h5><p>分为两种类型：</p>
+<p>衡量标准： 卷积核的几何中位数 </p>
+<p>   <strong>-</strong> <strong>SFP Soft filter pruning —— l2 norm: soft pruning</strong>  🌟</p>
+<p>​    <strong>-</strong> <strong>Learning both Weights and Connections for Efficient Neural Networks  —— no structured prune: weight</strong> 🌟</p>
+<p><strong>(2) feature map</strong></p>
 <ul>
-<li>end2end 方式的直接端到端的网络</li>
-<li>按照 retinex 原理，将网络分为三个部分：分解、增强模块和去噪模块</li>
-</ul>
-<h5 id="3-超分："><a href="#3-超分：" class="headerlink" title="3. 超分："></a>3. 超分：</h5><p>一般分为四个模块： 特征提取、非线性变换、上采样、重建四个模块</p>
-<h4 id="二-数据处理措施"><a href="#二-数据处理措施" class="headerlink" title="二. 数据处理措施"></a>二. 数据处理措施</h4><h4 id="三-优化"><a href="#三-优化" class="headerlink" title="三. 优化"></a>三. 优化</h4><h5 id="（1）常见的设置"><a href="#（1）常见的设置" class="headerlink" title="（1）常见的设置"></a>（1）常见的设置</h5><p>学习率：</p>
-<p>常见的几种学习率的调整方法：  ReduceLROnPlateau、余弦退火、StepLR</p>
-<ul>
-<li><p>ReduceLROnPlateau：当指定指标不下降（上升）的时候， 将学习率降低为原来的十分之一。是这三种方案里面最优的， 他可以根据训练的情况进行动态调整， 需要注意的是， 用的时候最好设置一下最小学习率，不然后期会因为学习率衰减得过小导致模型不再训练。</p>
-</li>
-<li><p>余弦退火使用的时候，最大学习率和最小学习率相差的数量级不要太大(比如1e-1和1e-4)，不然会导致在该快的时候太慢，在该慢的时候太快，特别的接近最优解的时候，太大就直接跑偏。</p>
-</li>
-<li><p>StepLR就很传统，也挺好用的，但是灵活度不如ReduceLROnPlateau。</p>
+<li><p><strong>APoZ: Network trimming: A data-driven neuron pruning approach towards efficient deep architectures</strong></p>
+<p>衡量标准: 激活层输出的feature map的的稀疏程度</p>
 </li>
 </ul>
-<p>优化器：</p>
-<p>正则化：</p>
-<p>归一化：</p>
-<p>损失函数：</p>
-<h4 id="四-其他"><a href="#四-其他" class="headerlink" title="四. 其他"></a>四. 其他</h4><p>编写代码的基本原则：</p>
-<ul>
-<li>构建网络， 输入随机 Tensor， 检查输入和输出是否正确。</li>
-<li>构建数据集读取接口， 查看是否能够准确的读取数据、可视化，并检测数据</li>
-<li>编写损失函数、评价指标，优化方法</li>
-<li>组合优化、数据和网络</li>
+<p>​    <strong>- HRank</strong></p>
+<p><strong>（3）loss func</strong></p>
+<p>​    <strong>Pruning Convolutional Neural Networks for Resource Efficient Inference ZAS</strong></p>
+<p>​    衡量标准: 修剪网络参数引起的损失函数的变化</p>
+<h5 id="2-基于重建误差"><a href="#2-基于重建误差" class="headerlink" title="2. 基于重建误差"></a>2. 基于重建误差</h5><ul>
+<li><strong>Channel pruning for accelerating very deep neural networks</strong>  🌟</li>
 </ul>
-<p>网络设计的考虑点：</p>
+<p>​      衡量标准: 通过最小化裁剪后特征图和裁剪前特征图之间的误差</p>
 <ul>
-<li>现有精度能否得到需求的指标</li>
-<li>运算资源是否足够</li>
-<li></li>
+<li><p><strong>ThiNet (Luo et al., 2017)</strong> 🌟</p>
+<p>衡量标准: 用输入子集代替原来的输入得到输出的相似度</p>
+</li>
 </ul>
+<h5 id="3-稀疏化"><a href="#3-稀疏化" class="headerlink" title="3. 稀疏化"></a>3. 稀疏化</h5><ul>
+<li><strong>(SSL) Learning Structured Sparsity in Deep Neural Networks</strong>  <strong>🌟</strong></li>
+</ul>
+<p>​       使用 group Lasso 给损失函数加入相应的惩罚，进行结构化稀疏</p>
+<ul>
+<li><p><strong>(Network Slimming)  l1 norm: bn gamma</strong>  <strong>🌟</strong></p>
+<p>衡量标准: BN层的 γ 参数</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">updateBN</span>():</span>
+    <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> model.modules():
+        <span class="hljs-keyword">if</span> isinstance(m, nn.BatchNorm2d):
+            m.weight.grad.data.add_(args.s*torch.sign(m.weight.data))  <span class="hljs-comment"># L1</span>
+              
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">train</span>(<span class="hljs-params">epoch</span>):</span>
+    <span class="hljs-keyword">for</span> batch_idx, (data, target) <span class="hljs-keyword">in</span> enumerate(train_loader):
+        // ...
+        loss.backward()
+        <span class="hljs-keyword">if</span> args.sr:
+            updateBN()
+        // ...</code></pre>
+</li>
+</ul>
+<h5 id="4-NAS"><a href="#4-NAS" class="headerlink" title="4. NAS"></a>4. NAS</h5><ul>
+<li><p>AMC</p>
+</li>
+<li><p>OneforAll</p>
+</li>
+<li><p>AutoSlim</p>
+</li>
+</ul>
+<h5 id="5-理论思考"><a href="#5-理论思考" class="headerlink" title="5. 理论思考"></a>5. 理论思考</h5><ul>
+<li><p>Rethinking the value of network pruning   🌟</p>
+<p>​    这篇论文的作者实验过程中发现了模型修剪过后，微调得到的效果和重新从头训练几乎相同，于是便做了多组实验证明这一结论，推翻了包括自己的方法在内的很多方法，提出对参数修剪的一个新的认识：参数修剪的实际作用在于得到架构而非权值。</p>
+</li>
+<li><p>The lottery ticket hypothesis: Finding sparse, trainable neural networks  🌟</p>
+</li>
+<li>Recovering from Random Pruning: On the Plasticity of Deep Convolutional Neural Networks</li>
+<li>Pruning from Scratch</li>
+</ul>
+<h5 id="6-简单应用"><a href="#6-简单应用" class="headerlink" title="6.简单应用"></a>6.简单应用</h5><p>(1) YOLO 剪枝</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/153496637"><strong>https://zhuanlan.zhihu.com/p/153496637</strong></a></li>
+</ul>
+<p>(2) GAN</p>
+<ul>
+<li><p>GAN Slimming: All-in-One GAN Compression by A Unified Optimization Framework</p>
+</li>
+<li><p>GAN Compression: Efficient Architectures for Interactive Conditional GANs</p>
+</li>
+</ul>
+<h5 id="7-软硬件联合设计"><a href="#7-软硬件联合设计" class="headerlink" title="7. 软硬件联合设计"></a>7. 软硬件联合设计</h5><ul>
+<li>ADMM</li>
+<li>MCUNet</li>
+<li>One for All </li>
+</ul>
+<h3 id="二-注意事项："><a href="#二-注意事项：" class="headerlink" title="二. 注意事项："></a>二. 注意事项：</h3><ol>
+<li><p>剪裁一个 conv layer 的 filter，需要修改后续 conv 的 filter. 即剪掉 $X<em>i$ 的一个 filter，会导致 $X</em>{i+1}$ 少一个 channel,  $X_{i+1}$ 对应的 filter 在 input_channel 维度上也要减 1。</p>
+</li>
+<li><p>剪裁完 $X<em>i$之后，根据注意事项 1 我们从$X</em>{i+1}$ 的 filter 中删除了一行，在计算$X_{i+1}$的filters的l1_norm(图中绿色一列)的时候，有两种选择</p>
+</li>
+</ol>
+<ul>
+<li>算上被删除的一行：independent pruning </li>
+<li>减去被删除的一行：greedy pruning</li>
+</ul>
+<ol>
+<li>在对ResNet等复杂网络剪裁的时候，还要考虑到后当前卷积层的修改对上一层卷积层的影响。在对 residual block 剪裁时，$X<em>{i+1}$ 层如何剪裁取决于 project shortcut 的剪裁结果，因为我们要保证 project shortcut 的 output 和 $X</em>{i+1}$ 的 output 能被正确的 concat.</li>
+</ol>
+<h5 id="2-敏感度的理解"><a href="#2-敏感度的理解" class="headerlink" title="2. 敏感度的理解"></a>2. 敏感度的理解</h5><p><img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleSlim/release/1.0.1/docs/images/algo/pruning_3.png" srcset="/img/loading.gif" style="zoom:33%;"></p>
+<p>如图所示，横坐标是将filter剪裁掉的比例，竖坐标是精度的损失，每条彩色虚线表示的是网络中的一个卷积层。 以不同的剪裁比例<strong>单独</strong>剪裁一个卷积层，并观察其在验证数据集上的精度损失，并绘出图中的虚线。虚线上升较慢的，对应的卷积层相对不敏感，我们优先剪不敏感的卷积层的filter.</p>
+<ul>
+<li><p>选择最优的剪裁率组合</p>
+<p>我们将上图中的折线拟合为下图中的曲线，每在竖坐标轴上选取一个精度损失值，就在横坐标轴上对应着一组剪裁率，如<strong>图8</strong>中黑色实线所示。 用户给定一个模型整体的剪裁率，我们通过移动<strong>图5</strong>中的黑色实线来找到一组满足条件的且合法的剪裁率。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleSlim/release/1.0.1/docs/images/algo/pruning_4.png" srcset="/img/loading.gif" style="zoom:33%;"></p>
+<ul>
+<li>迭代剪裁</li>
+</ul>
+<p>考虑到多个卷积层间的相关性，一个卷积层的修改可能会影响其它卷积层的敏感度，我们采取了多次剪裁的策略，步骤如下：</p>
+<ul>
+<li>step1: 统计各卷积层的敏感度信息</li>
+<li>step2: 根据当前统计的敏感度信息，对每个卷积层剪掉少量 filter, 并统计 FLOPS，如果 FLOPS 已满足要求，进入step4，否则进行step3。</li>
+<li>step3: 对网络进行简单的fine-tune，进入step1</li>
+<li>step4: fine-tune训练至收敛</li>
+</ul>
+<p>​    </p>
+<p>​    </p>
 
             </div>
             <hr>
@@ -272,18 +346,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/14/network-pruning/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">network-pruning</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/10/super-resolution/">
-                        <span class="hidden-mobile">super_resolution</span>
+                      <a href="/2020/10/21/principlesof-neural-network-design/">
+                        <span class="hidden-mobile">principlesof-neural-network-design</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -426,7 +494,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "principlesof-neural-network-design&nbsp;",
+        "network-pruning&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

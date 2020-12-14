@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.2k 字
+      3.6k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      36
+      41
        分钟
     </span>
   
@@ -291,7 +291,7 @@
 </ul>
 <p>​        本文作者认为逆残差模块会削弱梯度跨层传播的能力，将特征从高维空间压缩到低维空间，会造成信息丢失，同时这也容易引起梯度混淆问题(特指梯度消失或梯度爆炸)，从而影响训练的收敛和最终模型的性能。本文提出的sandglass模块如下图所示：</p>
 <p><img src="/2019/04/15/lightweight-cnn-architecture-design/15.png" srcset="/img/loading.gif" alt="x" style="zoom:35%;"></p>
-<p>​        sandglass 模块是在轻量级的残差块上依据逆残差块所存在的问题所改进的，同时这个模块还用到了MobileNetV2中的线性瓶颈设计，即只在第一个 3x3 卷积后边和第二个 1x1 卷积后边使用非线性激活函数 relu6，其他层后边使用线性激活函数(y=x), 这有助于避免零化现象的出现，进而减少信息损失。</p>
+<p>​        sandglass 模块是在轻量级的残差块上依据逆残差块所存在的问题所改进的，同时这个模块还用到了MobileNetV2中的线性瓶颈设计，即只在第一个 3x3 卷积后边和第二个 1x1 卷积后边使用非线性激活函数 relu6，其他层后边使用线性激活函数(y=x), 这有助于避免零化现象的出现，进而减少信息损失</p>
 <h4 id="8-GhostNet"><a href="#8-GhostNet" class="headerlink" title="8. GhostNet"></a>8. GhostNet</h4><h5 id="1-出发点："><a href="#1-出发点：" class="headerlink" title="(1) 出发点："></a>(1) 出发点：</h5><p>​      通过对比分析 ResNet-50 网络第一个残差组( Residual group )输出的特征图可视化结果，发现一些特征图高度相似。如果按照传统的思考方式，可能认为这些相似的特征图存在冗余，是多余信息，想办法避免产生这些高度相似的特征图。本文的思路是<strong>不去刻意的避免产生这种Ghost对，而是尝试利用简单的线性操作来获得更多的Ghost对。</strong></p>
 <p>其基本操作如下：</p>
 <ul>
@@ -305,14 +305,54 @@
 <h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><ul>
 <li><p>关于网络结构的变迁， 如下图所示(所有 conv 层之后，都使用了 BN 层， 且 BN 层在激活函数之前)</p>
 <ul>
-<li>mobilenet v1 将 普通卷积分解为  DepthWise 和 PointWise 两个操作</li>
-<li>shufflenet v1 引入 channel shuffle 操作，初步形成 GC + DW + GC 的卷积组合</li>
-<li>mobilenet v2 引入了 逆残差模块， 此时的形成了 PW+DW+PW 的组合</li>
-<li>shufflent v2 引入了 channels split 操作</li>
+<li>mobilenet v1 将普通卷积分解为  DepthWise 和 PointWise 两个操作</li>
+<li>shufflenet v1 引入 channel shuffle 操作，初步形成 GConv + shuffle + DW + GConv 的卷积组合</li>
+<li>mobilenet v2 引入了 逆残差模块， 此时的形成了 PW+DW+PW 的组合。 注意这里最后一个 PW 使用线性函数</li>
+<li>shufflent v2 引入了 channels split 操作， 并将 concat + shuffle + split 进行合并</li>
 </ul>
 </li>
 </ul>
-<p>  <img src="/2019/04/15/lightweight-cnn-architecture-design/17.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2019/04/15/lightweight-cnn-architecture-design/17.png" srcset="/img/loading.gif" alt></p>
+<ul>
+<li><p>一些小经验</p>
+<ul>
+<li>使用 DW 和 PW 进行加速是常规操作， 但是对 DW和 PW 的顺序还需要进一步探索。（比如 mobilenext 则使用了 DW + PW + PW+ DW 的组合形式）</li>
+<li>MobileNetV2的倒置残差模块 + SE block + H-swish 是一个屡试不爽的组合，虽然速度会有所损失。</li>
+<li>激活函数的放置位置还没有定论（虽然 mobilenet v2 进行了探索，提出了线性瓶颈）</li>
+<li>有一些网络(ghostnet 和 bsconv )提出了对卷积核/特征层的冗余进行探索分析，从而降低运算量， 这也算一个方向。</li>
+</ul>
+</li>
+<li><p>一些对于轻量级检测网络的探索： 轻量级检测的核心问题还是低层特征和高层特征的融合问题，在 backbone 通常选择上面的 轻量级分类网络：</p>
+<ul>
+<li>Pelee: A Real-Time Object Detection System on Mobile Devices</li>
+<li>Tiny-dsod: Lightweight object detection for resource-restricted usages.</li>
+<li>Light-head R-cnn: In defense of two-stage object detector</li>
+<li>ThunderNet: Towards Real-time Generic Object Detection</li>
+<li>NanoDet</li>
+</ul>
+</li>
+<li>轻量级分割网络<ul>
+<li>BiSeNet</li>
+<li>DFANet</li>
+</ul>
+</li>
+</ul>
+<h4 id="参考论文："><a href="#参考论文：" class="headerlink" title="参考论文："></a>参考论文：</h4><ul>
+<li><p>SqueezeNet: AlexNet-level accuracy with 50x fewer parameters and &lt;0.5MB model size.</p>
+</li>
+<li><p>MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications</p>
+</li>
+<li><p>MobileNetV2: Inverted Residuals and Linear Bottlenecks</p>
+</li>
+<li><p>Searching for MobileNetV3(nas for efficient conv neural network) </p>
+</li>
+<li><p>ShuffleNet: An Extremely Efficient Convolutional Neural Network for Mobile Devices</p>
+</li>
+<li><p>ShuffleNet V2: Practical Guidelines for Ecient CNN Architecture Design </p>
+</li>
+<li><p>Xception: Deep Learning with Depthwise Separable Convolutions</p>
+</li>
+</ul>
 
             </div>
             <hr>
