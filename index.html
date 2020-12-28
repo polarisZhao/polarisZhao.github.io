@@ -160,84 +160,6 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/12/15/transformer-for-vision-task/">transformer-for-vision-task</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/15/transformer-for-vision-task/">
-          
-          
-            
-          
-          1. NLP 中的 transformer 和 self-attention所谓的 transformer 就是带有 self-attention 的 seq2seq 模型。所以要了解 transformer 首先需要知道  self-attention 结构
-1.  self attentionQ ： to mathc others
-K :  to be matched
-V : informat
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-15 11:43" pubdate>
-              2020-12-15
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/12/14/quantizing/">quantizing</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/14/quantizing/">
-          
-          
-            
-          
-          ​        模型量化是指权重或激活输出可以被聚类到一些离散、低精度(reduced precision) 的数值点上，这通常依赖于特定算法库或硬件平台的支持：
-1. 二值网络Binary Weight (只对权重进行二值化)
-🌟 [BinaryConnect] BinaryConnect: Training Deep Neural Networks with binary weights 
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-14 15:02" pubdate>
-              2020-12-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/DL-Deploy/">DL_Deploy</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
         <a href="/2020/12/14/%E6%B5%85%E8%B0%88DeepLearning%E8%90%BD%E5%9C%B0%E4%B8%8E%E5%B7%A5%E7%A8%8B%E9%83%A8%E7%BD%B2/">浅谈DeepLearning落地与工程部署</a>
       </h1>
 
@@ -278,16 +200,16 @@ V : informat
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/12/14/network-pruning/">network-pruning</a>
+        <a href="/2020/12/13/efficient-conv/">efficient-conv</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/12/14/network-pruning/">
+        <a href="/2020/12/13/efficient-conv/">
           
           
             
           
-          模型剪枝的相关工作记录
+          这次要填坑了！！ 阐述一些底层的卷积实现方式：包含：滑动窗口、im2col + gemm、winograd 等
         </a>
       </p>
 
@@ -295,8 +217,8 @@ V : informat
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-14 12:17" pubdate>
-              2020-12-14
+            <time datetime="2020-12-13 11:11" pubdate>
+              2020-12-13
             </time>
           </div>
         
@@ -318,26 +240,24 @@ V : informat
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/21/principles-of-neural-network-design/">principlesof-neural-network-design</a>
+        <a href="/2020/12/12/img2col/">img2col</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/21/principles-of-neural-network-design/">
+        <a href="/2020/12/12/img2col/">
           
           
             
           
-          一. 网络主题框架1. 检测网络一般分为三个部分： backbone、neck(用于进行特征融合)、head
-（1）backbonebackbone 的常见的设计方案有：
+          1. im2col 基本原理(1) 对于图像的变换：
+首先将每个卷积所卷积的区域作为一行，所有的卷积区域纵向排列，作为右乘矩阵。需要注意的是多个通道应该堆叠在下面。如下图所示：
+单通道：
 
-resnet 及其相应的扩展系列、efficientnet、hrnet 等网络
-轻量级别网络：shufflenet、mobilenet、ghostnet 等网络
+多通道：
 
-可以尝试的一些解决方案：
-
-SPP 模块、RFB 模块
-
-注意
+输入特征图转化得到的矩阵尺度 = (卷积组输入通道数*卷积核高*卷积核宽) * (卷积层输出单通道特征图高 * 卷积层输出单通道特征图宽)
+(2) 对于卷积核的变换
+将一个卷积核拉伸为一个横行，作为
         </a>
       </p>
 
@@ -345,8 +265,8 @@ SPP 模块、RFB 模块
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-21 17:23" pubdate>
-              2020-10-21
+            <time datetime="2020-12-12 23:15" pubdate>
+              2020-12-12
             </time>
           </div>
         
@@ -361,16 +281,16 @@ SPP 模块、RFB 模块
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/10/super-resolution/">super_resolution</a>
+        <a href="/2020/11/24/network-pruning/">network-pruning</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/10/super-resolution/">
+        <a href="/2020/11/24/network-pruning/">
           
           
             
           
-          超分辨率增强方向的一些记录
+          模型剪枝的相关工作记录
         </a>
       </p>
 
@@ -378,8 +298,8 @@ SPP 模块、RFB 模块
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-10 17:06" pubdate>
-              2020-10-10
+            <time datetime="2020-11-24 12:17" pubdate>
+              2020-11-24
             </time>
           </div>
         
@@ -387,7 +307,131 @@ SPP 模块、RFB 模块
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E6%99%BA%E8%83%BD%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">智能图像处理</a>
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/15/lightweight-cnn-architecture-design/">lightweight-cnn-architecture-design</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/15/lightweight-cnn-architecture-design/">
+          
+          
+            
+          
+          常见的移动端模型：mobilenet 系列和 shufflenet 系列和 GhostNet。对于 MnasNet、PorxylessNas、FBNet 等轻量级搜索架构则不涉及。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-15 15:28" pubdate>
+              2020-11-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/13/quantizing/">quantizing</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/13/quantizing/">
+          
+          
+            
+          
+          ​        模型量化是指权重或激活输出可以被聚类到一些离散、低精度(reduced precision) 的数值点上，这通常依赖于特定算法库或硬件平台的支持：
+1. 二值网络Binary Weight (只对权重进行二值化)
+🌟 [BinaryConnect] BinaryConnect: Training Deep Neural Networks with binary weights 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-13 15:02" pubdate>
+              2020-11-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/07/int8-quantize/">int8_quantize</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/07/int8-quantize/">
+          
+          
+            
+          
+          1. FP32 vs int8​        首先来看一下 FP32、FP16 和 int8之间的动态范围和精度的对比， 可以看到float32 的取值范围几乎是无穷的，而int8只有-128~127. 因此需要建立映射关系将float32类型的浮点数映射到指定范围的int8类型。 
+
+​        目前最常见的两种int8量化实现方式是 Nvidia的TensorRT方案 和 google
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-07 16:26" pubdate>
+              2020-11-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
             
           </div>
         
@@ -516,51 +560,11 @@ ncnn::Extractor ex = s
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-4/">ncnn源码分析_4</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-4/">
-          
-          
-            
-          
-          ncnn源码分析-4 模型量化源码
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-21 11:20" pubdate>
-              2020-09-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/DL-Deploy/">DL_Deploy</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

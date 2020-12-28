@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>YOLO - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<div class="page-content">
+  <p>YOLO series: YOLO v1. YOLO v2 and. YOLO v3</p>
+<a id="more"></a>
+<h3 id="1-YOLO-v1"><a href="#1-YOLO-v1" class="headerlink" title="1. YOLO v1"></a>1. YOLO v1</h3><h4 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h4><p>直接在输出层回归 bounding box 的位置和 bounding box所属的类别(整张图作为网络的输入，把 Object Detection 的问题转化成一个 Regression 问题)</p>
+<h4 id="YOLO-v1-流程"><a href="#YOLO-v1-流程" class="headerlink" title="YOLO v1 流程"></a>YOLO v1 流程</h4><p><img src="/2.png" srcset="/img/loading.gif" alt></p>
+<ol>
+<li><p>将图片Resize成448x448，分成7x7个网格(grid cell)，某个物体的中心落在这个网格中此网格就负责预测这个物体。</p>
+</li>
+<li><p>提取特征和预测，卷积部分负责提取特征。全连接部分负责预测：</p>
+<ul>
+<li>两个 【bounding box(bbox) + conﬁdence】 (2x5)</li>
+<li>20个物体的概率（20）</li>
+</ul>
+<p>总的输出为 (7X7)X30 的维度。</p>
+</li>
+<li><p>过滤bbox（通过nms）</p>
+</li>
+</ol>
+<h3 id="2-YOLO-v2"><a href="#2-YOLO-v2" class="headerlink" title="2. YOLO v2"></a>2. YOLO v2</h3><ol>
+<li><p>class-specific confidence score：</p>
+<p>class-specific confidence score 是三项的成绩。第一项是 bbox每个网格预测的类别信息即20个物体的概率， 第二项是每个 bbox 的置信度， 第三项是 ground truth 和 预测框的 IOU。得到每个bbox的class-specific confidence score以后，设置阈值，滤掉得分低的boxes，对保留的boxes进行NMS处理，就得到最终的检测结果</p>
+</li>
+<li><p>损失函数的设计：<br><img src="/1.png" srcset="/img/loading.gif" alt></p>
+</li>
+</ol>
+<h3 id="3-YOLOv3"><a href="#3-YOLOv3" class="headerlink" title="3. YOLOv3"></a>3. YOLOv3</h3><p>论文改进点</p>
+<ul>
+<li><p>BN + leaky ReLU + res connection[ 加入了BN层, 激活函数使用了Leaky ReLU, 并且引入了残差连接 ]</p>
+</li>
+<li><p>backbone(FPN multi scales)[ 仿照FPN网络结构的多尺度检测 ]</p>
+</li>
+<li><p>loss function [ 除了w、h仍然使用平方均差， 其他均使用交叉熵。然后按权重相加 ]</p>
+</li>
+<li><p>bbox anchor priors -&gt; softmax [ 聚类获得先验框大小 ]</p>
+</li>
+</ul>
+<h5 id="1-YOLOv3-结构"><a href="#1-YOLOv3-结构" class="headerlink" title="(1) YOLOv3 结构"></a>(1) YOLOv3 结构</h5><p><img src="/3_1.png" srcset="/img/loading.gif" alt></p>
+<p>​    先使用 DBL (conv+bn+leaky_relu) 进行一个简单的滤波处理， 然后接res1, res2, res8 提取特征1, 再接 res8 提取特征2, 再接 res4 提取特征 3, 最后融合三个特征。</p>
+<ul>
+<li>相比于 YOLO V2 的 darknet19 采用 maxpool 进行下采样， YOLO V3 提出的 Darknet53 则使用 stride 为 2 的卷积核来实现下采样。在 YOLO v3 中， 要经历五次下采样， 特征图尺寸缩小为原来的 1/32， 即输入为 416 x 416, 输出为 13x13。</li>
+</ul>
+<p><img src="/3_2.png" srcset="/img/loading.gif" alt="x" style="zoom:50%;"></p>
+<ul>
+<li><p>具体的细节实现上， <strong>darknet 19 的 conv + bn + relu 被替换为 conv + bn + leaky_relu</strong>。并在此基础上添加了残差结构。</p>
+</li>
+<li><p>三个输出分别是 13x13x255、26x26x255、52x52x255。yolo v3 输出了3个不同尺度的 feature map，YOLO v3 借鉴了 FPN(feature pyramid networks)，采用多尺度来对不同 size 的目标进行检测，越精细的 grid cell 就可以检测出越精细的物体。</p>
+<p>255的来源 ? COCO 的类别数为 80， 加上位置信息 x, y, w, h 和 confidence 为 85。每个网格单元预测 3 个 box。 总共为 3 *( 80 + 5) = 255。</p>
+</li>
+</ul>
+<h5 id="2-损失函数"><a href="#2-损失函数" class="headerlink" title="(2) 损失函数"></a>(2) 损失函数</h5><p>​     在 YOLO v3除了w、h 仍然使用平方均差， 其他 (x, y)、 class, confidence 均使用交叉熵，然后按权重相加，损失函数应该由各自特点确定。最后加到一起就可以组成最终的 loss_function 了，也就是一个loss_function搞定端到端的训练。</p>
+<pre><code class="hljs cpp">xy_loss = object_mask * box_loss_scale * K.binary_crossentropy(raw_true_xy, raw_pred[..., <span class="hljs-number">0</span>:<span class="hljs-number">2</span>], from_logits=True)
+wh_loss = object_mask * box_loss_scale * <span class="hljs-number">0.5</span> * K.square(raw_true_wh - raw_pred[..., <span class="hljs-number">2</span>:<span class="hljs-number">4</span>])
+confidence_loss = object_mask * K.binary_crossentropy(object_mask, raw_pred[..., <span class="hljs-number">4</span>:<span class="hljs-number">5</span>], from_logits=True) + \
+                          (<span class="hljs-number">1</span> - object_mask) * K.binary_crossentropy(object_mask, raw_pred[..., <span class="hljs-number">4</span>:<span class="hljs-number">5</span>],
+                                                                    from_logits=True) * ignore_mask
+class_loss = object_mask * K.binary_crossentropy(true_class_probs, raw_pred[..., <span class="hljs-number">5</span>:], from_logits=True)
+
+xy_loss = K.sum(xy_loss) / mf
+wh_loss = K.sum(wh_loss) / mf
+confidence_loss = K.sum(confidence_loss) / mf
+class_loss = K.sum(class_loss) / mf
+loss += xy_loss + wh_loss + confidence_loss + class_loss</code></pre>
+<p>以上是一段 keras 框架描述的 yolo v3 的 loss_function 代码。忽略恒定系数不看，可以从上述代码看出：除了 w, h 的损失函数依然采用均方误差之外，其他部分的损失函数用的是交叉熵。最后加到一起。</p>
+<h5 id="3-Bounding-Box-Prediction"><a href="#3-Bounding-Box-Prediction" class="headerlink" title="(3) Bounding Box Prediction"></a>(3) Bounding Box Prediction</h5><p>​    对于YOLO v3 而言，在 prior 这里的处理有明确解释：选用的 bbox priors 的 k=9，对于 tiny-yolo 的话，k = 6。priors 都是在数据集上聚类得来的，有确定的数值，如下:</p>
+<pre><code class="hljs cpp"><span class="hljs-number">10</span>,<span class="hljs-number">13</span>,  <span class="hljs-number">16</span>,<span class="hljs-number">30</span>,  <span class="hljs-number">33</span>,<span class="hljs-number">23</span>,  <span class="hljs-number">30</span>,<span class="hljs-number">61</span>,  <span class="hljs-number">62</span>,<span class="hljs-number">45</span>,  <span class="hljs-number">59</span>,<span class="hljs-number">119</span>,  <span class="hljs-number">116</span>,<span class="hljs-number">90</span>,  <span class="hljs-number">156</span>,<span class="hljs-number">198</span>,  <span class="hljs-number">373</span>,<span class="hljs-number">326</span></code></pre>
+<p>​    每个 anchor prior 就是两个数字组成的，一个代表高度另一个代表宽度。 v3对b-box进行预测的时候，采用了logistic regression。输出和v2一样都是 (t_x, t_y, t_w, t_h, t_o)，然后通过公式1计算出绝对的 (x, y, w, h, c) 。</p>
+<p><img src="/3_7.png" srcset="/img/loading.gif" alt="c" style="zoom:50%;"></p>
+<p>​    logistic回归用于对anchor包围的部分进行一个目标性评分(objectness score)，即这块位置是目标的可能性有多大。这一步是在predict之前进行的，可以去掉不必要anchor，可以减少计算量。</p>
+<h3 id="4-YOLOv4"><a href="#4-YOLOv4" class="headerlink" title="4. YOLOv4"></a>4. YOLOv4</h3><h3 id="5-YOLOv5"><a href="#5-YOLOv5" class="headerlink" title="5. YOLOv5"></a>5. YOLOv5</h3><h3 id="6-PP-YOLO"><a href="#6-PP-YOLO" class="headerlink" title="6. PP-YOLO"></a>6. PP-YOLO</h3><h3 id="7-Bag-of-Freebies"><a href="#7-Bag-of-Freebies" class="headerlink" title="7. Bag of Freebies"></a>7. Bag of Freebies</h3><p>论文《Bag of Freebies for Training Object Detection Neural Networks》提炼了目标检测算法通用训练 tricks，论文说是 Bag of Freebies，并且更倾向于对 One-stage 系列优化，one-stage 计算量更小，在落地上更为普遍。</p>
+<h3 id="二、目标检测训练Tricks"><a href="#二、目标检测训练Tricks" class="headerlink" title="二、目标检测训练Tricks"></a><strong>二、目标检测训练Tricks</strong></h3><p>  论文[1]总共提到了六种通用的训练Tricks，其中有几种在yolov3原始算法中都有用到，所以说不得不承认yolo系列是非常优秀的目标检测算法。具体为</p>
+<p>1、Visually Coherent Image Mixup for Object Detection (mixup数剧增强,借鉴文[2])</p>
+<p> 与[2]原始的mixup不同点有两点：</p>
+<p>1）文[2]提出的mixup数据增强是一种有特色方法，但是实验对象是分类与对抗生成网络，成对图像的mixup是以resize到相同大小的图像为前提完成的。</p>
+<p>​            <img src="https://img-blog.csdnimg.cn/20190320130541830.png" srcset="/img/loading.gif" alt="img"></p>
+<p>  目标检测问题中如果resize图像到相同大小则会造成图像畸变，检测任务对于这种变化较为敏感，因此作者采用保图像几何形状的方式对图像进行mixup,我的理解是图像直接mixup成对图像，取最大宽高并填充（constant合成的空白区域），最后计算损失时按照mixup的beta分布产生的权重，对损失进行加权求和，再反向传播loss更新模型权重。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190320130542430.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L291eWFuZ2Z1c2h1,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="img"></p>
+<p>2）文[2]的mixup方法中成对图像求加权和的权重是由Beta分布随机生成（Beta分布如图），Beta的两个参数默认取值1.0（源码），原始mixup论文[2]试验则是从0.2到1.0的几组试验值，论文[1]采用的Beta分布两个参数则是取值大于等于1，在实验中Beta分布的参数值取1.5时效果更好，涨点明显：</p>
+<p>​                    <img src="https://img-blog.csdnimg.cn/20190320130541559.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L291eWFuZ2Z1c2h1,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="img">。</p>
+<p>​                     <img src="https://img-blog.csdnimg.cn/20190320130541720.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L291eWFuZ2Z1c2h1,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="img"></p>
+<h5 id="4-标签平滑-label-smoothing"><a href="#4-标签平滑-label-smoothing" class="headerlink" title="4. 标签平滑 label smoothing"></a>4. 标签平滑 label smoothing</h5><p>label  smoothing 个人感觉则是对标签放松处理（改变类别的分布），使得目标函数不至于太严格，降低不同类别的置信度，一定程度上使得模型更易于收敛且能避免模型过拟合（over fitting）。对目标类别的 Ground Truth 做如下处理，对原始标签乘上一个小于 1 且接近于 1 的数，再加上一个类似正则项的东东，其实也就是一种对目标函数做的正则化处理。</p>
+<p>​                         <img src="https://img-blog.csdnimg.cn/20190320130540863.png" srcset="/img/loading.gif" alt="img"></p>
+<p>  其中，K 为类别数目，分子为小正数， 一般取 0.1 。具体的描述可以参看论文[3]。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">for</span> images, labels <span class="hljs-keyword">in</span> train_loader:
+    ...
+    N = labels.size(<span class="hljs-number">0</span>)
+    <span class="hljs-comment"># C is the number of classes.</span>
+    smoothed_labels = torch.full(size=(N, C), fill_value = <span class="hljs-number">0.1</span> / (C - <span class="hljs-number">1</span>)).cuda()
+    smoothed_labels.scatter_(dim=<span class="hljs-number">1</span>, index=torch.unsqueeze(labels, dim=<span class="hljs-number">1</span>), value=<span class="hljs-number">0.9</span>)
+    
+    ...</code></pre>
+<h5 id="5-数据预处理-Data-Preprocessing"><a href="#5-数据预处理-Data-Preprocessing" class="headerlink" title="5. 数据预处理  Data Preprocessing"></a>5. 数据预处理  Data Preprocessing</h5><p>文章着重评估了常见的图像增强方法:</p>
+<ul>
+<li>几何变换：随机裁剪、随机扩张、随机水平翻转、随机 resize</li>
+<li>颜色抖动：亮度、色调、曝光度、对比度调整</li>
+</ul>
+<h5 id="6-Training-Scheduler-Revamping（训练策略改进）"><a href="#6-Training-Scheduler-Revamping（训练策略改进）" class="headerlink" title="6. Training Scheduler Revamping（训练策略改进）"></a>6. Training Scheduler Revamping（训练策略改进）</h5><p>这里主要采用的方案是： warmup + cosine schedule</p>
+<h5 id="7-Synchronized-Batch-Normalization"><a href="#7-Synchronized-Batch-Normalization" class="headerlink" title="7. Synchronized Batch Normalization"></a>7. Synchronized Batch Normalization</h5><p>  这个策略是针对土豪提的，对于大规模数据集的多卡训练，Batch会被分割成很多小部分（小 Batch）在不同的显卡，这样实际上虽然加速了训练，但是Batch却变小了，可能会限制Batch Normalization的作用，与大Batch训练的初衷向左。对于分类问题可能影响不到，但是对于对Batch敏感的目标检测任务则影响很大。基于此采用Synchronized Batch Normalization。</p>
+<h5 id="8、Random-shapes-training-for-single-stage-object-detection-networks-多尺度训练"><a href="#8、Random-shapes-training-for-single-stage-object-detection-networks-多尺度训练" class="headerlink" title="8、Random shapes training for single-stage object detection networks  多尺度训练"></a>8、Random shapes training for single-stage object detection networks  多尺度训练</h5><p>在训练的过程中， 每隔一定的 iterations 就改变训练图片的尺度，这样做可以实现跨尺度特征融合，也能使得模型在多种输入大小下训练以适应不同的图像大小输入。这样做也可以使得模型不容易过拟合以增强泛化性能。</p>
+<h3 id="8-YOLO-的轻量级改进型"><a href="#8-YOLO-的轻量级改进型" class="headerlink" title="8. YOLO 的轻量级改进型"></a>8. YOLO 的轻量级改进型</h3>
+</div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "YOLO&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

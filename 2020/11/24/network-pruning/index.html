@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>network-pruning - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-24 12:17" pubdate>
+        November 24, 2020 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">network-pruning</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>模型剪枝的相关工作记录</p>
+<a id="more"></a>
+<p> 剪枝是指裁减掉不重要的冗余的卷积参数，减少参数量，加快推理速。剪枝可以分为结构化剪枝和非结构化剪枝。在非结构化剪枝中， 是将其置零的，并没有进行剪枝，通常需要搭配固定的硬件。结构化剪枝则是指在 filter 层面，通道层面，或者 shape 层面的剪枝。</p>
+<p><img src="/2020/11/24/network-pruning/3.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>本文主要关注与结构化剪枝的相关工作</p>
+<h3 id="一-解决方案"><a href="#一-解决方案" class="headerlink" title="一. 解决方案"></a>一. 解决方案</h3><h5 id="1-基于度量"><a href="#1-基于度量" class="headerlink" title="1. 基于度量"></a>1. 基于度量</h5><p><strong>(1) 基于权重</strong></p>
+<ul>
+<li><strong>Pruning Filters for Efficient ConvNets  ——  l1 norm</strong> 🌟</li>
+</ul>
+<p>衡量标准: Filter的L1 norm</p>
+<ul>
+<li><strong>Filter pruning via geometric median for deep convolutional neural networks acceleration</strong>    🌟</li>
+</ul>
+<p>衡量标准： 卷积核的几何中位数 </p>
+<p>   <strong>-</strong> <strong>SFP Soft filter pruning —— l2 norm: soft pruning</strong>  🌟</p>
+<p>​    <strong>-</strong> <strong>Learning both Weights and Connections for Efficient Neural Networks  —— no structured prune: weight</strong> 🌟</p>
+<p><strong>(2) feature map</strong></p>
+<ul>
+<li><p><strong>APoZ: Network trimming: A data-driven neuron pruning approach towards efficient deep architectures</strong></p>
+<p>衡量标准: 激活层输出的feature map的的稀疏程度</p>
+</li>
+</ul>
+<p>​    <strong>- HRank</strong></p>
+<p><strong>（3）loss func</strong></p>
+<p>​    <strong>Pruning Convolutional Neural Networks for Resource Efficient Inference ZAS</strong></p>
+<p>​    衡量标准: 修剪网络参数引起的损失函数的变化</p>
+<h5 id="2-基于重建误差"><a href="#2-基于重建误差" class="headerlink" title="2. 基于重建误差"></a>2. 基于重建误差</h5><ul>
+<li><strong>Channel pruning for accelerating very deep neural networks</strong>  🌟</li>
+</ul>
+<p>​      衡量标准: 通过最小化裁剪后特征图和裁剪前特征图之间的误差</p>
+<ul>
+<li><p><strong>ThiNet (Luo et al., 2017)</strong> 🌟</p>
+<p>衡量标准: 用输入子集代替原来的输入得到输出的相似度</p>
+</li>
+</ul>
+<h5 id="3-稀疏化"><a href="#3-稀疏化" class="headerlink" title="3. 稀疏化"></a>3. 稀疏化</h5><ul>
+<li><strong>(SSL) Learning Structured Sparsity in Deep Neural Networks</strong>  <strong>🌟</strong></li>
+</ul>
+<p>​       使用 group Lasso 给损失函数加入相应的惩罚，进行结构化稀疏</p>
+<ul>
+<li><p><strong>(Network Slimming)  l1 norm: bn gamma</strong>  <strong>🌟</strong></p>
+<p>衡量标准: BN层的 γ 参数</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">updateBN</span>():</span>
+    <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> model.modules():
+        <span class="hljs-keyword">if</span> isinstance(m, nn.BatchNorm2d):
+            m.weight.grad.data.add_(args.s*torch.sign(m.weight.data))  <span class="hljs-comment"># L1</span>
+              
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">train</span>(<span class="hljs-params">epoch</span>):</span>
+    <span class="hljs-keyword">for</span> batch_idx, (data, target) <span class="hljs-keyword">in</span> enumerate(train_loader):
+        // ...
+        loss.backward()
+        <span class="hljs-keyword">if</span> args.sr:
+            updateBN()
+        // ...</code></pre>
+</li>
+</ul>
+<h5 id="4-NAS"><a href="#4-NAS" class="headerlink" title="4. NAS"></a>4. NAS</h5><ul>
+<li><p>AMC</p>
+</li>
+<li><p>OneforAll</p>
+</li>
+<li><p>AutoSlim</p>
+</li>
+</ul>
+<h5 id="5-理论思考"><a href="#5-理论思考" class="headerlink" title="5. 理论思考"></a>5. 理论思考</h5><ul>
+<li><p>Rethinking the value of network pruning   🌟</p>
+<p>​    这篇论文的作者实验过程中发现了模型修剪过后，微调得到的效果和重新从头训练几乎相同，于是便做了多组实验证明这一结论，推翻了包括自己的方法在内的很多方法，提出对参数修剪的一个新的认识：参数修剪的实际作用在于得到架构而非权值。</p>
+</li>
+<li><p>The lottery ticket hypothesis: Finding sparse, trainable neural networks  🌟</p>
+</li>
+<li>Recovering from Random Pruning: On the Plasticity of Deep Convolutional Neural Networks</li>
+<li>Pruning from Scratch</li>
+</ul>
+<h5 id="6-简单应用"><a href="#6-简单应用" class="headerlink" title="6.简单应用"></a>6.简单应用</h5><p>(1) YOLO 剪枝</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/153496637"><strong>https://zhuanlan.zhihu.com/p/153496637</strong></a></li>
+</ul>
+<p>(2) GAN</p>
+<ul>
+<li><p>GAN Slimming: All-in-One GAN Compression by A Unified Optimization Framework</p>
+</li>
+<li><p>GAN Compression: Efficient Architectures for Interactive Conditional GANs</p>
+</li>
+</ul>
+<h5 id="7-软硬件联合设计"><a href="#7-软硬件联合设计" class="headerlink" title="7. 软硬件联合设计"></a>7. 软硬件联合设计</h5><ul>
+<li>ADMM</li>
+<li>MCUNet</li>
+<li>One for All </li>
+</ul>
+<h3 id="二-注意事项："><a href="#二-注意事项：" class="headerlink" title="二. 注意事项："></a>二. 注意事项：</h3><ol>
+<li><p>剪裁一个 conv layer 的 filter，需要修改后续 conv 的 filter. 即剪掉 $X<em>i$ 的一个 filter，会导致 $X</em>{i+1}$ 少一个 channel,  $X_{i+1}$ 对应的 filter 在 input_channel 维度上也要减 1。</p>
+</li>
+<li><p>剪裁完 $X<em>i$之后，根据注意事项 1 我们从$X</em>{i+1}$ 的 filter 中删除了一行，在计算$X_{i+1}$的filters的l1_norm(图中绿色一列)的时候，有两种选择</p>
+</li>
+</ol>
+<ul>
+<li>算上被删除的一行：independent pruning </li>
+<li>减去被删除的一行：greedy pruning</li>
+</ul>
+<ol>
+<li>在对ResNet等复杂网络剪裁的时候，还要考虑到后当前卷积层的修改对上一层卷积层的影响。在对 residual block 剪裁时，$X<em>{i+1}$ 层如何剪裁取决于 project shortcut 的剪裁结果，因为我们要保证 project shortcut 的 output 和 $X</em>{i+1}$ 的 output 能被正确的 concat.</li>
+</ol>
+<h5 id="2-敏感度的理解"><a href="#2-敏感度的理解" class="headerlink" title="2. 敏感度的理解"></a>2. 敏感度的理解</h5><p><img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleSlim/release/1.0.1/docs/images/algo/pruning_3.png" srcset="/img/loading.gif" style="zoom:33%;"></p>
+<p>如图所示，横坐标是将filter剪裁掉的比例，竖坐标是精度的损失，每条彩色虚线表示的是网络中的一个卷积层。 以不同的剪裁比例<strong>单独</strong>剪裁一个卷积层，并观察其在验证数据集上的精度损失，并绘出图中的虚线。虚线上升较慢的，对应的卷积层相对不敏感，我们优先剪不敏感的卷积层的filter.</p>
+<ul>
+<li><p>选择最优的剪裁率组合</p>
+<p>我们将上图中的折线拟合为下图中的曲线，每在竖坐标轴上选取一个精度损失值，就在横坐标轴上对应着一组剪裁率，如<strong>图8</strong>中黑色实线所示。 用户给定一个模型整体的剪裁率，我们通过移动<strong>图5</strong>中的黑色实线来找到一组满足条件的且合法的剪裁率。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleSlim/release/1.0.1/docs/images/algo/pruning_4.png" srcset="/img/loading.gif" style="zoom:33%;"></p>
+<ul>
+<li>迭代剪裁</li>
+</ul>
+<p>考虑到多个卷积层间的相关性，一个卷积层的修改可能会影响其它卷积层的敏感度，我们采取了多次剪裁的策略，步骤如下：</p>
+<ul>
+<li>step1: 统计各卷积层的敏感度信息</li>
+<li>step2: 根据当前统计的敏感度信息，对每个卷积层剪掉少量 filter, 并统计 FLOPS，如果 FLOPS 已满足要求，进入step4，否则进行step3。</li>
+<li>step3: 对网络进行简单的fine-tune，进入step1</li>
+<li>step4: fine-tune训练至收敛</li>
+</ul>
+<p>​    </p>
+<p>​    </p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/DL-Deploy/">DL_Deploy</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/12/img2col/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">img2col</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/15/lightweight-cnn-architecture-design/">
+                        <span class="hidden-mobile">lightweight-cnn-architecture-design</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "network-pruning&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,521 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>cmake使用 - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<div class="page-content">
+  <p>cmake 基本使用</p>
+<a id="more"></a>
+<h3 id="一-实例项目"><a href="#一-实例项目" class="headerlink" title="一. 实例项目"></a>一. 实例项目</h3><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> <span class="hljs-built_in">cd</span> project1  <span class="hljs-comment"># use project2/project3 instead of project1</span></span>
+<span class="hljs-meta">$</span><span class="bash"> <span class="hljs-built_in">cd</span> build</span>
+<span class="hljs-meta">$</span><span class="bash"> cmake ..</span>
+<span class="hljs-meta">$</span><span class="bash"> make</span>
+<span class="hljs-meta">$</span><span class="bash"> ./hello <span class="hljs-comment"># </span></span>
+Hello World.</code></pre>
+<ul>
+<li><strong>project 1:</strong>  使用cmake 编译项目</li>
+<li><strong>project 2:</strong> 使用动态链接库</li>
+<li><strong>project 3：</strong> 将src和include 分别放到不同的文件夹下</li>
+<li><strong>project4:</strong> 使用第三方库</li>
+</ul>
+<h3 id="二-基本语法"><a href="#二-基本语法" class="headerlink" title="二. 基本语法"></a>二. 基本语法</h3><h5 id="1-CMake-基本使用"><a href="#1-CMake-基本使用" class="headerlink" title="1. CMake 基本使用"></a>1. CMake 基本使用</h5><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span> (VERSION <span class="hljs-number">2.8</span>)
+<span class="hljs-keyword">project</span> (Demo1)
+<span class="hljs-keyword">add_executable</span>(Demo main.cpp)</code></pre>
+<h5 id="2-多个文件同时编译"><a href="#2-多个文件同时编译" class="headerlink" title="2. 多个文件同时编译"></a>2. 多个文件同时编译</h5><pre><code class="hljs cmake"><span class="hljs-comment"># 使用 aux_source_directory(&lt;dir&gt; &lt;variable&gt;)</span>
+<span class="hljs-keyword">aux_source_directory</span>(src DIR_SRCS)
+<span class="hljs-keyword">add_library</span>(xxxxx SHARED <span class="hljs-variable">$&#123;SRC_FILES&#125;</span>)
+
+<span class="hljs-comment"># glob</span>
+<span class="hljs-keyword">file</span>(GLOB_RECURSE SRC_FILES src/*.cpp) 
+<span class="hljs-keyword">add_library</span>(xxxxx SHARED <span class="hljs-variable">$&#123;SRC_FILES&#125;</span>)
+
+<span class="hljs-comment"># (3)多个文件同时写</span>
+<span class="hljs-keyword">set</span>(SRC_FILES
+    src/util/xxx.cpp
+    src/util/xxxxx_xxxxxxx.cpp
+    src/xxxx.cpp
+    )
+<span class="hljs-keyword">add_library</span>(xxxxx SHARED <span class="hljs-variable">$&#123;SRC_FILES&#125;</span>)</code></pre>
+<h5 id="3-生成动态库或者共享库"><a href="#3-生成动态库或者共享库" class="headerlink" title="3. 生成动态库或者共享库"></a>3. 生成动态库或者共享库</h5><pre><code class="hljs cmake"><span class="hljs-comment"># 静态库</span>
+<span class="hljs-keyword">add_library</span>(slzheliib STATIC libStatic.cpp)
+<span class="hljs-comment"># 共享库</span>
+<span class="hljs-keyword">add_library</span>(dlib SHARED libShared.cpp)</code></pre>
+<h5 id="4-使用第三方包-以-opencv-和-FFTW-为例"><a href="#4-使用第三方包-以-opencv-和-FFTW-为例" class="headerlink" title="4. 使用第三方包(以 opencv 和 FFTW 为例)"></a>4. 使用第三方包(以 opencv 和 FFTW 为例)</h5><pre><code class="hljs cmake"><span class="hljs-comment"># 编译: add_executable(Demo demo.cpp)</span>
+<span class="hljs-keyword">find_package</span>( OpenCV REQUIRED)
+<span class="hljs-keyword">if</span> (OpenCV_FOUND)
+    <span class="hljs-keyword">include_directories</span>(<span class="hljs-variable">$&#123;OpenCV_INCLUDE_DIRS&#125;</span>)
+    <span class="hljs-keyword">target_link_libraries</span>(Demo <span class="hljs-variable">$&#123;Opencv_LIBS&#125;</span>)
+<span class="hljs-keyword">endif</span> (OpenCV_FOUND)</code></pre>
+<pre><code class="hljs cmake"><span class="hljs-comment"># 另外一种方式(通过 xxx.cmake 进行)　</span>
+<span class="hljs-comment"># cmake相当于上一种方式中的find_package和include_directories</span>
+<span class="hljs-comment"># 这里以 FFTW 为例</span>
+<span class="hljs-keyword">include</span>(cmake/FindFFTW.cmake)
+<span class="hljs-keyword">target_link_libraries</span>(udwt-gumbel <span class="hljs-variable">$&#123;OpenCV_LIBS&#125;</span> <span class="hljs-variable">$&#123;FFTW_LIBRARIES&#125;</span>)</code></pre>
+<h5 id="5-如何优化编译选项-Debug-Release模式-："><a href="#5-如何优化编译选项-Debug-Release模式-：" class="headerlink" title="5. 如何优化编译选项(Debug/Release模式)："></a>5. 如何优化编译选项(Debug/Release模式)：</h5><p>​    Debug通常称为调试版本，它包含调试信息，并且不作任何优化，便于程序员调试程序。Release 称为发布版本，它往往是进行了各种优化，使得程序在代码大小和运行速度上都是最优的，以便用户很好地使用。</p>
+<ul>
+<li>在CMakeLists.txt下加入</li>
+</ul>
+<pre><code class="hljs cmake"><span class="hljs-comment"># cmake -DCMAKE_BUILD_TYPE=Debug/Release ..</span>
+<span class="hljs-keyword">SET</span>(CMAKE_BUILD_TYPE <span class="hljs-string">&quot;Release&quot;</span>)
+<span class="hljs-keyword">if</span> (CMAKE_BUILD_TYPE <span class="hljs-keyword">STREQUAL</span> <span class="hljs-string">&quot;Debug&quot;</span>)
+    <span class="hljs-keyword">set</span>(CMAKE_CXX_FLAGS_DEBUG <span class="hljs-string">&quot;$ENV&#123;CXXFLAGS&#125; -O0 -Wall -g -ggdb&quot;</span>)
+    <span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;CMAKE_BUILD_TYPE = Debug&quot;</span>)
+<span class="hljs-keyword">else</span>()
+    <span class="hljs-keyword">set</span>(CMAKE_CXX_FLAGS_RELEASE <span class="hljs-string">&quot;$ENV&#123;CXXFLAGS&#125; -O3 -Wall&quot;</span>)
+    <span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;CMAKE_BUILD_TYPE = Release&quot;</span>)
+<span class="hljs-keyword">endif</span>()</code></pre>
+<p>​        <strong>CMake中有一个变量 CMAKE_BUILD_TYPE ,可以的取值是None、Debug、Release、RelWithDebInfo和MinSizeRel。当这个变量值为Debug的时候,CMake会使用变量 CMAKE_CXX_FLAGS_DEBUG 和 CMAKE_C_FLAGS_DEBUG 中的字符串作为编译选项生成 Makefile</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>CMAKE_BUILD_TYPE</th>
+<th>对应的c编译选项变量</th>
+<th>对应的c++编译选项变量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>None</td>
+<td>CMAKE_C_FLAGS</td>
+<td>CMAKE_CXX_FLAGS</td>
+</tr>
+<tr>
+<td>Debug</td>
+<td>CMAKE_C_FLAGS_DEBUG</td>
+<td>CMAKE_CXX_FLAGS_DEBUG</td>
+</tr>
+<tr>
+<td>Release</td>
+<td>CMAKE_C_FLAGS_RELEASE</td>
+<td>CMAKE_CXX_FLAGS_RELEASE</td>
+</tr>
+<tr>
+<td>RelWithDebInfo</td>
+<td>CMAKE_C_FLAGS_RELWITHDEBINFO</td>
+<td>CMAKE_CXX_FLAGS_RELWITHDEBINFO</td>
+</tr>
+<tr>
+<td>MinSizeRel</td>
+<td>CMAKE_C_FLAGS_MINSIZEREL</td>
+<td>CMAKE_CXX_FLAGS_MINSIZEREL</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>​    如果将优化程度调到最高需要设置<code>-O3</code>，最低的是<code>-O0</code>即不做优化，添加调试信息的参数是<code>-g  -ggdb</code>，如果不添加这个参数，调试信息就不会被包含在生成的二进制中。</p>
+<p>（1）<code>-O</code>，<code>-O1</code> 这两个命令的效果是一样的，目的都是在不影响编译速度的前提下，尽量采用一些优化算法降低代码大小和可执行代码的运行速度。 </p>
+<p>（2）<code>-O2</code> 该优化选项会牺牲部分编译速度，除了执行<code>-O1</code>所执行的所有优化之外，还会采用几乎所有的目标配置支持的优化算法，用以提高目标代码的运行速度。 </p>
+<p>（3） <code>-O3</code> 该选项除了执行<code>-O2</code>所有的优化选项之外，一般都是采取很多向量化算法，提高代码的并行执行程度，利用现代CPU中的流水线，Cache等。这个选项会提高执行代码的大小，当然会降低目标代码的执行时间。</p>
+<p>（4）<code>-Os</code> 这个优化标识和<code>-O3</code>有异曲同工之妙，当然两者的目标不一样，<code>-O3</code>的目标是宁愿增加目标代码的大小，也要拼命的提高运行速度，但是这个选项是在<code>-O2</code>的基础之上，尽量的降低目标代码的大小，这对于存储容量很小的设备来说非常重要。为了降低目标代码大小，会禁用下列优化选项，一般就是压缩内存中的对齐空白(alignment padding)</p>
+<p>（5）<code>-Ofast</code> 该选项将不会严格遵循语言标准，除了启用所有的<code>-O3</code>优化选项之外，也会针对某些语言启用部分优化。如：<code>-ffast-math</code> .</p>
+<p>（6）<code>-Og</code>: 该标识会精心挑选部分与<code>-g</code>选项不冲突的优化选项，当然就能提供合理的优化水平，同时产生较好的可调试信息和对语言标准的遵循程度。</p>
+<h5 id="6-设定使用-C-11"><a href="#6-设定使用-C-11" class="headerlink" title="6. 设定使用 C++11"></a>6. 设定使用 C++11</h5><pre><code class="hljs cmake"><span class="hljs-comment"># Use C++11</span>
+<span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD <span class="hljs-number">11</span>)
+<span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="hljs-keyword">ON</span>)
+<span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;C++11 support has been enabled by default.&quot;</span>)</code></pre>
+<h5 id="7-自定义编译选项-以-OpenMP-和-SSE为例"><a href="#7-自定义编译选项-以-OpenMP-和-SSE为例" class="headerlink" title="7. 自定义编译选项(以 OpenMP 和 SSE为例)"></a>7. 自定义编译选项(以 OpenMP 和 SSE为例)</h5><pre><code class="hljs cmake"><span class="hljs-comment"># Use OpenMP</span>
+<span class="hljs-keyword">option</span>(USE_OPENMP      <span class="hljs-string">&quot;Set to ON to build use openmp&quot;</span>  <span class="hljs-keyword">ON</span>)
+<span class="hljs-keyword">if</span> (USE_OPENMP)
+    <span class="hljs-keyword">find_package</span>(OpenMP QUIET)
+    <span class="hljs-keyword">if</span> (OPENMP_FOUND)
+        <span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;Use OpenMP&quot;</span>)
+        <span class="hljs-keyword">add_definitions</span>(-DUSE_OPENMP)
+        <span class="hljs-keyword">set</span>(CMAKE_C_FLAGS <span class="hljs-string">&quot;$&#123;CMAKE_C_FLAGS&#125; $&#123;OpenMP_C_FLAGS&#125;&quot;</span>)
+        <span class="hljs-keyword">set</span>(CMAKE_CXX_FLAGS <span class="hljs-string">&quot;$&#123;CMAKE_CXX_FLAGS&#125; $&#123;OpenMP_CXX_FLAGS&#125;&quot;</span>)
+        <span class="hljs-keyword">set</span>(CMAKE_EXE_LINKER_FLAGS <span class="hljs-string">&quot;$&#123;CMAKE_EXE_LINKER_FLAGS&#125; $&#123;OpenMP_EXE_LINKER_FLAGS&#125;&quot;</span>)
+    <span class="hljs-keyword">endif</span>()
+<span class="hljs-keyword">endif</span>()
+
+<span class="hljs-comment"># Use SSE</span>
+<span class="hljs-keyword">option</span>(USE_SSE         <span class="hljs-string">&quot;Set to ON to build use SSE&quot;</span>  <span class="hljs-keyword">ON</span>)
+<span class="hljs-keyword">if</span> (USE_SSE)
+    <span class="hljs-keyword">add_definitions</span>(-DUSE_SSE)
+    <span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;Use SSE&quot;</span>)
+    <span class="hljs-keyword">set</span>(CMAKE_CXX_FLAGS <span class="hljs-string">&quot;$&#123;CMAKE_CXX_FLAGS&#125; -msse4.1&quot;</span>)
+<span class="hljs-keyword">endif</span>()</code></pre>
+<h5 id="8-添加版本号"><a href="#8-添加版本号" class="headerlink" title="8. 添加版本号"></a>8. 添加版本号</h5><pre><code class="hljs cmake"><span class="hljs-comment"># Version (DEMO is Project Name)</span>
+<span class="hljs-keyword">set</span> (DEMO_VERSION_MAJOR <span class="hljs-number">0</span>)
+<span class="hljs-keyword">set</span> (DEMO_VERSION_MINOR <span class="hljs-number">1</span>)
+<span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;PROJECT VERSION IS $&#123;DEMO_VERSION_MAJOR&#125;.$&#123;DEMO_VERSION_MINOR&#125;&quot;</span>)</code></pre>
+<h5 id="9-设置子文件夹"><a href="#9-设置子文件夹" class="headerlink" title="9. 设置子文件夹"></a>9. 设置子文件夹</h5><p>在主项目的 <code>CMakeLists.txt</code> 中, 可以使用 <code>add_subdirectory</code> 来添加 子文件夹, 然后在子文件夹中也要有一个 <code>CMakeLists.txt</code> 文件.</p>
+<pre><code class="hljs cmake"><span class="hljs-keyword">add_subdirectory</span>(benchmark)
+<span class="hljs-keyword">add_subdirectory</span>(src)
+<span class="hljs-keyword">add_subdirectory</span>(tools)</code></pre>
+<p>项目的基本目录为:</p>
+<pre><code class="hljs cmake">.
+├── src
+│   ├── CMakeLists.txt
+│   └── xxx.cpp
+├── tools
+│   ├── CMakeLists.txt
+│   └── xxx.cpp
+├── benchmark
+│   ├── CMakeLists.txt
+│   └── xxx.cpp
+├── main.cpp
+└── CMakeLists.txt</code></pre>
+<h5 id="10-测试"><a href="#10-测试" class="headerlink" title="10. 测试"></a>10. 测试</h5><pre><code class="hljs cmake"><span class="hljs-keyword">enable_testing</span>()
+
+<span class="hljs-keyword">add_test</span> (test_5_2 Demo <span class="hljs-number">5</span> <span class="hljs-number">2</span>)
+<span class="hljs-keyword">set_tests_properties</span> (test_5_2 PROPERTIES PASS_REGULAR_EXPRESSION <span class="hljs-string">&quot;is 25&quot;</span>)
+
+<span class="hljs-keyword">add_test</span> (test_2_10 Demo <span class="hljs-number">2</span> <span class="hljs-number">10</span>)
+<span class="hljs-keyword">set_tests_properties</span> (test_2_10 PROPERTIES PASS_REGULAR_EXPRESSION <span class="hljs-string">&quot;is 1024&quot;</span>)</code></pre>
+<p>set_tests_properties 中的 <code>PASS_REGULAR_EXPRESSION</code> 用来测试输出是否包含后面跟着的字符串。</p>
+<h5 id="11-设置安装与与生成安装包"><a href="#11-设置安装与与生成安装包" class="headerlink" title="11.设置安装与与生成安装包"></a>11.设置安装与与生成安装包</h5><p>生成的 Demo 文件将会被复制到 <code>/usr/local/bin</code> 中，而 demo.h 和则会被复制到 <code>/usr/local/include</code> 中。顺带一提的是，这里的 <code>/usr/local/</code> 是默认安装到的根目录，可以通过修改 <code>CMAKE_INSTALL_PREFIX</code> 变量的值来指定这些文件应该拷贝到哪个根目录。</p>
+<pre><code class="hljs cmake"><span class="hljs-keyword">install</span> (TARGETS Demo DESTINATION bin) 
+<span class="hljs-keyword">install</span> (FILES demo.h DESTINATION <span class="hljs-keyword">include</span>)</code></pre>
+<h5 id="12-指定输出目录"><a href="#12-指定输出目录" class="headerlink" title="12. 指定输出目录"></a>12. 指定输出目录</h5><pre><code class="hljs cmake"><span class="hljs-keyword">SET</span>(EXECUTABLE_OUTPUT_PATH <span class="hljs-variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/bin)       <span class="hljs-comment"># 设置可执行文件的输出目录</span>
+<span class="hljs-keyword">SET</span>(LIBRARY_OUTPUT_PATH <span class="hljs-variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/lib)           <span class="hljs-comment"># 设置库文件的输出目录</span></code></pre>
+<h5 id="13-使用第三方软件-但是不安装-以opencv为例"><a href="#13-使用第三方软件-但是不安装-以opencv为例" class="headerlink" title="13.  使用第三方软件,  但是不安装(以opencv为例)"></a>13.  使用第三方软件,  但是不安装(以opencv为例)</h5><p>将所需的头文件放在  <code>include</code>  文件夹中, 将需要的 共享库 <code>*.so</code> 放在 <code>lib</code> 文件夹中.</p>
+<pre><code class="hljs cmake"><span class="hljs-keyword">include_directories</span>(<span class="hljs-keyword">include</span>)
+<span class="hljs-keyword">set</span>(opencv_lib
+   <span class="hljs-variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span>/lib/libopencv_highgui.so.<span class="hljs-number">3.3</span>
+   <span class="hljs-variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span>/lib/libopencv_videoio.so.<span class="hljs-number">3.3</span>
+   <span class="hljs-variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span>/lib/libopencv_imgcodecs.so.<span class="hljs-number">3.3</span>
+   <span class="hljs-variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span>/lib/libopencv_imgproc.so.<span class="hljs-number">3.3</span>
+   <span class="hljs-variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span>/lib/libopencv_core.so.<span class="hljs-number">3.3</span>
+)
+
+<span class="hljs-keyword">target_link_libraries</span>(demo <span class="hljs-variable">$&#123;opencv_lib&#125;</span>)</code></pre>
+<h3 id="三-Cmake常见问题"><a href="#三-Cmake常见问题" class="headerlink" title="三. Cmake常见问题"></a>三. Cmake常见问题</h3><h5 id="1-Question-make-Nothing-to-be-done-for-all-Solution"><a href="#1-Question-make-Nothing-to-be-done-for-all-Solution" class="headerlink" title="1. Question : make: Nothing to be done for `all` Solution"></a>1. <strong>Question</strong> : <strong>make: Nothing to be done for `all` Solution</strong></h5><p>这句提示是说明你已经编译好了，而且没有对代码进行任何改动。若想重新编译，可以先删除以前编译产生的目标文件，然后使用 make clean，然后再使用 make。</p>
+<h5 id="2-Question-gcc-make-cmake-的联系与区别"><a href="#2-Question-gcc-make-cmake-的联系与区别" class="headerlink" title="2. Question: gcc/make/cmake 的联系与区别"></a>2. Question: gcc/make/cmake 的联系与区别</h5><p>​      gcc是GNU Compiler Collection（就是GNU编译器套件），也可以简单认为是编译器，它可以编译很多种编程语言（括C、C++、Objective-C、Fortran、Java等等）。<strong>当你的程序只有一个源文件时，直接就可以用gcc命令编译它</strong>。但是当你的程序包含很多个源文件时，用gcc命令逐个去编译时，你就很容易混乱而且工作量大。这时可以使用make 工具，<strong>make工具可以看成是一个智能的批处理工具，它本身并没有编译和链接的功能，而是用类似于批处理的方式—— 通过调用makefile文件中用户指定的命令来进行编译和链接的</strong>。简单的说就像一首歌的乐谱，make工具就像指挥家，指挥家根据乐谱指挥整个乐团怎么样演奏，make工具就根据makefile中的命令进行编译和链接的。makefile命令中就包含了调用gcc（也可以是别的编译器）去编译某个源文件的命令。</p>
+<p>​        makefile在一些简单的工程完全可以人工手写，但是当工程非常大的时候，手写makefile也是非常麻烦的，如果换了个平台makefile又要重新修改。这时候就出现了Cmake这个工具，<strong>cmake就可以更加简单的生成makefile文件给上面那个make用</strong>。当然cmake还有其他功能，就是<strong>可以跨平台</strong>生成对应平台能用的makefile，你不用再自己去修改了。可是cmake根据什么生成makefile呢？它又要<strong>根据一个叫CMakeLists.txt文件（学名：组态档）去生成makefile</strong>。到最后CMakeLists.txt文件谁写啊？亲，是你自己手写的。三者的关系可以如下面的简图所示：</p>
+<p><img src="/cmake.png" srcset="/img/loading.gif" alt="p4107"></p>
+<h5 id="3-常见的路径"><a href="#3-常见的路径" class="headerlink" title="3. 常见的路径"></a>3. 常见的路径</h5><p><strong>PROJECT_SOURCE_DIR:</strong> 含有 <code>project()</code> 指令的<code>CMakeLists.txt</code> 文件夹。</p>
+<p><strong>CMAKE_CURRENT_SOURCE_DIR:</strong> 目前正在处理的CMakeLists.txt 所在位置。</p>
+<h5 id="4-指定输出路径"><a href="#4-指定输出路径" class="headerlink" title="4. 指定输出路径"></a>4. 指定输出路径</h5><pre><code class="hljs cmake"><span class="hljs-keyword">SET</span>(EXECUTABLE_OUTPUT_PATH <span class="hljs-variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/../bin)       <span class="hljs-comment">#设置可执行文件的输出目录</span>
+<span class="hljs-keyword">SET</span>(LIBRARY_OUTPUT_PATH <span class="hljs-variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/../lib)           <span class="hljs-comment">#设置库文件的输出目录</span></code></pre>
+<h3 id="四-参考链接"><a href="#四-参考链接" class="headerlink" title="四. 参考链接"></a>四. 参考链接</h3><p>[0] <a target="_blank" rel="noopener" href="https://cmake.org">CMake官方网站</a></p>
+<p>[1] <a target="_blank" rel="noopener" href="https://www.hahack.com/codes/cmake/">CMake 入门实战</a></p>
+<p>[2]  <a target="_blank" rel="noopener" href="https://cmake.org/cmake-tutorial/">CMake-tutorial</a></p>
+<p>[3] 《CMake Pratice》</p>
+<p>[4]  <a target="_blank" rel="noopener" href="https://cmake.org/mailing-lists/">cmake-maillist</a></p>
+<p>[5]  <a target="_blank" rel="noopener" href="https://github.com/onqtam/awesome-cmake">awesome-camke</a></p>
+<p>[6] 《Mastering CMake》</p>
+
+</div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "cmake使用&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
