@@ -229,27 +229,32 @@
 </ul>
 <h4 id="三-常见的推理框架"><a href="#三-常见的推理框架" class="headerlink" title="三. 常见的推理框架"></a>三. 常见的推理框架</h4><p>​        一般会提供模型优化和推断引擎两个模块。模型优化模块用于将给定的模型转化为标准的 Intermediate Representation (IR) ，并对模型优化。推断引擎 (Inference Engine) 则会根据特定的硬件进行算子的优化，以实现高效的前向推导。 </p>
 <ul>
-<li>国外：</li>
-</ul>
-<p>google：tf-lite    <a target="_blank" rel="noopener" href="https://www.tensorflow.org/lite/performance/post_training_quantization">https://www.tensorflow.org/lite/performance/post_training_quantization</a></p>
-<p>facebook：caffe2  + qnnpack: <a target="_blank" rel="noopener" href="https://github.com/pytorch/QNNPACK">https://github.com/pytorch/QNNPACK</a></p>
-<p>intel： <strong>open-vino(for intel CPU)</strong>  <a target="_blank" rel="noopener" href="https://software.intel.com/en-us/openvino-toolkit">https://software.intel.com/en-us/openvino-toolkit</a></p>
-<p>apple： core ml</p>
-<p>nvidia： <strong>TensorRT(for nvidia GPU)</strong></p>
+<li><p>国外：</p>
 <ul>
-<li>国内：</li>
+<li>google：tf-lite    <a target="_blank" rel="noopener" href="https://www.tensorflow.org/lite/performance/post_training_quantization">https://www.tensorflow.org/lite/performance/post_training_quantization</a></li>
+<li>facebook：caffe2  + qnnpack: <a target="_blank" rel="noopener" href="https://github.com/pytorch/QNNPACK">https://github.com/pytorch/QNNPACK</a></li>
+<li>intel： <strong>open-vino(for intel CPU)</strong>  <a target="_blank" rel="noopener" href="https://software.intel.com/en-us/openvino-toolkit">https://software.intel.com/en-us/openvino-toolkit</a></li>
+<li>apple： core ml</li>
+<li>nvidia： <strong>TensorRT(for nvidia GPU)</strong></li>
 </ul>
-<p>腾讯：<strong>ncnn -&gt; TNN(for arm chip)</strong>  <a target="_blank" rel="noopener" href="https://github.com/Tencent/ncnn">https://github.com/Tencent/ncnn</a></p>
-<p>阿里： mnn  <a target="_blank" rel="noopener" href="https://github.com/alibaba/MNN">https://github.com/alibaba/MNN</a></p>
-<p>百度： paddlelite  <a target="_blank" rel="noopener" href="https://github.com/PaddlePaddle/Paddle-Lite">https://github.com/PaddlePaddle/Paddle-Lite</a></p>
-<p>小米：mace  <a target="_blank" rel="noopener" href="https://github.com/XiaoMi/mace">https://github.com/XiaoMi/mace</a></p>
+</li>
+<li><p>国内：</p>
 <ul>
-<li>其他</li>
+<li>腾讯：<strong>ncnn -&gt; TNN(for arm chip)</strong>  <a target="_blank" rel="noopener" href="https://github.com/Tencent/ncnn">https://github.com/Tencent/ncnn</a></li>
+<li>阿里： mnn  <a target="_blank" rel="noopener" href="https://github.com/alibaba/MNN">https://github.com/alibaba/MNN</a></li>
+<li>百度： paddlelite  <a target="_blank" rel="noopener" href="https://github.com/PaddlePaddle/Paddle-Lite">https://github.com/PaddlePaddle/Paddle-Lite</a></li>
+<li>小米：mace  <a target="_blank" rel="noopener" href="https://github.com/XiaoMi/mace">https://github.com/XiaoMi/mace</a></li>
 </ul>
-<p>TVM: <a target="_blank" rel="noopener" href="https://github.com/dmlc/tvm">https://github.com/dmlc/tvm</a></p>
-<p>TC: TensorComprehensions</p>
-<p>onnx: <a target="_blank" rel="noopener" href="https://github.com/onnx/onnx">https://github.com/onnx/onnx</a></p>
-<p>ps：MLIR（MachineLearning Intermediate Represent）深度学习中间表示已经越来越受重视，但是最大的问题是众多的框架无法统一IR，前途漫漫（参见 ONNX 项目）。</p>
+</li>
+<li><p>其他</p>
+<ul>
+<li>TVM: <a target="_blank" rel="noopener" href="https://github.com/dmlc/tvm">https://github.com/dmlc/tvm</a></li>
+<li>TC: TensorComprehensions</li>
+<li>onnx: <a target="_blank" rel="noopener" href="https://github.com/onnx/onnx">https://github.com/onnx/onnx</a></li>
+</ul>
+</li>
+</ul>
+<p>ps：MLIR（MachineLearning Intermediate Represent）深度学习中间表示已经越来越受重视，但是最大的问题是众多的框架无法统一 IR，前途漫漫（参见 ONNX 项目）。</p>
 <p>目前做 MLIR 比较出色的包括（这些 IR 都仅限这些框架自己内部使用）：MLIR(<a target="_blank" rel="noopener" href="https://github.com/tensorflow/mlir)、TVM、XLA">https://github.com/tensorflow/mlir)、TVM、XLA</a></p>
 <h4 id="四、硬件发展"><a href="#四、硬件发展" class="headerlink" title="四、硬件发展"></a>四、硬件发展</h4><p>各类硬件的发展都离不开芯片制程、核心数量、指令架构优化三个主要方向</p>
 <p><strong>2.1 服务器端硬件分类</strong></p>
@@ -260,16 +265,11 @@
 <p> DSP、<strong>FPGA</strong>、外接式加速设备，各种云平台形式的部署</p>
 <h4 id="五-一些基本的问题"><a href="#五-一些基本的问题" class="headerlink" title="五. 一些基本的问题"></a>五. 一些基本的问题</h4><h5 id="1-工程上对卷积操作如何进行优化的？"><a href="#1-工程上对卷积操作如何进行优化的？" class="headerlink" title="1. 工程上对卷积操作如何进行优化的？"></a>1. 工程上对卷积操作如何进行优化的？</h5><p><strong>目前，卷积的计算大多采用间接计算的方式，主要有以下几种实现方式</strong>：</p>
 <ul>
-<li><p>滑窗机制。这种方法是最直观最简单的方法。 但是，该方法不容易实现大规模加速，因此，通常情况下不采用这种方法（但是也不是绝对不会用，在一些特定的条件下该方法反而是最高效的）</p>
-</li>
-<li><p>im2col + GEMM。 caffe/MXNet等很多框架中都使用了这种计算方式，原因是将问题转化为矩阵乘法后可以方便的使用很多矩阵运算库(如MKL、openblas、Eigen等)。</p>
-</li>
-<li><p>FFT变换。 时域卷积等于频域相乘，因此可将问题转化为简单的乘法问题。傅里叶变换和快速傅里叶变化是在经典图像处理里面经常使用的计算方法，但是，在 ConvNet 中通常不采用，主要是因为在 ConvNet 中的卷积模板通常都比较小，例如 3×3 等，这种情况下，FFT 的时间开销反而更大，所以很少在CNN中利用FFT实现卷积。</p>
-</li>
-<li><p>Winograd：快速卷积算法，针对不同大小的卷积核进行优化，减少计算中的乘法运算次数，提升运行速度。-&gt; 大部分的前向推导框架都实现了 winograd算法。</p>
-</li>
-<li><p>MEC：改进了 im2col+GEMM 算法</p>
-</li>
+<li>滑窗机制。这种方法是最直观最简单的方法。 但是，该方法不容易实现大规模加速，因此，通常情况下不采用这种方法（但是也不是绝对不会用，在一些特定的条件下该方法反而是最高效的）</li>
+<li>im2col + GEMM。 caffe/MXNet等很多框架中都使用了这种计算方式，原因是将问题转化为矩阵乘法后可以方便的使用很多矩阵运算库(如MKL、openblas、Eigen等)。</li>
+<li>FFT变换。 时域卷积等于频域相乘，因此可将问题转化为简单的乘法问题。傅里叶变换和快速傅里叶变化是在经典图像处理里面经常使用的计算方法，但是，在 ConvNet 中通常不采用，主要是因为在 ConvNet 中的卷积模板通常都比较小，例如 3×3 等，这种情况下，FFT 的时间开销反而更大，所以很少在CNN中利用FFT实现卷积。</li>
+<li>Winograd：快速卷积算法，针对不同大小的卷积核进行优化，减少计算中的乘法运算次数，提升运行速度。-&gt; 大部分的前向推导框架都实现了 winograd算法。</li>
+<li>MEC：改进了 im2col+GEMM 算法</li>
 </ul>
 <h5 id="2、算法底层加速相关的技术"><a href="#2、算法底层加速相关的技术" class="headerlink" title="2、算法底层加速相关的技术"></a>2、算法底层加速相关的技术</h5><p><strong>代码层级：</strong>图优化(conv + bn + relu 融合)、卷积计算方式优化（im2col + gemm、winograd、FFT）、尽量避免乘法和除法运算（使用位移、加减法运算替代）、精简代码减少不必要的运算、循环优化、高效存储(CSR)等</p>
 <p><strong>汇编优化：</strong>并非汇编代码的效率一定比 C 快，如果 C 程序写的足够好，则编译器生成的汇编可能质量会更高，只是针对特定场景下的情况编译器的优化可能还赶不上高效优化后的手写汇编，因此 ncnn、MNN 都采用了汇编实现算子，但是 TVM 针对 CPU 的代码生成并不是生成的汇编，但是对生成的 LLVM IR 做了很多的优化，目前基本上在 ARM 上已经与 ncnn、MNN 的性能相当了。</p>
