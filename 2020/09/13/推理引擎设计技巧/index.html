@@ -1,0 +1,578 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>推理引擎设计技巧 - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-13 00:26" pubdate>
+        September 13, 2020 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      785 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">推理引擎设计技巧</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h4 id="1-基于C-C-的基本优化"><a href="#1-基于C-C-的基本优化" class="headerlink" title="1. 基于C/C++的基本优化"></a>1. 基于C/C++的基本优化</h4><ol>
+<li><p>编译器很牛逼，GCC/CLANG 都有运行速度的优化选项，打开这些选项能帮助程序显著提升速度，虽然这还远远不够，但聊胜于无吧。</p>
+<p>下面是 ncnn 示例项目中的一段代码:</p>
+<pre><code class="hljs cmake"><span class="hljs-comment"># ncnn/examples/squeezencnn/jni/Android.mk</span>
+LOCAL_CFLAGS := -O2 -fvisibility=hidden -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -ffast-<span class="hljs-keyword">math</span>
+LOCAL_CPPFLAGS := -O2 -fvisibility=hidden -fvisibility-inlines-hidden -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -ffast-<span class="hljs-keyword">math</span>
+LOCAL_LDFLAGS += -Wl,--gc-sections</code></pre>
+<p>以前工作时候写的CMakeLists 中的代码：</p>
+<pre><code class="hljs cmake"><span class="hljs-comment"># set(CMAKE_BUILD_TYPE Release)</span>
+<span class="hljs-keyword">if</span> (CMAKE_BUILD_TYPE <span class="hljs-keyword">STREQUAL</span> <span class="hljs-string">&quot;Debug&quot;</span>)
+    <span class="hljs-keyword">set</span>(CMAKE_CXX_FLAGS_DEBUG <span class="hljs-string">&quot;$ENV&#123;CXXFLAGS&#125; -O0 -Wall -g2 -ggdb&quot;</span>)
+    <span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;CMAKE_BUILD_TYPE = Debug&quot;</span>)
+<span class="hljs-keyword">else</span>()
+    <span class="hljs-keyword">set</span>(CMAKE_CXX_FLAGS_RELEASE <span class="hljs-string">&quot;$ENV&#123;CXXFLAGS&#125; -O3 -Wall&quot;</span>)
+    <span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;CMAKE_BUILD_TYPE = Release&quot;</span>)
+<span class="hljs-keyword">endif</span>()</code></pre>
+</li>
+<li><p>书写高效的C代码。循环展开、内联、分支优化，避免除法，查表等优化小技巧要滚瓜烂熟，信手拈来。</p>
+</li>
+<li><p>必须看得懂汇编，即使你不写，也要知道编译器编译出来的汇编代码效率如何。这样你可以通过调整C/C++代码，让编译器生成你需要的代码。</p>
+</li>
+</ol>
+<h4 id="2-缓存友好"><a href="#2-缓存友好" class="headerlink" title="2. 缓存友好"></a>2. 缓存友好</h4><h5 id="（1）少用内存"><a href="#（1）少用内存" class="headerlink" title="（1）少用内存"></a>（1）少用内存</h5><h5 id="（2）连续访问、对齐访问、合并访问、显示对齐数据加载、缓存预取"><a href="#（2）连续访问、对齐访问、合并访问、显示对齐数据加载、缓存预取" class="headerlink" title="（2）连续访问、对齐访问、合并访问、显示对齐数据加载、缓存预取"></a>（2）连续访问、对齐访问、合并访问、显示对齐数据加载、缓存预取</h5><h4 id="3-多线程"><a href="#3-多线程" class="headerlink" title="3. 多线程"></a>3. 多线程</h4><h5 id="1-OpenMP"><a href="#1-OpenMP" class="headerlink" title="1. OpenMP"></a>1. OpenMP</h5><p>OpenMP会自动为循环分配线程，使用OpenMP加速只需要在串行代码中添加编译指令以及少量API即可。理想情况下，加速比大约能达到0.75*cores。</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// ncnn/src/layer/relu.cpp</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">ReLU::forward_inplace</span><span class="hljs-params">(Mat&amp; bottom_top_blob, <span class="hljs-keyword">const</span> Option&amp; opt)</span> <span class="hljs-keyword">const</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (bottom_top_blob.elemsize == <span class="hljs-number">1u</span>)
+        <span class="hljs-keyword">return</span> ReLU::forward_inplace_int8(bottom_top_blob, opt);
+
+    <span class="hljs-keyword">int</span> w = bottom_top_blob.w;
+    <span class="hljs-keyword">int</span> h = bottom_top_blob.h;
+    <span class="hljs-keyword">int</span> channels = bottom_top_blob.c;
+    <span class="hljs-keyword">int</span> size = w * h;
+
+    <span class="hljs-keyword">if</span> (slope == <span class="hljs-number">0.f</span>)
+    &#123;
+        <span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> omp parallel for num_threads(opt.num_threads)</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> q=<span class="hljs-number">0</span>; q&lt;channels; q++)
+        &#123;
+            <span class="hljs-keyword">float</span>* ptr = bottom_top_blob.channel(q);
+
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;size; i++)
+            &#123;
+                <span class="hljs-keyword">if</span> (ptr[i] &lt; <span class="hljs-number">0</span>)
+                    ptr[i] = <span class="hljs-number">0</span>;
+            &#125;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        #pragma omp parallel <span class="hljs-keyword">for</span> num_threads(opt.num_threads)
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> q=<span class="hljs-number">0</span>; q&lt;channels; q++)
+        &#123;
+            <span class="hljs-keyword">float</span>* ptr = bottom_top_blob.channel(q);
+
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;size; i++)
+            &#123;
+                <span class="hljs-keyword">if</span> (ptr[i] &lt; <span class="hljs-number">0</span>)
+                    ptr[i] *= slope;
+            &#125;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p>​    但并非所有循环都适合做多线程优化，如果每次循环只做了非常少的事情，那么使用多线程会得不偿失。实际运用中，可以通过 <code>#pragma omp parallel for if (cond)</code> 语句来判断runtime过程中是否要启用多线程。</p>
+<h5 id="动态调度"><a href="#动态调度" class="headerlink" title="动态调度"></a>动态调度</h5><h5 id="稀疏化"><a href="#稀疏化" class="headerlink" title="稀疏化"></a>稀疏化</h5><h5 id="定点化"><a href="#定点化" class="headerlink" title="定点化"></a>定点化</h5><h5 id="NEON-汇编"><a href="#NEON-汇编" class="headerlink" title="NEON 汇编"></a>NEON 汇编</h5><h4 id="4-内存精简"><a href="#4-内存精简" class="headerlink" title="4. 内存精简"></a>4. 内存精简</h4><p>每个layer都会产生blob，除了最后的结果和多分支中间结果，大部分blob都可以不保留，开启ncnn的轻模式可以在运算后自动回收，省下内存。  如下图所示：</p>
+<p><img src="/2020/09/13/%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E8%AE%BE%E8%AE%A1%E6%8A%80%E5%B7%A7/1.png" srcset="/img/loading.gif" alt>某网络结构为 <code>Conv</code> -&gt; <code>Bias</code> -&gt; <code>ReLU</code> -&gt; <code>Concat</code>，在轻模式下，向ncnn索要Concat结果时，Conv结果会在运算Bias时自动回收，而Bais结果会在运算ReLU时自动回收，而ReLU结果会在运算Concat时自动回收, 最后只保留Concat结果，后面再需要C结果会直接获得，满足绝大部分深度网络的使用方式。ncnn 开启轻模式仅需要一行代码:</p>
+<pre><code class="hljs cpp">set_light_mode(<span class="hljs-literal">true</span>)</code></pre>
+<p>相关参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://m.facebook.com/notes/facebook-engineering/three-optimization-tips-for-c/10151361643253920">Three-optimization-tips-for-c</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/aix/library/au-aix-openmp-framework/index.html">通过GCC学习OpenMP框架</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.openmp.org/">OPEN MP官网</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/DL-Deploy/">DL_Deploy</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/13/leetcode/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/18/rk3399%E7%B3%BB%E7%BB%9F%E7%83%A7%E5%86%99/">
+                        <span class="hidden-mobile">rk3399系统烧写</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "推理引擎设计技巧&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

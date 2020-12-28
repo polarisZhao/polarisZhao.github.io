@@ -160,6 +160,223 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/10/21/principles-of-detection-network-design/">principles-of-detection-network-design</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/21/principles-of-detection-network-design/">
+          
+          
+            
+          
+          一. 网络主题框架1. 检测网络一般分为三个部分： backbone、neck(用于进行特征融合)、head
+（1）backbonebackbone 的常见的设计方案有：
+
+resnet 及其相应的扩展系列、efficientnet、hrnet 等网络
+轻量级别网络：shufflenet、mobilenet、ghostnet 等网络
+
+可以尝试的一些解决方案：
+
+SPP 模块、RFB 模块
+
+注意
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-21 17:23" pubdate>
+              2020-10-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%96%B9%E5%90%91/">基本方向</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/10/10/super-resolution/">super_resolution</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/10/super-resolution/">
+          
+          
+            
+          
+          超分辨率增强方向的一些记录
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-10 17:06" pubdate>
+              2020-10-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%96%B9%E5%90%91/">基本方向</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/21/ncnn%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E6%B5%85%E6%9E%90/">ncnn前向计算流程浅析</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/21/ncnn%E5%89%8D%E5%90%91%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E6%B5%85%E6%9E%90/">
+          
+          
+            
+          
+          1. 前向计算
+​    使用ncnn进行前向计算的步骤很简单，就如下十几行代码即可完成。
+/* Step 1.1 : 加载.parma 文件 */
+NSString *paramPath = [[NSBundle mainBundle] pathForResource:@&quot;squeezenet_v1.1&quot; ofType:@&quot;param&quot;];
+ncnn_ne
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-21 22:10" pubdate>
+              2020-09-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-6/">ncnn源码分析_6</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-6/">
+          
+          
+            
+          
+          分析了几个比较常见的算子 forward 过程， 比如 abs， bias，argmax， conv，pool， bn 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-21 19:00" pubdate>
+              2020-09-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-5/">ncnn源码分析_5</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-5/">
+          
+          
+            
+          
+          
+ncnn 提供了两种解析网络 layer 的方法：
+方法一: 在推理中进行解析模型转换之后，某些 layer 没有转换成功：(在转换的过程中)。 如 shufflenetv2 中，param 文件只转换到了 fc 这一个 layer。这时需要添加一层softmax，可以先对param文件中转换成功的layer做推理，然后手动添加一个softmax层：
+ncnn::Extractor ex = s
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-21 17:09" pubdate>
+              2020-09-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/09/21/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-4/">ncnn源码分析_4</a>
       </h1>
 
@@ -303,6 +520,13 @@
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+            
+          </div>
+        
         
       </div>
     </article>
@@ -348,171 +572,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/17/mxnet2ncnn/">mxnet2ncnn</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/17/mxnet2ncnn/">
-          
-          
-            
-          
-          mxnet2ncnn 部署方案
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-17 18:15" pubdate>
-              2020-09-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/DL-Deploy/">DL_Deploy</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/08/18/rk3399%E7%B3%BB%E7%BB%9F%E7%83%A7%E5%86%99/">rk3399系统烧写</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/08/18/rk3399%E7%B3%BB%E7%BB%9F%E7%83%A7%E5%86%99/">
-          
-          
-            
-          
-          一. 相关工具的准备
-下载 烧写工具:
-
-git clone https://github.com/rockchip-linux/rkbin.git
-
-下载相关的 ubuntu 镜像。下载地址  https://github.com/lanseyujie/tn3399_v3/release
-
-二. 刷机
-板卡进入刷机模式
-
-连接 usb-c 和 PC 主机。断开电源， 按住 recovey 键， 
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-18 09:25" pubdate>
-              2020-08-18
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%9B%B8%E5%85%B3/">嵌入式相关</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2019/04/13/Classification-neural-network/">Classification_neural_network</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/04/13/Classification-neural-network/">
-          
-          
-            
-          
-          本文主要梳理了四种主要常见的分类网络 alexnet、vgg、inception、resnet。
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-04-13 15:36" pubdate>
-              2019-04-13
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2019/04/13/mobile-neural-network-engine-design/">mobile-neural-network-engine-design</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/04/13/mobile-neural-network-engine-design/">
-          
-          
-            
-          
-          1. 基于C/C++的基本优化
-编译器很牛逼，GCC/CLANG 都有运行速度的优化选项，打开这些选项能帮助程序显著提升速度，虽然这还远远不够，但聊胜于无吧。
-下面是 ncnn 示例项目中的一段代码:
-# ncnn/examples/squeezencnn/jni/Android.mk
-LOCAL_CFLAGS := -O2 -fvisibility=hidden -fomit-frame-poi
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-04-13 00:26" pubdate>
-              2019-04-13
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

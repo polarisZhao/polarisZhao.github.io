@@ -1,0 +1,576 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>FaceBoxes - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-04-13 18:00" pubdate>
+        April 13, 2019 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">FaceBoxes</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>FaceBoxes: A CPU Real-time Face Detector with High Accuracy</p>
+<a id="more"></a>
+<h3 id="FaceBoxes-A-CPU-Real-time-Face-Detector-with-High-Accuracy"><a href="#FaceBoxes-A-CPU-Real-time-Face-Detector-with-High-Accuracy" class="headerlink" title="FaceBoxes: A CPU Real-time Face Detector with High Accuracy"></a>FaceBoxes: A CPU Real-time Face Detector with High Accuracy</h3><p>论文阅读：FaceBoxes: A CPU Real-time Face Detector with High Accuracy</p>
+<p>文章： <a target="_blank" rel="noopener" href="http://cn.arxiv.org/abs/1708.05234">http://cn.arxiv.org/abs/1708.05234</a></p>
+<h4 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h4><p>2个挑战：</p>
+<p>1) 在杂乱背景下人脸视角大的变化需要人脸检测器精准的解决复杂人脸和非人脸的分类问题。</p>
+<p>2) 较大的搜索空间和人脸尺寸进一步增加了时间效率的需要。</p>
+<p>​        传统方法效率高但在人脸大的视角变化下精度不够，基于CNN的方法精度高但速度很慢。受到Faster R-CNN的RPN以及SSD中多尺度机制的启发，便有了这篇可以在CPU上实时跑的FaceBoxes。</p>
+<h4 id="FaceBoxes"><a href="#FaceBoxes" class="headerlink" title="FaceBoxes"></a>FaceBoxes</h4><p><strong>（1）RDCL：Rapidly Digested Convolutional Layers, 加速计算</strong></p>
+<p>​    缩小输入的空间大小：为了快速减小输入的空间尺度大小，在卷积核池化上使用了一系列的大的stride,在Conv1,Pool1,Conv2,Pool2上stride分别是4,2,2,2,RDCL的stride一共是32，意味着输入的尺度大小被快速减小了32倍。这里是区别于YOLO v3 的关键， YOLO v3 整体下降了32倍，这里仅仅在 RDCL 部分就下降了32倍，参数量是少了很多，可以加快速度，这个点还是值得借鉴的</p>
+<ul>
+<li><p>选择合适的kernel size：一个网络开始的一些层的kernel size应该比较小以用来加速，同时也应该足够大用以减轻空间大小减小带来的信息损失。Conv1,Conv2和所有的Pool分别选取7x7, 5x5, 3x3的kernel size。</p>
+</li>
+<li><p>减少输出通道数：使用C.ReLU来增加输出通道数，比使用卷积增加通道数需要的参数量更少。</p>
+</li>
+</ul>
+<p><strong>（2）MSCL：Multiple Scale Convolutional Layers,丰富感受野，使不同层的anchor离散化以处理多尺度人脸</strong></p>
+<p>　　将RPN作为一个人脸检测器，不能获取很好的性能有以下两个原因：(1) RPN中的anchor只和最后一个卷积层相关，其中的特征和分辨率在处理人脸变化上太弱。(2) anchor相应的层使用一系列不同的尺度来检测人脸，但只有单一的感受野，不能匹配不同尺度的人脸。</p>
+<p>　　为解决这个问题，对MSCL从以下两个角度去设计：</p>
+<p>　　Multi-scale design along the dimension of network depth.如下图，anchor在多尺度的feature map上面取，类似SSD。</p>
+<p><img src="/2019/04/13/FaceBoxes/1.png" srcset="/img/loading.gif" alt="img"></p>
+<p>Multi-scale design along the dimension of network width.使用inception模块，内部使用不同大小的卷积核，可以捕获到更多的尺度信息。</p>
+<p><strong>（3）Anchor densification strategy：</strong></p>
+<p> Inception的anchor尺度为32<em>32,64</em>64,128<em>128,Conv3_2、Conv4_2的尺度分别为256</em>256和512<em>512。比如Conv3_2的stride是64、anchor大小为256</em>256，表示对应输入图片每64像素大小有一个256*256的anchor。</p>
+<p><img src="/2019/04/13/FaceBoxes/2.png" srcset="/img/loading.gif" alt="img"></p>
+<p>​    我们定义 anchor密度为：Adensity = Ascale/Ainterval。Ascale表示anchor的尺度，Ainterval表示anchor间隔。</p>
+<p>​    显然在不同尺度上anchor的密度不均衡。相比大的anchor（128-256-512），小的anchor（32和64）过于稀疏，将会导致在小脸检测中低的召回率。</p>
+<p>为解决不均衡问题，此处提出新的anchor策略。为了加大一种anchor的密度，在一个感受野的中心均匀的堆叠n^2 个anchor（本来是1个）用来预测。文章里对32<em>32的anchor做了4倍，对64</em>64的anchor做了2倍，这样就可以保证不同尺度的anchor有相同的密度。</p>
+<p><img src="/2019/04/13/FaceBoxes/3.png" srcset="/img/loading.gif" alt="img"></p>
+<h4 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h4><h5 id="1-Training-dataset"><a href="#1-Training-dataset" class="headerlink" title="1. Training dataset:"></a>1. Training dataset:</h5><p>​    WIDER FACE的子集，12880个图片。</p>
+<p><strong>（1）Data augmentation:</strong></p>
+<ul>
+<li><p>Color distorition:根据<a target="_blank" rel="noopener" href="https://arxiv.org/ftp/arxiv/papers/1312/1312.5402.pdf">《Some Improvements on Deep Convolutional Neural Network Based Image Classification》</a></p>
+</li>
+<li><p>Random cropping: 从原图中随机裁剪5个方块patch:一个最大方块，其他的分别在范围[0.3, 1]之于原图尺寸。</p>
+</li>
+<li><p>Scale transformation:将随机裁剪后的方块patch给resize到1024*1024.</p>
+</li>
+<li><p>Horizontal flipping: 0.5的概率翻转。</p>
+</li>
+<li><p>Face-box filter: 如果face box的中心在处理后的图片上，则保持其重叠，然后将高或宽小于20像素的face box过滤出来。</p>
+</li>
+</ul>
+<p><strong>（2）Matching strategy:</strong></p>
+<p>​    在训练时需要判断哪个anchor是和哪个face bounding box相关的。首先使用jaccard overlap将每个脸和anchor对应起来，然后对anchor和任意脸jaccard overlap高于阈值（0.35）的匹配起来。</p>
+<p><strong>（3）Loss function:</strong></p>
+<p>​    和Faster R-CNN中的RPN用同样的loss,一个2分类的softmax loss用来做分类，smooth L1用来做回归。</p>
+<p><strong>（4）Hard negative mining:</strong></p>
+<p>在anchor匹配后，大多数anchor都是负样本，导致正样本和负样本严重不均衡。为了更快更稳定的训练，将他们按照loss值排序并选取最高的几个，保证正样本和负样本的比例最高不超过3:1.</p>
+<p><strong>（5）Other implementation details:</strong></p>
+<p>​    Xavier随机初始化、优化器SGD、momentum:0.9、weight decay:5e-4，batch size:32，迭代最大次数:120k，初始80k迭代learning rate:1e-3，80-100k迭代用1e-4，,100-120k迭代用1e-5，使用caffe实现。</p>
+<h4 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h4><p><img src="/2019/04/13/FaceBoxes/4.png" srcset="/img/loading.gif" alt="img"></p>
+<p><strong>(2) Model analysis</strong></p>
+<p>​    FDDB相比 AFW 和 PASCAL face 较为困难，因此这里在FDDB上作分析。</p>
+<p><strong>(2) Ablative Setting:</strong></p>
+<p>1) 去掉 anchor densification strategy. =&gt; Anchor densification strategy is crucial.  这种 anchor 策略也提升了大约1个百分点</p>
+<p>2)把 MSCL 替换为三层卷积，其大小都为3*3，输出数都和MSCL中前三个Inception的保持一致. 同时，把anchor只和最后一层卷积关联。 =&gt; MSCL is better.  稍微慢了 1点，但是精度提高了一个点（！FPN 已经成为现有网络都借鉴的一点）</p>
+<p>3)把RDCL中的C.ReLU替换为ReLU。=&gt; RDCL is efficient and accuracy-preserving. 不改变精确度的情况下， 提升了大约 1/3 的速度</p>
+<p><img src="/2019/04/13/FaceBoxes/5.png" srcset="/img/loading.gif" alt="img"></p>
+<p><strong>(3) 实验结果:</strong></p>
+<p>AFW:</p>
+<p><img src="/2019/04/13/FaceBoxes/6.png" srcset="/img/loading.gif" alt="img"></p>
+<p>PASCAL face:</p>
+<p><img src="/2019/04/13/FaceBoxes/7.png" srcset="/img/loading.gif" alt="img"></p>
+<p>FDDB:</p>
+<p><img src="/2019/04/13/FaceBoxes/8.png" srcset="/img/loading.gif" alt="img"></p>
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><ul>
+<li>大卷积快速降低运算量 + CReLU</li>
+<li>anchor 采样机制</li>
+<li>多尺度特征融合</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%9F%BA%E6%9C%AC%E6%96%B9%E5%90%91/">基本方向</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/04/13/Face-Detection-Solution/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Face-Detection-Solution</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/04/13/MTCNN/">
+                        <span class="hidden-mobile">MTCNN</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "FaceBoxes&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
