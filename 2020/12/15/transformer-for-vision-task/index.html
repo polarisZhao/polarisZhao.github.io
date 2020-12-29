@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      688 字
+      997 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9
+      13
        分钟
     </span>
   
@@ -208,13 +208,26 @@
             <h1 style="display: none">transformer-for-vision-task</h1>
             
             <div class="markdown-body" id="post-body">
-              <h3 id="1-NLP-中的-transformer-和-self-attention"><a href="#1-NLP-中的-transformer-和-self-attention" class="headerlink" title="1. NLP 中的 transformer 和 self-attention"></a>1. NLP 中的 transformer 和 self-attention</h3><p>所谓的 transformer 就是带有 self-attention 的 seq2seq 模型。所以要了解 transformer 首先需要知道  self-attention 结构</p>
-<h5 id="1-self-attention"><a href="#1-self-attention" class="headerlink" title="1.  self attention"></a>1.  self attention</h5><p>Q ： to mathc others</p>
+              <p>transformer 是一种新提出的神经网络， 主要利用注意力机制来提取内在特征。本文主要介绍了视觉方向上 transformer 的应用。</p>
+<a id="more"></a>
+<h3 id="1-transformer-的提出-attention-is-all-your-need"><a href="#1-transformer-的提出-attention-is-all-your-need" class="headerlink" title="1. transformer 的提出 : attention is all your need"></a>1. transformer 的提出 : attention is all your need</h3><p>transformer 在 NLP 领域应用有三个重要的节点：</p>
+<ul>
+<li>2017.6：首次完全基于注意力机制的 transformer， 并将其用于机器翻译和英语分析任务。《 Attention is all your need 》</li>
+<li>2018.10   BERT：引入了一种新的语言表示模型，称为 BERT， 通过联合调节左右上下文，从未标记的文本中预训练一个 transformer。</li>
+<li>2020.5 GPT-3：在 45TB 的纯文本数据上预训练了一个具有 1750 亿超参数的巨型 transformer 模型 GPT-3。这个模型在不进行微调的情况下， 在不同的自然语言任务上实现了强大的性能。</li>
+</ul>
+<p>本文主要分享 2017年6 月 这篇论文 《Attention is all your need》</p>
+<h3 id="2-Computer-Vision-中的-transformer"><a href="#2-Computer-Vision-中的-transformer" class="headerlink" title="2. Computer Vision 中的 transformer"></a>2. Computer Vision 中的 transformer</h3><h4 id="1-classification"><a href="#1-classification" class="headerlink" title="(1) classification"></a>(1) classification</h4><p>iGPT ：训练序列 transformer 进行自回归预测像素，实现 CNN 在图像分类任务上的相匹配结果。</p>
+<p>ViT：将纯 transformer 直接应用于 贴片 序列。</p>
+<h4 id="2-detection-amp-segmentation"><a href="#2-detection-amp-segmentation" class="headerlink" title="(2) detection &amp; segmentation"></a>(2) detection &amp; segmentation</h4><p>用于检测的 DETR网络、Deformable DETR 和用于分割的Max-DeepLab</p>
+<h4 id="3-low-level-vision"><a href="#3-low-level-vision" class="headerlink" title="(3) low-level vision"></a>(3) low-level vision</h4><p>用于 low-level 的有 iPT、TTSR</p>
+<h4 id="4-video"><a href="#4-video" class="headerlink" title="(4) video"></a>(4) video</h4><h3 id="3-efficient-transformer"><a href="#3-efficient-transformer" class="headerlink" title="3. efficient transformer"></a>3. efficient transformer</h3><p>所谓的 transformer 就是带有 self-attention 的 seq2seq 模型。所以要了解 transformer 首先需要知道  self-attention 结构</p>
+<p>Q : to mathc others</p>
 <p>K :  to be matched</p>
 <p>V : information to be  extracted   需要被提取的信息</p>
 <p><img src="/2020/12/15/transformer-for-vision-task/self-attention.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
 <p>首先将原始的 feature map 通过三个 1x1 conv 得到 三个 feature maps。 从上到下， 我们依次称之为 query、key 和 value。 将 query 转置然后和 key 相乘，经过 softmax 可以得到对应的 attention_map。 将 attention map 和 val 进行点乘。 再经过一个 1x1 conv 即可得到 self-attention feature maps。</p>
-<h5 id="2-Multi-head"><a href="#2-Multi-head" class="headerlink" title="2. Multi-head"></a>2. Multi-head</h5><h5 id="3-Position-encoding"><a href="#3-Position-encoding" class="headerlink" title="3. Position encoding"></a>3. Position encoding</h5><h5 id="4-attention-is-all-your-need-image"><a href="#4-attention-is-all-your-need-image" class="headerlink" title="4. attention is all your need [image]"></a>4. attention is all your need [image]</h5><h3 id="2-CV-中的-transformer"><a href="#2-CV-中的-transformer" class="headerlink" title="2. CV 中的 transformer"></a>2. CV 中的 transformer</h3><h5 id="1-ViT-Vision-Transformer"><a href="#1-ViT-Vision-Transformer" class="headerlink" title="1. ViT: Vision Transformer"></a>1. ViT: Vision Transformer</h5><p>​    这篇论文是比较早的将 transformer 机制应用到 vision 领域的文章。首先，对原始图片进行分块，展平成为序列，然后将其输入进原始的 Transformer 模型的编码器 Encoder 部分，最后连接一个全连接层对图片进行分类。</p>
+<h5 id="2-Multi-head"><a href="#2-Multi-head" class="headerlink" title="2. Multi-head"></a>2. Multi-head</h5><h5 id="3-Position-encoding"><a href="#3-Position-encoding" class="headerlink" title="3. Position encoding"></a>3. Position encoding</h5><h5 id="4-attention-is-all-your-need-image"><a href="#4-attention-is-all-your-need-image" class="headerlink" title="4. attention is all your need [image]"></a>4. attention is all your need [image]</h5><h5 id="1-ViT-Vision-Transformer"><a href="#1-ViT-Vision-Transformer" class="headerlink" title="1. ViT: Vision Transformer"></a>1. ViT: Vision Transformer</h5><p>​    这篇论文是比较早的将 transformer 机制应用到 vision 领域的文章。首先，对原始图片进行分块，展平成为序列，然后将其输入进原始的 Transformer 模型的编码器 Encoder 部分，最后连接一个全连接层对图片进行分类。</p>
 <p>github: <a target="_blank" rel="noopener" href="https://github.com/lucidrains/vit-pytorch">https://github.com/lucidrains/vit-pytorch</a></p>
 <p>Paper: <a target="_blank" rel="noopener" href="https://openreview.net/pdf?id=YicbFdNTTy">An Image is worth 16X16 words: transformers for image recognition at scale</a></p>
 <p><img src="/2020/12/15/transformer-for-vision-task/vit.gif" srcset="/img/loading.gif" style="zoom:35%;"></p>
