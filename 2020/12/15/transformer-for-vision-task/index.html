@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.2k 字
+      2.6k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      26
+      35
        分钟
     </span>
   
@@ -210,42 +210,95 @@
             <div class="markdown-body" id="post-body">
               <p>transformer 是一种新提出的神经网络， 主要利用注意力机制来提取内在特征。本文主要介绍了视觉方向上 transformer 的应用。</p>
 <a id="more"></a>
-<ul>
-<li>[ ] 添加更多的相关代码， 让说明和代码进行对应</li>
-<li>[ ] 另外两篇论文</li>
-</ul>
 <h3 id="1-transformer-的提出-attention-is-all-your-need"><a href="#1-transformer-的提出-attention-is-all-your-need" class="headerlink" title="1. transformer 的提出 : attention is all your need"></a>1. transformer 的提出 : attention is all your need</h3><p>transformer 在 NLP 领域应用有三个重要的节点：</p>
 <ul>
-<li>2017.6：首次完全基于注意力机制的 transformer， 并将其用于机器翻译和英语分析任务。《 Attention is all your need 》</li>
-<li>2018.10   BERT：引入了一种新的语言表示模型，称为 BERT， 通过联合调节左右上下文，从未标记的文本中预训练一个 transformer。</li>
-<li>2020.5 GPT-3：在 45TB 的纯文本数据上预训练了一个具有 1750 亿超参数的巨型 transformer 模型 GPT-3。这个模型在不进行微调的情况下， 在不同的自然语言任务上实现了强大的性能。</li>
+<li>2017年06月：首次完全基于注意力机制的 transformer， 并将其用于机器翻译和英语分析任务，发表于论文《 Attention is all your need 》。这是 transformer 的起点， 也是本文介绍的重点。</li>
+<li>2018年10月：引入了一种新的语言表示模型，称为 BERT， 通过联合调节左右上下文，从未标记的文本中预训练一个 transformer。</li>
+<li>2020年05月： GPT-3诞生：在 45TB 的纯文本数据上预训练了一个具有 1750 亿超参数的巨型 transformer 模型 GPT-3。这个模型在不进行微调的情况下，在不同的自然语言任务上实现了强大的性能。</li>
 </ul>
-<p>本文主要分享 2017年6 月 这篇论文 《Attention is all your need》。 比较原始的 transformer 模型如下图所示， 它包含了一系列的encoder 和 decoder。 每个 encoder 由 self-attention 层和 feed forward 组成， 每个 decoder 则是由 self-attention、encoder-decoder attention 和 feed forward nn 组成。在输入之前先将句子中的每个单词 embedded 为 512 维的向量。</p>
+<h4 id="1-1-vanilla-transformer"><a href="#1-1-vanilla-transformer" class="headerlink" title="1.1 vanilla transformer"></a>1.1 vanilla transformer</h4><p>​        原始的 transformer 用于进行机器翻译任务， 其模型如下图所示， 它由一系列的 encoder 和 decoder 组成。 每个 encoder 由 self-attention 层和 feed forward nn 组成， 每个 decoder 则是由 self-attention、encoder-decoder attention 和 feed forward nn 组成。 在输入之前先将句子中的每个单词 embedding 为 512 维的向量， 然后经过 encoder-decoder 进行编解码，最后将输出的向量重新编码为一个 单词组成句子， 从而完成翻译任务。</p>
 <p><img src="/2020/12/15/transformer-for-vision-task/1.png" srcset="/img/loading.gif" style="zoom:45%;"></p>
-<h5 id="1-1-self-attention-layer"><a href="#1-1-self-attention-layer" class="headerlink" title="1.1 self attention layer"></a>1.1 self attention layer</h5><p><img src="/2020/12/15/transformer-for-vision-task/self-attention.png" srcset="/img/loading.gif" style="zoom:30%;"></p>
-<p>​        在 self-attention 层， 首先将 输入向量转化为三个不同的 vector， 这三个向量被称为 query vector(to match others) , key vector(to be matched) 和 value vector(information to be  extracted)。将这三个向量打包为 Q、V、K 三个矩阵。在此之后， 执行如下步骤:</p>
+<h4 id="1-2-self-attention-layer"><a href="#1-2-self-attention-layer" class="headerlink" title="1.2 self attention layer"></a>1.2 self attention layer</h4><p>​        self attention 机制可以描述为将一个查询 query 和一组键值对 key-val 映射到一个输出 output，其中 query、key、val 和 output 都是向量。输出 output 是以值的加权和来计算的，其中分配给每个值的权重 weight 是由 query 与对应 key 的相似度计算出来的</p>
+<p><img src="/2020/12/15/transformer-for-vision-task/self-attention.png" srcset="/img/loading.gif" style="zoom:30%;"></p>
+<p>​        在 self-attention 层， 首先将输入 vector 转化为三个不同的 vector， 这三个向量被称为 query vector(to match others) , key vector(to be matched) 和 value vector(information to be  extracted)。将这三个向量打包为 Q、V、K 三个矩阵。在此之后，执行如下步骤:</p>
 <p>Setp 1：计算不同输入之间的分数， 这里记为: $S = Q \cdot K^T$</p>
-<p>Step2:  正则化该分数： $S_n = S/ \sqrt{d_k}$</p>
-<p>Step3:  借助 softmax 将分数转化概率  $P = softmax(S_n)$</p>
-<p>Step4: 将 P 作为权重，乘以 V 矩阵  $Z = V \cdot P$</p>
+<p>Step 3:  借助 softmax 将分数转化概率  $P = softmax(S_n)$</p>
+<p>Step 4: 将 P 作为权重，乘以 V 矩阵  $Z = V \cdot P$</p>
 <p>上述的处理过程可以被统一到如下的公式中：</p>
 <script type="math/tex; mode=display">
-Attention(Q, K, V) = softmax(\frac{Q \cdot K^T}{\sqrt{d_K}}) \cdot V</script><p>该公式的解释很简单。 第1步计算两个不同向量之间的分数，该分数的含义是当前位置的单词和其他单词的关联程度。第2步对分数进行规范化处理，主要是使其有更稳定的梯度，以达到更好的训练效果。第3步将分数转变成概率。最后，每个值向量乘以概率，概率较大的向量会被下面几层更加注意(attention)。</p>
-<p>​        解码器中的 encoder-decode attention 和编码器中的 self-attention 几乎相同。不同的是 矩阵 K 和 矩阵 V 来自于 编码器， 而 Q 来自上一层。</p>
-<p>​    需要注意的是，上述过程与每个词的位置无关，因此自注意力层缺乏捕捉句子中词的位置信息的能力。为了解决这个问题，在原始输入嵌入的基础上，增加一个维度为 $d_{model}$ 的位置编码，以得到单词的最终输入向量。具体来说，位置编码的公式如下：</p>
+Attention(Q, K, V) = softmax(\frac{Q \cdot K^T}{\sqrt{d_K}}) \cdot V</script><p>​         该公式的解释很简单。 第 1 步计算两个不同向量之间的分数，该分数的含义是当前位置的单词和其他单词的关联程度。第 2 步对分数进行规范化处理，主要是使其有更稳定的梯度(点积结果较大，输入 softmax 的值较大，从而导致 梯度较小)，以达到更好的训练效果。第 3 步将分数转变成概率。最后，每个值向量乘以概率，概率较大的向量会被下面几层更加注意(attention)。 一个简单的 self-attention 实现如下:</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">attention</span>(<span class="hljs-params">query, key, value, mask=None, dropout=<span class="hljs-number">0.0</span></span>):</span>
+    d_k = query.size(<span class="hljs-number">-1</span>)
+    scores = torch.matmul(query, key.transpose(<span class="hljs-number">-2</span>, <span class="hljs-number">-1</span>)) / math.sqrt(d_k)
+    <span class="hljs-keyword">if</span> mask <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+        scores = scores.masked_fill(mask == <span class="hljs-number">0</span>, <span class="hljs-number">-1e9</span>)
+    p_attn = F.softmax(scores, dim = <span class="hljs-number">-1</span>)
+    <span class="hljs-comment"># (Dropout described below)</span>
+    p_attn = F.dropout(p_attn, p=dropout)
+    <span class="hljs-keyword">return</span> torch.matmul(p_attn, value), p_attn</code></pre>
+<p>​        解码器中的 Encoder-Decode attention 和编码器中的 Self-Attention 几乎相同。不同的是矩阵 K 和 矩阵 V 来自于 编码器， 而 Q 来自上一层输出。</p>
+<p>​        需要注意的是，上述过程与每个词的位置无关，因此自注意力层缺乏捕捉句子中词的位置信息的能力。为了解决这个问题，在原始输入嵌入的基础上，增加一个维度为 $d_{model}$ 的位置编码，以得到单词的最终输入向量。具体来说，位置编码的公式如下：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 PE(pos, 2i) &= sin(\frac{pos}{10000^{\frac{2i}{d_{model}}}}); \\
 PE(pos, 2i+1) &= cos(\frac{pos}{10000^{\frac{2i}{d_{model}}}})
-\end{align}</script><p>这里的 pos 表示单词在句子中的位置， i 则笔试当前编码的维度。</p>
-<h5 id="1-2-Multi-Head-Attention"><a href="#1-2-Multi-Head-Attention" class="headerlink" title="1.2 Multi-Head Attention"></a>1.2 Multi-Head Attention</h5><p>​        为了提升 vanilla self-attention 层的性能，加入了一种叫做 multi-head attention 的机制，进一步完善了self-attention 层。需要注意的是，对于一个给定的参考词，我们在浏览句子的时候，往往要关注其他几个词。因此，单头自注意层限制了对某一特定位置(或几个特定位置)的关注能力，同时不影响对其他同样重要的 position 的关注。这是通过赋予注意力层不同的 represententation 子空间来实现的。具体来说，对不同的头使用不同的查询、键和值矩阵，由于随机初始化，它们可以在训练后将输入向量投射到不同的表示子空间。</p>
+\end{align}</script><p>这里的 $pos$ 表示单词在句子中的位置， $i$  则表示当前编码的维度。其实现如下所示：</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PositionalEncoding</span>(<span class="hljs-params">nn.Module</span>):</span>
+    <span class="hljs-string">&quot;Implement the PE function.&quot;</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, d_model, dropout, max_len=<span class="hljs-number">5000</span></span>):</span>
+        super(PositionalEncoding, self).__init__()
+        self.dropout = nn.Dropout(p=dropout)
+        
+        <span class="hljs-comment"># Compute the positional encodings once in log space.</span>
+        pe = torch.zeros(max_len, d_model)
+        position = torch.arange(<span class="hljs-number">0</span>, max_len).unsqueeze(<span class="hljs-number">1</span>)
+        div_term = torch.exp(torch.arange(<span class="hljs-number">0</span>, d_model, <span class="hljs-number">2</span>) *
+                             -(math.log(<span class="hljs-number">10000.0</span>) / d_model))
+        pe[:, <span class="hljs-number">0</span>::<span class="hljs-number">2</span>] = torch.sin(position * div_term)
+        pe[:, <span class="hljs-number">1</span>::<span class="hljs-number">2</span>] = torch.cos(position * div_term)
+        pe = pe.unsqueeze(<span class="hljs-number">0</span>)
+        self.register_buffer(<span class="hljs-string">&#x27;pe&#x27;</span>, pe)
+        
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">forward</span>(<span class="hljs-params">self, x</span>):</span>
+        x = x + Variable(self.pe[:, :x.size(<span class="hljs-number">1</span>)], requires_grad=<span class="hljs-literal">False</span>)
+        <span class="hljs-keyword">return</span> self.dropout(x)</code></pre>
+<h4 id="1-3-Multi-Head-Attention"><a href="#1-3-Multi-Head-Attention" class="headerlink" title="1.3 Multi-Head Attention"></a>1.3 Multi-Head Attention</h4><p>​        为了提升 vanilla self-attention 层的性能，加入了一种叫做 multi-head attention 的机制，进一步完善了self-attention 层。需要注意的是，对于一个给定的参考词，我们在浏览句子的时候，往往要关注其他几个词。因此，单头自注意层限制了对某一特定位置(或几个特定位置)的关注能力，同时不影响对其他同样重要的 position 的关注。这是通过赋予注意力层不同的 represententation 子空间来实现的。具体来说，对不同的头使用不同的查询、键和值矩阵，由于随机初始化，它们可以在训练后将输入向量投射到不同的表示子空间。</p>
 <p><img src="/2020/12/15/transformer-for-vision-task/2.png" srcset="/img/loading.gif" style="zoom:45%;"></p>
-<h5 id="1-3-Other-Parts-in-Transformer"><a href="#1-3-Other-Parts-in-Transformer" class="headerlink" title="1.3 Other Parts in Transformer"></a>1.3 Other Parts in Transformer</h5><p>论文 attention for all your need 的 encoder-decoder 模型如下所示：</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MultiHeadedAttention</span>(<span class="hljs-params">nn.Module</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, h, d_model, dropout=<span class="hljs-number">0.1</span></span>):</span>
+        <span class="hljs-string">&quot;Take in model size and number of heads.&quot;</span>
+        super(MultiHeadedAttention, self).__init__()
+        <span class="hljs-keyword">assert</span> d_model % h == <span class="hljs-number">0</span>
+        <span class="hljs-comment"># We assume d_v always equals d_k</span>
+        self.d_k = d_model // h
+        self.h = h
+        self.p = dropout
+        self.linears = clones(nn.Linear(d_model, d_model), <span class="hljs-number">4</span>)
+        self.attn = <span class="hljs-literal">None</span>
+        
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">forward</span>(<span class="hljs-params">self, query, key, value, mask=None</span>):</span>
+        <span class="hljs-string">&quot;Implements Figure 2&quot;</span>
+        <span class="hljs-keyword">if</span> mask <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-comment"># Same mask applied to all h heads.</span>
+            mask = mask.unsqueeze(<span class="hljs-number">1</span>)
+        nbatches = query.size(<span class="hljs-number">0</span>)
+        
+        <span class="hljs-comment"># 1) Do all the linear projections in batch from d_model =&gt; h x d_k </span>
+        query, key, value = [l(x).view(nbatches, <span class="hljs-number">-1</span>, self.h, self.d_k).transpose(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+                             <span class="hljs-keyword">for</span> l, x <span class="hljs-keyword">in</span> zip(self.linears, (query, key, value))]
+        
+        <span class="hljs-comment"># 2) Apply attention on all the projected vectors in batch. </span>
+        x, self.attn = attention(query, key, value, mask=mask, dropout=self.p)
+        
+        <span class="hljs-comment"># 3) &quot;Concat&quot; using a view and apply a final linear. </span>
+        x = x.transpose(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>).contiguous().view(nbatches, <span class="hljs-number">-1</span>, self.h * self.d_k)
+        <span class="hljs-keyword">return</span> self.linears[<span class="hljs-number">-1</span>](x)</code></pre>
+<h4 id="1-4-Other-Parts-in-Transformer"><a href="#1-4-Other-Parts-in-Transformer" class="headerlink" title="1.4 Other Parts in Transformer"></a>1.4 Other Parts in Transformer</h4><p>论文 attention for all your need 的 encoder-decoder 模型如下所示：</p>
 <p><img src="/2020/12/15/transformer-for-vision-task/3.png" srcset="/img/loading.gif" style="zoom:50%;"></p>
 <ul>
 <li><p>Residual in the encoder and decoder： 如上图所示， 在编码器和解码器的每个子层中都增加了一个残差连接，以加强信息的流动，获得更好的性能。之后再进行 layer normalization。上述运算可以描述为：</p>
 <script type="math/tex; mode=display">
-layernorm(X + attention(X))</script><p>需要注意的是，这里用 $X$ 作为自关注层的输入，因为 query、key和value 矩阵 Q、K 和 V 都是由同一个输入矩阵 $X$ 导出的。</p>
+layernorm(X + attention(X))</script><p>需要注意的是，这里用 $X$ 作为自关注层的输入，因为 query、key 和 value 矩阵 Q、K 和 V 都是由同一个输入矩阵 $X$ 导出的。</p>
 </li>
 <li><p>Feed-forward neural network：feed-forward NN 是由两个线性变换层和它们内部的 ReLU 激活函数组成的，该运算可以描述为：</p>
 <script type="math/tex; mode=display">
@@ -262,10 +315,10 @@ FFNN(X) = W_2 \sigma(W_1X)</script><p>其中 $W1$和 $W2$ 是两个线性变换�
 <p>因此，不仅在NLP领域，而且在计算机视觉领域，进一步研究 transformer 的应用是很有意义的</p>
 <h3 id="2-Computer-Vision-中的-transformer"><a href="#2-Computer-Vision-中的-transformer" class="headerlink" title="2. Computer Vision 中的 transformer"></a>2. Computer Vision 中的 transformer</h3><h4 id="1-classification"><a href="#1-classification" class="headerlink" title="(1) classification"></a>(1) classification</h4><p>iGPT ：训练序列 transformer 进行自回归预测像素，实现 CNN 在图像分类任务上的相匹配结果。</p>
 <p>ViT：将纯 transformer 直接应用于 贴片 序列</p>
-<p>​    这篇论文是比较早的将 transformer 机制应用到 vision 领域的文章。首先，对原始图片进行分块，展平成为序列，然后将其输入进原始的 Transformer 模型的编码器 Encoder 部分，最后连接一个全连接层对图片进行分类。</p>
+<p>​    这篇论文是比较早的将 transformer 机制应用到 classification 领域的文章。首先，对原始图片进行分块，展平成为序列，然后将其输入进原始的 Transformer 模型的编码器 Encoder 部分，最后连接一个全连接层对图片进行分类。</p>
 <p>github: <a target="_blank" rel="noopener" href="https://github.com/lucidrains/vit-pytorch">https://github.com/lucidrains/vit-pytorch</a></p>
 <p>Paper: <a target="_blank" rel="noopener" href="https://openreview.net/pdf?id=YicbFdNTTy">An Image is worth 16X16 words: transformers for image recognition at scale</a></p>
-<p><img src="file:///Users/zhichaozhao/Documents/hexo-blog/source/_posts/transformer-for-vision-task/vit.gif?lastModify=1609253600" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/2020/12/15/transformer-for-vision-task/vit.gif" srcset="/img/loading.gif" alt="img" style="zoom:50%;"></p>
 <ol>
 <li><p><strong>数据处理部分</strong>：原始输入的图片数据时 H<em>W</em>C, 我们先对图片进行分块，再进行展平。 假设每个块的长宽为(P, P), 那么分块的数目为 N = H <em> W / (P </em> P)。 图中的 N = 9， 论文中的 P = 16。对每个图片块展平成一维向量， 每个向量大小为 P <em> P </em> C， 总的输入变换为 N <em> (P^2 </em> C)。</p>
 <pre><code class="hljs apache"><span class="hljs-attribute">x</span> = rearrange(img, &#x27;b c (h p<span class="hljs-number">1</span>) (w p<span class="hljs-number">2</span>) -&gt; b (h w) (p<span class="hljs-number">1</span> p<span class="hljs-number">2</span> c)&#x27;, p<span class="hljs-number">1</span> = p, p<span class="hljs-number">2</span> = p) # use einops的拓展包</code></pre>
@@ -306,8 +359,6 @@ x += self.pos_embedding[:, :(n + <span class="hljs-number">1</span>)]</code></pr
 <span class="hljs-class">            x = ff(<span class="hljs-title">x</span>)</span>
 <span class="hljs-class">        return x</span></code></pre>
 </li>
-</ol>
-<ol>
 <li><p><strong>mlp_head:</strong>  使用 layernorm 和 全连接 实现</p>
 <pre><code class="hljs fortran">self<span class="hljs-number">.</span>mlp_head = nn<span class="hljs-number">.</span><span class="hljs-keyword">Sequential</span>(
     nn<span class="hljs-number">.</span>LayerNorm(<span class="hljs-built_in">dim</span>),
