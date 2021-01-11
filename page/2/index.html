@@ -160,6 +160,48 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/11/07/int8-quantize/">int8_quantize</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/07/int8-quantize/">
+          
+          
+            
+          
+          1. FP32 vs int8​        首先来看一下 FP32、FP16 和 int8之间的动态范围和精度的对比， 可以看到float32 的取值范围几乎是无穷的，而int8只有-128~127. 因此需要建立映射关系将float32类型的浮点数映射到指定范围的int8类型。 
+
+​        目前最常见的两种int8量化实现方式是 Nvidia的TensorRT方案 和 google
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-07 16:26" pubdate>
+              2020-11-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/21/principles-of-detection-network-design/">principles-of-detection-network-design</a>
       </h1>
 
@@ -169,7 +211,7 @@
           
             
           
-          对于一个检测框架，一般从 模型、数据和算法三部分进行入手处理。
+          ​    对于一个深度学习问题， 我们应该尽量从模型、数据、算法三个方向进行处理。对于目标检测也不例外。 这里，我们将从模型、数据和算法三个角度对目标检测这个问题进行展开探讨。 由于很多问题都是行业内有待讨论，值得商榷的， 所以一些观点也会附上链接， 并挑选出笔者认为合适的方案。
         </a>
       </p>
 
@@ -505,46 +547,6 @@ ncnn::Extractor ex = s
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2020-09-17 18:26" pubdate>
-              2020-09-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/DL-Deploy/">DL_Deploy</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/17/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">ncnn源码分析_0</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/17/ncnn%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">
-          
-          
-            
-          
-          ncnn 源码分析第一篇
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-17 18:22" pubdate>
               2020-09-17
             </time>
           </div>
