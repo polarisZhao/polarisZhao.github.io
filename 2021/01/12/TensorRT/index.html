@@ -1,0 +1,843 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>TensorRT - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-01-12 09:29" pubdate>
+        January 12, 2021 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      42
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">TensorRT</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h3 id="TensorRT-简介"><a href="#TensorRT-简介" class="headerlink" title="TensorRT 简介"></a>TensorRT 简介</h3><p>在推理过程中，基于TensorRT 的应用程序的执行速度可以比 CPU 平台速度快40 倍</p>
+<ul>
+<li>不同的硬件需要匹配不同的cuda库，然后还需要进行测试， 比如选核等操作</li>
+<li>TensorRT 以  NVIDIA 的并行编程模型 CUDA 为基础构建围城</li>
+<li>TensorRT 针对多种深度学习推理应用的生产部署提供 INT8 和 FP 6 优化</li>
+</ul>
+<p>TensorRT 框架支持：</p>
+<p>Tensorflow、Mathlab、onnx(pytorch、mxnet等)</p>
+<p>TRT 的核心优化方法</p>
+<ul>
+<li>权重与激活精度校准：通过将模型量化为 INT8 来更大限度地提高吞吐量， 同时保持较高准确度</li>
+<li>层与张量融合：通过融合内核中的节点， 优化 GPU显存和带宽使用</li>
+<li>内核自动调整： 基于目标 GPU 平台选择最佳数据层和算法</li>
+<li>动态张量显存： 更大限度减少显存占用，并高效地位张量重复利用内存</li>
+<li>多流执行：用于并行处理多个输入流的可扩展设计</li>
+</ul>
+<h3 id="pytorch-gt-onnx"><a href="#pytorch-gt-onnx" class="headerlink" title="pytorch -&gt; onnx"></a>pytorch -&gt; onnx</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch
+<span class="hljs-keyword">from</span> torch.autograd <span class="hljs-keyword">import</span> Variable
+<span class="hljs-keyword">import</span> torch.onnx <span class="hljs-keyword">as</span> torch_onnx
+<span class="hljs-keyword">import</span> onnx
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>
+    input_shape = (<span class="hljs-number">3</span>, <span class="hljs-number">256</span>, <span class="hljs-number">256</span>)
+    model_onnx_path = <span class="hljs-string">&#x27;unet.onnx&#x27;</span>
+    dummy_input = Variable(torch.randn(<span class="hljs-number">1</span>, *input_shape))
+    model = torch.hub.load(<span class="hljs-string">&#x27;mateuszbuda/brain-segmentation-pytorch&#x27;</span>, <span class="hljs-string">&#x27;unet&#x27;</span>, in_channels=<span class="hljs-number">3</span>, out_channels=<span class="hljs-number">1</span>, init_features=<span class="hljs-number">32</span>, pretrained=<span class="hljs-literal">True</span>)
+    
+    model.train(<span class="hljs-literal">False</span>)
+    inputs = [<span class="hljs-string">&quot;input.1&quot;</span>]
+    outputs = [<span class="hljs-string">&quot;186&quot;</span>]
+    dynamic_axes = &#123;<span class="hljs-string">&#x27;input.1&#x27;</span>:&#123;<span class="hljs-number">0</span>: <span class="hljs-string">&#x27;batch&#x27;</span>&#125;, <span class="hljs-string">&#x27;186&#x27;</span>:&#123;<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;batch&#x27;</span>&#125;&#125;
+    out = torch.onnx.export(model, dummy_input, model_onnx_path, 
+                            input_names=inputs, output_names=outputs, dynamic_axes=dynamic_axes)</code></pre>
+<h3 id="计算图优化-onnx-优化"><a href="#计算图优化-onnx-优化" class="headerlink" title="计算图优化:onnx 优化"></a>计算图优化:onnx 优化</h3><p>(1) reshape 的时候的很多冗余算子的问题</p>
+<p>(2) 输入的归一化: 去掉，放在代码逻辑里面</p>
+<p>(3) conv_bn 的合并</p>
+<p>(4) 一些无法 boardcast 的问题</p>
+<p>(5) 新层的注册</p>
+<p>可视化图:  Netron</p>
+<p>Onnx-simplify</p>
+<p>可以参考 tencent-TNN/tools/converter/optimizer</p>
+<h3 id="二-自定义组件-TensorRT-Plugin"><a href="#二-自定义组件-TensorRT-Plugin" class="headerlink" title="二. 自定义组件 TensorRT Plugin"></a>二. 自定义组件 TensorRT Plugin</h3><p>官方文档： <a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#extending">https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#extending</a></p>
+<p>自定义组件 TensorRT Plugin 的整体流程如下所示:</p>
+<ol>
+<li>实现Plugin 类和 PluginCreator 类</li>
+<li>在 TensorRT OSS 的 plugin 的 InferPlugin.cpp 中注册新的 Plugin</li>
+<li>修改 CMakeLists.txt 并编译 nvinfer_plugin 库</li>
+<li>在 onnx-tensorrt 中注册新的 Plugin</li>
+<li>编译 nvonnxparse 库</li>
+<li>替换 nvinfer_plugin 和 nvonnxparser 库，使用 trtexec 将 onnx 转换为 tensorrt 模型</li>
+</ol>
+<p>下面对每一个步骤进行详细的讲解：</p>
+<h4 id="Step1-实现-Plugin-类-和-PluginCreator-类"><a href="#Step1-实现-Plugin-类-和-PluginCreator-类" class="headerlink" title="Step1 实现 Plugin 类 和 PluginCreator 类"></a>Step1 实现 Plugin 类 和 PluginCreator 类</h4><p>该步骤可以参考一下 TensorRT 官方 plugin 库： <a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT/tree/master/plugin。官方提供了较多的">https://github.com/NVIDIA/TensorRT/tree/master/plugin。官方提供了较多的</a> plugin 插件， 我们可以看到其源码，然后通过模仿源码来学习 plugin 的编写。 这里我们以 nmsPlugin 来看一下自定义的插件如何编写:</p>
+<pre><code class="hljs shell">.
+├── CMakeLists.txt
+├── README.md
+├── nmsPlugin.cpp
+└── nmsPlugin.h
+
+0 directories, 4 files</code></pre>
+<p>这里的 nmsPlugin 主要实现 <code>Normalize</code> 和 <code>NormalizePluginCreator</code> 两个类， 前者用于插件的具体实现， 后者用于根据需求创建该插件。</p>
+<pre><code class="hljs angelscript"><span class="hljs-keyword">class</span> <span class="hljs-symbol">Normalize</span> : <span class="hljs-symbol">public</span> <span class="hljs-symbol">IPluginV2Ext</span>
+<span class="hljs-symbol">class</span> <span class="hljs-symbol">NormalizePluginCreator</span> : <span class="hljs-symbol">public</span> <span class="hljs-symbol">BaseCreator</span></code></pre>
+<p><code>Normalize</code> 类继承自 <code>IPluginV2Ext</code>。在阅读其他的插件注册的时候会发现继承自其他类的情况。其实随着 TensorRT 的不断发展，插件接口也在不断地变化，由 v5 版本的<code>IPluginV2Ext</code>，到 v6 版本的 <code>IPluginV2IOExt</code> 和 <code>IPluginV2DynamicExt</code>。 官方的建议是继承自  <code>IPluginV2IOExt</code> 和 <code>IPluginV2DynamicExt</code>。 其实两者在类的编写上类似， 只是其中后者支持动态大小。我们的类需要继承自特定的类，并实现其中的虚函数</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Normalize</span> :</span> <span class="hljs-keyword">public</span> IPluginV2Ext
+&#123;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">// 构造函数</span>
+    Normalize(<span class="hljs-keyword">const</span> Weights* weights, <span class="hljs-keyword">int</span> nbWeights, <span class="hljs-keyword">bool</span> acrossSpatial, <span class="hljs-keyword">bool</span> channelShared, <span class="hljs-keyword">float</span> eps);
+    Normalize(
+        <span class="hljs-keyword">const</span> Weights* weights, <span class="hljs-keyword">int</span> nbWeights, <span class="hljs-keyword">bool</span> acrossSpatial, <span class="hljs-keyword">bool</span> channelShared, <span class="hljs-keyword">float</span> eps, <span class="hljs-keyword">int</span> C, <span class="hljs-keyword">int</span> H, <span class="hljs-keyword">int</span> W);
+    Normalize(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* buffer, <span class="hljs-keyword">size_t</span> length);
+    <span class="hljs-comment">// 析构函数</span>
+    ~Normalize() <span class="hljs-keyword">override</span> = <span class="hljs-keyword">default</span>;
+    <span class="hljs-comment">// 该 op 有几个返回值， 如果该操作只有一个输出，则直接返回 1</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getNbOutputs</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+  
+    <span class="hljs-comment">// TensorRT 支持 Dynamic-shape 的时候，batch 这一维度必须是explicit的</span>
+    <span class="hljs-comment">// 也就是说，TensorRT处理的维度从以往的三维 [3,-1,-1] 变成了 [1,3,-1,-1]。</span>
+    <span class="hljs-comment">// 最新的 onnx-tensorrt 也必须设置 explicit 的 batchsize，</span>
+    <span class="hljs-comment">// 而且这个 batc h维度在 getOutputDimensions 中是可以获取到的。</span>
+    <span class="hljs-function">Dims <span class="hljs-title">getOutputDimensions</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index, <span class="hljs-keyword">const</span> Dims* inputs, <span class="hljs-keyword">int</span> nbInputDims)</span> <span class="hljs-keyword">override</span></span>;
+    <span class="hljs-comment">// 在这个插件准备开始run之前执行， 做一些初始化工作</span>
+    <span class="hljs-comment">// 初始化一些提前开辟空间的参数，一般是一些 cuda 操作需要的参数</span>
+    <span class="hljs-comment">// (例如conv操作需要执行卷积操作，我们就需要提前开辟weight和bias的显存)，</span>
+    <span class="hljs-comment">// 假如我们的算子需要这些参数，则在这里需要提前开辟显存</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">initialize</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">terminate</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;
+    <span class="hljs-comment">// 返回这个 op 前向过程中所需要的显存大小(bytesize)</span>
+    <span class="hljs-function"><span class="hljs-keyword">size_t</span> <span class="hljs-title">getWorkspaceSize</span><span class="hljs-params">(<span class="hljs-keyword">int</span> maxBatchSize)</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+
+    <span class="hljs-comment">// 实际插件 op 的执行函数， 我们自己实现的 cuda 操作就放在这里</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">enqueue</span><span class="hljs-params">(</span></span>
+<span class="hljs-function"><span class="hljs-params">        <span class="hljs-keyword">int</span> batchSize, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* <span class="hljs-keyword">const</span>* inputs, <span class="hljs-keyword">void</span>** outputs, <span class="hljs-keyword">void</span>* workspace, cudaStream_t stream)</span> <span class="hljs-keyword">override</span></span>;
+
+    <span class="hljs-comment">// 返回序列化时需要写多少字节到 buffer 中</span>
+    <span class="hljs-function"><span class="hljs-keyword">size_t</span> <span class="hljs-title">getSerializationSize</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+
+    <span class="hljs-comment">// 把需要使用的数据按照顺序序列化到 buffer 里</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">serialize</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* buffer)</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+    <span class="hljs-comment">// 数据的类型和 plugin 的类型是否一致</span>
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">supportsFormat</span><span class="hljs-params">(DataType type, PluginFormat format)</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+
+    <span class="hljs-comment">// plugin 的类型和版本信息</span>
+    <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-title">getPluginType</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-title">getPluginVersion</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">destroy</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;
+    <span class="hljs-comment">// 克隆 plugin，调用构造函数， 并将权重和参数传递给这个构造函数</span>
+    <span class="hljs-function">IPluginV2Ext* <span class="hljs-title">clone</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+  
+    <span class="hljs-comment">// 为这个插件设置 namespace 名字， 如果不设置则默认为 &quot;&quot;， 需要注意 </span>
+    <span class="hljs-comment">// 同一个 namespace 下的 plugin 如果名字相同会冲突。</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setPluginNamespace</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* pluginNamespace)</span> <span class="hljs-keyword">override</span></span>;
+    <span class="hljs-comment">// 获取插件的 namespace</span>
+    <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-title">getPluginNamespace</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+
+    <span class="hljs-function">DataType <span class="hljs-title">getOutputDataType</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index, <span class="hljs-keyword">const</span> nvinfer1::DataType* inputTypes, <span class="hljs-keyword">int</span> nbInputs)</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isOutputBroadcastAcrossBatch</span><span class="hljs-params">(<span class="hljs-keyword">int</span> outputIndex, <span class="hljs-keyword">const</span> <span class="hljs-keyword">bool</span>* inputIsBroadcasted, <span class="hljs-keyword">int</span> nbInputs)</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">canBroadcastInputAcrossBatch</span><span class="hljs-params">(<span class="hljs-keyword">int</span> inputIndex)</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+    <span class="hljs-comment">// 添加一些 op 用到的其他东西， 比如 cublas handle</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">attachToContext</span><span class="hljs-params">(</span></span>
+<span class="hljs-function"><span class="hljs-params">        cudnnContext* cudnnContext, cublasContext* cublasContext, IGpuAllocator* gpuAllocator)</span> <span class="hljs-keyword">override</span></span>;
+     <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">detachFromContext</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;
+  
+    <span class="hljs-comment">// 配置插件 op， 判断输入和输出类型数量是够正确</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">configurePlugin</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Dims* inputDims, <span class="hljs-keyword">int</span> nbInputs, <span class="hljs-keyword">const</span> Dims* outputDims, <span class="hljs-keyword">int</span> nbOutputs,</span></span>
+<span class="hljs-function"><span class="hljs-params">        <span class="hljs-keyword">const</span> DataType* inputTypes, <span class="hljs-keyword">const</span> DataType* outputTypes, <span class="hljs-keyword">const</span> <span class="hljs-keyword">bool</span>* inputIsBroadcast,</span></span>
+<span class="hljs-function"><span class="hljs-params">        <span class="hljs-keyword">const</span> <span class="hljs-keyword">bool</span>* outputIsBroadcast, PluginFormat floatFormat, <span class="hljs-keyword">int</span> maxBatchSize)</span> <span class="hljs-keyword">override</span></span>;
+
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-function">Weights <span class="hljs-title">copyToDevice</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* hostData, <span class="hljs-keyword">size_t</span> count)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">serializeFromDevice</span><span class="hljs-params">(<span class="hljs-keyword">char</span>*&amp; hostBuffer, Weights deviceWeights)</span> <span class="hljs-keyword">const</span></span>;
+    <span class="hljs-function">Weights <span class="hljs-title">deserializeToDevice</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>*&amp; hostBuffer, <span class="hljs-keyword">size_t</span> count)</span></span>;
+
+    cublasHandle_t mCublas;
+
+    Weights mWeights&#123;&#125;;
+    <span class="hljs-keyword">int</span> mNbWeights&#123;&#125;;
+    <span class="hljs-keyword">bool</span> acrossSpatial&#123;&#125;;
+    <span class="hljs-keyword">bool</span> channelShared&#123;&#125;;
+    <span class="hljs-keyword">float</span> eps&#123;&#125;;
+    <span class="hljs-keyword">int</span> C&#123;&#125;;
+    <span class="hljs-keyword">int</span> H&#123;&#125;;
+    <span class="hljs-keyword">int</span> W&#123;&#125;;
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> mPluginNamespace;
+&#125;;</code></pre>
+<p><code>NormalizePluginCreator</code>  则继承自  <code>public BaseCreator</code>，其实现相对较少：</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NormalizePluginCreator</span> :</span> <span class="hljs-keyword">public</span> BaseCreator
+&#123;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">// 构造函数</span>
+    NormalizePluginCreator();
+    <span class="hljs-comment">// 析构函数</span>
+    ~NormalizePluginCreator() <span class="hljs-keyword">override</span> = <span class="hljs-keyword">default</span>;
+    <span class="hljs-comment">// 获取 plugin 的名称和版本</span>
+    <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-title">getPluginName</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-title">getPluginVersion</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">override</span></span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">const</span> PluginFieldCollection* <span class="hljs-title">getFieldNames</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;
+    <span class="hljs-comment">// 通过 FeildCollection 中获取构造 plugin 所需要的所有参数，并调用 plugin 构造函数创建算子</span>
+    <span class="hljs-function">IPluginV2Ext* <span class="hljs-title">createPlugin</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name, <span class="hljs-keyword">const</span> PluginFieldCollection* fc)</span> <span class="hljs-keyword">override</span></span>;
+    <span class="hljs-comment">// 会被 onnx-tensorrt 的一个叫做 TRT_PluginV2 的转换 op 调用，</span>
+    <span class="hljs-comment">// 这个 op 会读取 onnx 模型的 data 数据将其反序列化到 network 中。</span>
+    <span class="hljs-function">IPluginV2Ext* <span class="hljs-title">deserializePlugin</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* name, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* serialData, <span class="hljs-keyword">size_t</span> serialLength)</span> <span class="hljs-keyword">override</span></span>;
+
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">static</span> PluginFieldCollection mFC;
+    <span class="hljs-keyword">bool</span> mAcrossSpatial&#123;&#125;;
+    <span class="hljs-keyword">bool</span> mChannelShared&#123;&#125;;
+    <span class="hljs-keyword">float</span> mEps&#123;&#125;;
+    <span class="hljs-keyword">int</span> mNbWeights&#123;&#125;;
+    <span class="hljs-keyword">static</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;PluginField&gt; mPluginAttributes;
+&#125;;</code></pre>
+<h4 id="Step2-在-InferPlugin-cpp-中注册新的-Plugin"><a href="#Step2-在-InferPlugin-cpp-中注册新的-Plugin" class="headerlink" title="Step2 在  InferPlugin.cpp 中注册新的 Plugin"></a>Step2 在  InferPlugin.cpp 中注册新的 Plugin</h4><p>当没有自定义的时候， 可以采取两种方法：</p>
+<ul>
+<li>使用较小的算子直接实现</li>
+<li>Tensor Plugin </li>
+</ul>
+<p>Tensor Plugin 开发流程</p>
+<ul>
+<li>开发解析器 parser/onnx</li>
+<li>Plugin 创建 -&gt; cuda kernel 实现</li>
+<li>TensorRT 算子注册</li>
+</ul>
+<p>TensorRT Plugin 开发</p>
+<p>TensorRT 分为开源和闭源部分：</p>
+<p>开源部分： </p>
+<p>OSS 地址：<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT">https://github.com/NVIDIA/TensorRT</a></p>
+<p>NVIDIA TensorRT 的开源软件(OSS) 组件： 其中包括 TensorRT 插件和解析器(caffe和 ONNX) 的资源， 以及演示 TensorRT 平台用法和功能的示例应用程序。 这些开源软件组件是 TensorRT General Availibility(GA) 发行版的子集， 具有一些扩展和错误修复。</p>
+<p>闭源版本：</p>
+<p>量化、推理计算、kernel 查找等</p>
+<p>TensorRT OSS</p>
+<p>安装流程</p>
+<p>git 获取完成的 OSS 项目包</p>
+<pre><code class="hljs shell">git clone -b https://github/nvidia/TensorRT TensorRT
+cd TensorRT
+git submodule update --init --recursive # 安装一些子模块: 比如 cub、protobuf、onnx、pybind11 等
+export TRT_SOURCE=&#x27;pwd&#x27;</code></pre>
+<p>安装 GA 包</p>
+<pre><code class="hljs shell">cd ~/Downloads
+tar -xvzf TensorRT-7.2.1.6.CentOS-7.6.x86_64-gnu.cuda-11.0.cudnn8.0.tar.gz
+export TRT_RELEASE=`pwd`/TensorRT-7.2.1.6</code></pre>
+<p>OSS 项目编译</p>
+<pre><code class="hljs shell">cd $TRT_SOURCE
+mkdir -p build &amp;&amp; cd build
+cmake .. -DTRT_LIB_DIR=$TRT_RELEASE/lib -DTRT_OUT_DIR=`pwd`/out # 会将 OSS 版本覆盖原有版本
+<span class="hljs-meta">#</span><span class="bash"> 输出二进制库 lib 和 可执行文件(示例代码)</span>
+make -j$(nproc)</code></pre>
+<p>TensorRT OSS 目录</p>
+<pre><code class="hljs shell">主要是三个 
+parser
+Plugin
+examples</code></pre>
+<p>一个学习工具：TensorRT 工具 kaldi-onnx</p>
+<p><a target="_blank" rel="noopener" href="https://github/com/XiaoMi/kaldi-onnx">https://github/com/XiaoMi/kaldi-onnx</a></p>
+<p>用于将 kaldi 语音识别工具包神经网络模型移植到onnx模型进行推理的工具。您可以使用 MACE 加快具有高度优化的 neon 内核的 android、ios， linux 或 windows 设备的推断，该工具支持转换 Nnet2 和 Nnet3 模型。</p>
+<p>onnx 模型快速验证：</p>
+<ul>
+<li><p>TensorRT OSS cmake 完成编译之后会生成 trtexxec</p>
+</li>
+<li><p>通过 trtexec 直接加载 onnx， 验证导出模型是否被 TensorRT 支持</p>
+</li>
+<li><p>根据支持情况，指定算子实现方案</p>
+<ul>
+<li>直接基于算子 op 进行开发， 涉及多个 kernel 启动，性能可能相对较差</li>
+<li>使用 plugin 进行开发</li>
+</ul>
+</li>
+</ul>
+<p>神经网络量化技术及混合推理的原理</p>
+<p>TensorRT 8bit 量化</p>
+<p>目标： 将 FP32 转化为 int8 并尽可能减少准确率损失</p>
+<p>效果：不需要额外的 finetune 和重新训练</p>
+<p>TensorRT 的 Plugin 开发详解</p>
+<p>(1) 观察网络结构， 确认算子的版本、名称、输入、输出、参数及相应权重</p>
+<p>(2) 开发算子的解析模块 parser</p>
+<p>(3) 继承 PluginV2Ext, 完成 kernel 以及相应 API 的开发</p>
+<p>(4) 实现 Creator 相关的操作</p>
+<ul>
+<li>自定义添加是通过扩展 IPluginV2Ext 和 IPluginCreator 实现的</li>
+<li>IPluginV2Ext: IPluginV2 的升级版本， 实现自定义插件的基类， 包含版本化和其他格式和单精度的处理</li>
+<li>IPluginCreator： 自定义层的创建类， 可以通过它获取插件的名称、版本信息、参数等， 也提供网络创建阶段创建插件的方法， 并在推理阶段反序列化它。</li>
+</ul>
+<h5 id="1-TensorRT-plugin-Parser实现"><a href="#1-TensorRT-plugin-Parser实现" class="headerlink" title="1. TensorRT plugin[Parser实现]"></a>1. TensorRT plugin[Parser实现]</h5><p>文件路径: TensorRT/parser/onnx/builtin_op_importers.cpp</p>
+<p>OP 导入: DEFINE_BUILT_OP_IMPORTER(BatchNorm)</p>
+<p>参数部分为OP 的名称， 与 onnx 一致</p>
+<pre><code class="hljs cpp">DEFINE_BUILTIN_OP_IMPORTER(BatchNormalization)
+&#123;
+    <span class="hljs-comment">// Scale, bias, mean, and variance must be initializers</span>
+    <span class="hljs-comment">// 解析输入信息</span>
+    <span class="hljs-keyword">auto</span> scale_weights = inputs.at(<span class="hljs-number">1</span>).weights();
+    <span class="hljs-keyword">auto</span> bias_weights = inputs.at(<span class="hljs-number">2</span>).weights();
+    <span class="hljs-keyword">auto</span> mean_weights = inputs.at(<span class="hljs-number">3</span>).weights();
+    <span class="hljs-keyword">auto</span> variance_weights = inputs.at(<span class="hljs-number">4</span>).weights();
+
+    <span class="hljs-comment">// ...</span>
+
+    <span class="hljs-comment">// 解析属性信息</span>
+    <span class="hljs-function">OnnxAttrs <span class="hljs-title">attrs</span><span class="hljs-params">(node)</span></span>;
+    <span class="hljs-keyword">float</span> eps = attrs.get&lt;<span class="hljs-keyword">float</span>&gt;(<span class="hljs-string">&quot;epsilon&quot;</span>, <span class="hljs-number">1e-5</span>f);
+
+    nvinfer1::Dims dims = tensor_ptr-&gt;getDimensions();
+
+    <span class="hljs-keyword">bool</span> need_to_expand_dims = (dims.nbDims == <span class="hljs-number">3</span>);
+
+&#125;</code></pre>
+<h5 id="2-TensorRT-Plugin开发-具体-Plugin"><a href="#2-TensorRT-Plugin开发-具体-Plugin" class="headerlink" title="2. TensorRT Plugin开发 [具体 Plugin]"></a>2. TensorRT Plugin开发 [具体 Plugin]</h5><p>​        继承自  <code>nvinfer1::IPluginV2DynamicExt</code>  或者 <code>PluginV2Ext</code> 来实现对应的 API。 其中 enqueue API 实现将具体化的 kernel 调用过程加入执行队列所在流的功能。 和具体的 Cuda kernel 的实现相关联。</p>
+<p>其中前者是指定了具体的参数， 这里的 enqueue 则是具体的实现。</p>
+<p>注册 creator</p>
+<p>TensorRT/plugin/inferplugin.cpp</p>
+<p>将自定义的 plugin 创建器进行初始化。 系统最终通过 creator 映射关系来实现 plugin 的创建和调用</p>
+<p>注册过程， 维护map结构，实现字符串到 creator 的映射。</p>
+<h5 id="4-Plugin-编译支持"><a href="#4-Plugin-编译支持" class="headerlink" title="4. Plugin 编译支持"></a>4. Plugin 编译支持</h5><p>确保TensorRT/Plugin/CMakeLists 保证新增加的 Plugin 能够被正常编译通过。</p>
+<h4 id="关于plugin的注册"><a href="#关于plugin的注册" class="headerlink" title="关于plugin的注册"></a>关于plugin的注册</h4><p>注册插件有两种方式，第一种如官方的 plugin 代码。</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> &#123;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">initLibNvInferPlugins</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* logger, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* libNamespace)</span></span>&#123;
+        <span class="hljs-comment">// User defgined tdnn plugin</span>
+        initializePlugin&lt;nvinfer1::plugin::GridAnchorPluginCreator&gt;(logger, libNamespace);
+        initializePlugin&lt;nvinfer1::plugin::NMSPluginCreator&gt;(logger, libNamespace);
+        initializePlugin&lt;nvinfer1::plugin::RmsNormCreator&gt;(logger, libNamespace);
+        <span class="hljs-comment">// ...</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+&#125; <span class="hljs-comment">// extern &quot;C&quot;</span></code></pre>
+<p>其中 <code>initializePlugin</code> 函数执行了 <code>addPluginCreator</code> 函数：</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> CreatorType&gt;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">initializePlugin</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* logger, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* libNamespace)</span></span>
+<span class="hljs-function"></span>&#123;
+    PluginCreatorRegistry::getInstance().addPluginCreator&lt;CreatorType&gt;(logger, libNamespace);
+&#125;</code></pre>
+<p><code>addPluginCreator</code> 函数又执行了 <code>getPluginRegistry()-&gt;registerCreator</code> 对 <code>pluginCreator</code> 进行了注册，这样就完成注册任务了：</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addPluginCreator</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* logger, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* libNamespace)</span></span>
+<span class="hljs-function"></span>&#123;
+    ...
+        <span class="hljs-keyword">if</span> (mRegistryList.find(pluginType) == mRegistryList.end())
+        &#123;
+            <span class="hljs-keyword">bool</span> status = getPluginRegistry()-&gt;registerCreator(*pluginCreator, libNamespace);
+            <span class="hljs-keyword">if</span> (status)
+            &#123;
+                mRegistry.push(<span class="hljs-built_in">std</span>::move(pluginCreator));
+                mRegistryList.insert(pluginType);
+                verboseMsg = <span class="hljs-string">&quot;Plugin creator registration succeeded - &quot;</span> + pluginType;
+            &#125;
+            <span class="hljs-keyword">else</span>
+            &#123;
+                errorMsg = <span class="hljs-string">&quot;Could not register plugin creator:  &quot;</span> + pluginType;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">else</span>
+        &#123;
+            verboseMsg = <span class="hljs-string">&quot;Plugin creator already registered - &quot;</span> + pluginType;
+        &#125;
+    ...
+&#125;
+</code></pre>
+<p>在加载 <code>NvInferRuntimeCommon.h</code> 头文件的时候会得到一个 <code>getPluginRegistry</code> ，这里类中包含了所有已经注册了的 <code>IPluginCreator</code>，在使用的时候我们通过 <code>getPluginCreator</code> 函数得到相应的 <code>IPluginCreator</code>。</p>
+<p>另一种注册可以直接通过<code>REGISTER_TENSORRT_PLUGIN</code>来注册：</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">//!</span>
+<span class="hljs-comment">//! \brief Return the plugin registry</span>
+<span class="hljs-comment">//!</span>
+<span class="hljs-comment">//  在加载`NvInferRuntimeCommon.h`头文件的时候会得到一个`getPluginRegistry`</span>
+<span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-function">TENSORRTAPI nvinfer1::IPluginRegistry* <span class="hljs-title">getPluginRegistry</span><span class="hljs-params">()</span></span>;
+
+<span class="hljs-keyword">namespace</span> nvinfer1
+&#123;
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PluginRegistrar</span></span>
+<span class="hljs-class">&#123;</span>
+<span class="hljs-keyword">public</span>:
+    PluginRegistrar() &#123; getPluginRegistry()-&gt;registerCreator(instance, <span class="hljs-string">&quot;&quot;</span>); &#125;
+<span class="hljs-keyword">private</span>:
+    T instance&#123;&#125;;
+&#125;;
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> REGISTER_TENSORRT_PLUGIN(name) \</span>
+    <span class="hljs-keyword">static</span> nvinfer1::PluginRegistrar&lt;name&gt; pluginRegistrar#<span class="hljs-meta">#name &#123;&#125;</span>
+
+&#125; <span class="hljs-comment">// namespace nvinfer1</span></code></pre>
+<p>也就是说，如果我们已经在plugin的<code>.h</code>文件中执行了<code>REGISTER_TENSORRT_PLUGIN(BatchedNMSPluginCreator);</code>就不需要再创建一个类似于官方的<code>initLibNvInferPlugins()</code>函数去一个一个注册了。</p>
+<p>看到这里了，希望对大家有所帮助，觉得有收获的大爷们点个赞呀。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/13/knowledge-distillation/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">knowledge-distillation</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/10/CPP-review/">
+                        <span class="hidden-mobile">CPP_review</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "TensorRT&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -160,18 +160,18 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/11/07/int8-quantize/">int8_quantize</a>
+        <a href="/2020/11/13/quantizing/">quantizing</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/11/07/int8-quantize/">
+        <a href="/2020/11/13/quantizing/">
           
           
             
           
-          1. FP32 vs int8​        首先来看一下 FP32、FP16 和 int8之间的动态范围和精度的对比， 可以看到float32 的取值范围几乎是无穷的，而int8只有-128~127. 因此需要建立映射关系将float32类型的浮点数映射到指定范围的int8类型。 
-
-​        目前最常见的两种int8量化实现方式是 Nvidia的TensorRT方案 和 google
+          ​        量化， 也被称为定点化、离散化，是指用低精度整数来近似表示浮点数(权重和偏置)的方法。 在量化之后，可以在特定的硬件平台上使用特定的指令集对其加速， 另外，由于存储位宽的减小，模型的体积也会显著减小。常见的量化方案可以分为二值量化、三值量化、低比特量化(介于2-8bit之间) 和 int8 量化。
+1. 二值量化Binary Weight (只对权重进行二值化)
+🌟 [Bina
         </a>
       </p>
 
@@ -179,8 +179,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-07 16:26" pubdate>
-              2020-11-07
+            <time datetime="2020-11-13 15:02" pubdate>
+              2020-11-13
             </time>
           </div>
         
