@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.1k 字
+      2.5k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      42
+      34
        分钟
     </span>
   
@@ -208,31 +208,21 @@
             <h1 style="display: none">TensorRT</h1>
             
             <div class="markdown-body" id="post-body">
-              <h3 id="1-TensorRT-简介"><a href="#1-TensorRT-简介" class="headerlink" title="1. TensorRT 简介"></a>1. TensorRT 简介</h3><p>在推理过程中，基于TensorRT 的应用程序的执行速度可以比 CPU 平台速度快40 倍</p>
+              <h3 id="1-TensorRT-简介"><a href="#1-TensorRT-简介" class="headerlink" title="1. TensorRT 简介"></a>1. TensorRT 简介</h3><p>TensorRT 是一个前向推理框架。在推理过程中，基于TensorRT 的应用程序的执行速度可以比 CPU 平台速度快 40 倍。</p>
 <ul>
-<li>不同的硬件需要匹配不同的cuda库，然后还需要进行测试， 比如选核等操作</li>
-<li>TensorRT 以  NVIDIA 的并行编程模型 CUDA 为基础构建围城</li>
-<li>TensorRT 针对多种深度学习推理应用的生产部署提供 INT8 和 FP 6 优化</li>
+<li>不同的硬件需要匹配不同的 cuda库，然后还需要进行测试， 比如选核等操作</li>
+<li>TensorRT 以  NVIDIA 的并行编程模型 CUDA 为基础构建而成。</li>
+<li>TensorRT 针对多种深度学习推理应用的生产部署提供 INT8 和 FP 16 优化</li>
 </ul>
-<p>TensorRT 框架支持：</p>
-<p>Tensorflow、Mathlab、onnx(pytorch、mxnet等)</p>
-<p>TRT 的核心优化方法</p>
-<ul>
-<li>权重与激活精度校准：通过将模型量化为 INT8 来更大限度地提高吞吐量， 同时保持较高准确度</li>
-<li>层与张量融合：通过融合内核中的节点， 优化 GPU显存和带宽使用</li>
-<li>内核自动调整： 基于目标 GPU 平台选择最佳数据层和算法</li>
-<li>动态张量显存： 更大限度减少显存占用，并高效地位张量重复利用内存</li>
-<li>多流执行：用于并行处理多个输入流的可扩展设计</li>
-</ul>
-<h3 id="2-TensorRT-OSS"><a href="#2-TensorRT-OSS" class="headerlink" title="2. TensorRT OSS"></a>2. TensorRT OSS</h3><p>TensorRT Plugin 开发</p>
-<p>TensorRT 分为开源和闭源部分：</p>
-<p>开源部分： </p>
-<p>OSS 地址：<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT">https://github.com/NVIDIA/TensorRT</a></p>
-<p>NVIDIA TensorRT 的开源软件(OSS) 组件： 其中包括 TensorRT 插件和解析器(caffe和 ONNX) 的资源， 以及演示 TensorRT 平台用法和功能的示例应用程序。 这些开源软件组件是 TensorRT General Availibility(GA) 发行版的子集， 具有一些扩展和错误修复。</p>
-<p>闭源版本：</p>
-<p>量化、推理计算、kernel 查找等</p>
-<p>安装流程</p>
-<p>git 获取完成的 OSS 项目包</p>
+<p>TensorRT 框架支持大多数的 DeepLearning 框架</p>
+<p><img src="/2021/01/12/TensorRT/1.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>TensorRT 核心优化方法</p>
+<p><img src="/2021/01/12/TensorRT/2.png" srcset="/img/loading.gif" style="zoom:50%;"></p>
+<h3 id="2-TensorRT-OSS"><a href="#2-TensorRT-OSS" class="headerlink" title="2. TensorRT OSS"></a>2. TensorRT OSS</h3><h5 id="1-TensorRT-OSS"><a href="#1-TensorRT-OSS" class="headerlink" title="(1) TensorRT OSS"></a>(1) TensorRT OSS</h5><p>TensorRT 分为开源和闭源两部分</p>
+<p>开源部分：<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT">https://github.com/NVIDIA/TensorRT</a></p>
+<p>​        NVIDIA TensorRT 的开源软件(OSS) 组件：其中包括 TensorRT 插件和解析器(caffe 和 ONNX) 的资源， 以及演示 TensorRT 平台用法和功能的示例应用程序。 这些开源软件组件是 TensorRT General Availibility(GA) 发行版的子集， 具有一些扩展和错误修复。</p>
+<p>闭源版本： 量化、推理计算、kernel 查找等</p>
+<h5 id="2-安装流程"><a href="#2-安装流程" class="headerlink" title="(2) 安装流程"></a>(2) 安装流程</h5><p>git 获取完成的 OSS 项目包</p>
 <pre><code class="hljs shell">git clone -b https://github/nvidia/TensorRT TensorRT
 cd TensorRT
 git submodule update --init --recursive # 安装一些子模块: 比如 cub、protobuf、onnx、pybind11 等
@@ -247,12 +237,12 @@ mkdir -p build &amp;&amp; cd build
 cmake .. -DTRT_LIB_DIR=$TRT_RELEASE/lib -DTRT_OUT_DIR=`pwd`/out # 会将 OSS 版本覆盖原有版本
 <span class="hljs-meta">#</span><span class="bash"> 输出二进制库 lib 和 可执行文件(示例代码)</span>
 make -j$(nproc)</code></pre>
-<p>TensorRT OSS 目录</p>
-<pre><code class="hljs shell">主要是三个 
-parser
-Plugin
-examples</code></pre>
-<h3 id="pytorch-gt-onnx"><a href="#pytorch-gt-onnx" class="headerlink" title="pytorch -&gt; onnx"></a>pytorch -&gt; onnx</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch
+<h5 id="3-TensorRT-OSS-目录"><a href="#3-TensorRT-OSS-目录" class="headerlink" title="(3) TensorRT OSS 目录"></a>(3) TensorRT OSS 目录</h5><ul>
+<li>parser</li>
+<li>plugin</li>
+<li>examples</li>
+</ul>
+<h3 id="3-TensorRT-开发"><a href="#3-TensorRT-开发" class="headerlink" title="3. TensorRT 开发"></a>3. TensorRT 开发</h3><h5 id="（1）pytorch-gt-onnx"><a href="#（1）pytorch-gt-onnx" class="headerlink" title="（1）pytorch -&gt; onnx"></a>（1）pytorch -&gt; onnx</h5><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch
 <span class="hljs-keyword">from</span> torch.autograd <span class="hljs-keyword">import</span> Variable
 <span class="hljs-keyword">import</span> torch.onnx <span class="hljs-keyword">as</span> torch_onnx
 <span class="hljs-keyword">import</span> onnx
@@ -269,24 +259,44 @@ examples</code></pre>
     dynamic_axes = &#123;<span class="hljs-string">&#x27;input.1&#x27;</span>:&#123;<span class="hljs-number">0</span>: <span class="hljs-string">&#x27;batch&#x27;</span>&#125;, <span class="hljs-string">&#x27;186&#x27;</span>:&#123;<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;batch&#x27;</span>&#125;&#125;
     out = torch.onnx.export(model, dummy_input, model_onnx_path, 
                             input_names=inputs, output_names=outputs, dynamic_axes=dynamic_axes)</code></pre>
-<h3 id="计算图优化-onnx-优化"><a href="#计算图优化-onnx-优化" class="headerlink" title="计算图优化:onnx 优化"></a>计算图优化:onnx 优化</h3><p>(1) reshape 的时候的很多冗余算子的问题</p>
-<p>(2) 输入的归一化: 去掉，放在代码逻辑里面</p>
-<p>(3) conv_bn 的合并</p>
-<p>(4) 一些无法 boardcast 的问题</p>
-<p>(5) 新层的注册</p>
-<p>可视化图:  Netron</p>
-<p>Onnx-simplify</p>
-<p>可以参考 tencent-TNN/tools/converter/optimizer</p>
-<h3 id="二-自定义组件-TensorRT-Plugin"><a href="#二-自定义组件-TensorRT-Plugin" class="headerlink" title="二. 自定义组件 TensorRT Plugin"></a>二. 自定义组件 TensorRT Plugin</h3><p>官方文档： <a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#extending">https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#extending</a></p>
-<pre><code class="hljs angelscript">TensorRT 的 Plugin 开发详解
-(<span class="hljs-number">1</span>) 观察网络结构， 确认算子的版本、名称、输入、输出、参数及相应权重
-(<span class="hljs-number">2</span>) 开发算子的解析模块 parser
-(<span class="hljs-number">3</span>) 继承 PluginV2Ext, 完成 kernel 以及相应 API 的开发
-(<span class="hljs-number">4</span>) 实现 Creator 相关的操作
-- 自定义添加是通过扩展 IPluginV2Ext 和 IPluginCreator 实现的
-- IPluginV2Ext: IPluginV2 的升级版本， 实现自定义插件的基类， 包含版本化和其他格式和单精度的处理
-- IPluginCreator： 自定义层的创建类， 可以通过它获取插件的名称、版本信息、参数等， 也提供网络创建阶段创建插件的方法， 并在推理阶段反序列化它。</code></pre>
-<p>自定义组件 TensorRT Plugin 的整体流程如下所示:</p>
+<h5 id="（2）计算图优化：onnx-优化"><a href="#（2）计算图优化：onnx-优化" class="headerlink" title="（2）计算图优化：onnx 优化"></a>（2）计算图优化：onnx 优化</h5><p><strong>常见的处理：</strong></p>
+<ul>
+<li><p>reshape 的时候的很多冗余算子的问题</p>
+</li>
+<li><p>输入的归一化：去掉，放在代码逻辑里面</p>
+</li>
+<li>conv_bn 的合并</li>
+<li>一些无法 boardcast 的问题</li>
+<li>新层的注册</li>
+</ul>
+<p><strong>两个工具：</strong></p>
+<ul>
+<li><p>可视化图:  Netron</p>
+</li>
+<li><p>onnx-simplify</p>
+</li>
+</ul>
+<p><strong>onnx 模型快速验证：</strong></p>
+<ul>
+<li><p>TensorRT OSS 完成编译之后会生成 trtexec</p>
+</li>
+<li><p>通过 trtexec 直接加载 onnx， 验证导出模型是否被 TensorRT 支持</p>
+</li>
+<li><p>根据支持情况，指定算子实现方案</p>
+<ul>
+<li>直接基于算子 op 进行开发， 涉及多个 kernel 启动，性能可能相对较差</li>
+<li>使用 plugin 进行开发</li>
+</ul>
+</li>
+</ul>
+<h5 id="（3）-自定义组件-TensorRT-Plugin"><a href="#（3）-自定义组件-TensorRT-Plugin" class="headerlink" title="（3） 自定义组件 TensorRT Plugin"></a>（3） 自定义组件 TensorRT Plugin</h5><p>官方文档： <a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#extending">https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#extending</a></p>
+<p>TensorRT 的 Plugin 开发详解<br>① 观察网络结构， 确认算子的版本、名称、输入、输出、参数及相应权重<br>② 开发算子的解析模块 parser<br>③ 继承 PluginV2Ext, 完成 kernel 以及相应 API 的开发<br>④ 实现 Creator 相关的操作</p>
+<ul>
+<li>自定义添加是通过扩展 IPluginV2Ext 和 IPluginCreator 实现的</li>
+<li>IPluginV2Ext: IPluginV2 的升级版本， 实现自定义插件的基类， 包含版本化和其他格式和单精度的处理</li>
+<li>IPluginCreator： 自定义层的创建类， 可以通过它获取插件的名称、版本信息、参数等， 也提供网络创建阶段创建插件的方法， 并在推理阶段反序列化它。</li>
+</ul>
+<h3 id="4-TensorRT-Plugin-开发"><a href="#4-TensorRT-Plugin-开发" class="headerlink" title="4. TensorRT Plugin 开发"></a>4. TensorRT Plugin 开发</h3><p>自定义组件 TensorRT Plugin 的整体流程如下所示:</p>
 <ol>
 <li>实现Plugin 类和 PluginCreator 类 ：实现和接口</li>
 <li>在 TensorRT OSS 的 plugin 的 InferPlugin.cpp 中注册新的 Plugin：注册</li>
@@ -296,8 +306,7 @@ examples</code></pre>
 <li>替换 nvinfer_plugin 和 nvonnxparser 库，使用 trtexec 将 onnx 转换为 tensorrt 模型</li>
 </ol>
 <p>下面对每一个步骤进行详细的讲解：</p>
-<p>Tensor Plugin 开发流程</p>
-<h4 id="Step1-实现-Plugin-类-和-PluginCreator-类"><a href="#Step1-实现-Plugin-类-和-PluginCreator-类" class="headerlink" title="Step1 实现 Plugin 类 和 PluginCreator 类"></a>Step1 实现 Plugin 类 和 PluginCreator 类</h4><p>该步骤可以参考一下 TensorRT 官方 plugin 库： <a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT/tree/master/plugin。官方提供了较多的">https://github.com/NVIDIA/TensorRT/tree/master/plugin。官方提供了较多的</a> plugin 插件， 我们可以看到其源码，然后通过模仿源码来学习 plugin 的编写。 这里我们以 nmsPlugin 来看一下自定义的插件如何编写:</p>
+<h5 id="Step1-实现-Plugin-类-和-PluginCreator-类"><a href="#Step1-实现-Plugin-类-和-PluginCreator-类" class="headerlink" title="Step1 实现 Plugin 类 和 PluginCreator 类"></a>Step1 实现 Plugin 类 和 PluginCreator 类</h5><p>该步骤可以参考一下 TensorRT 官方 plugin 库： <a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT/tree/master/plugin。官方提供了较多的">https://github.com/NVIDIA/TensorRT/tree/master/plugin。官方提供了较多的</a> plugin 插件， 我们可以看到其源码，然后通过模仿源码来学习 plugin 的编写。 这里我们以 nmsPlugin 来看一下自定义的插件如何编写:</p>
 <pre><code class="hljs shell">.
 ├── CMakeLists.txt
 ├── README.md
@@ -423,7 +432,7 @@ examples</code></pre>
     <span class="hljs-keyword">int</span> mNbWeights&#123;&#125;;
     <span class="hljs-keyword">static</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;PluginField&gt; mPluginAttributes;
 &#125;;</code></pre>
-<h4 id="Step2-在-InferPlugin-cpp-中注册新-creator"><a href="#Step2-在-InferPlugin-cpp-中注册新-creator" class="headerlink" title="Step2 在  InferPlugin.cpp 中注册新 creator"></a>Step2 在  InferPlugin.cpp 中注册新 creator</h4><p>注册过程， 维护map结构，实现字符串到 creator 的映射。</p>
+<h5 id="Step2-在-InferPlugin-cpp-中注册新-creator"><a href="#Step2-在-InferPlugin-cpp-中注册新-creator" class="headerlink" title="Step2 在  InferPlugin.cpp 中注册新 creator"></a>Step2 在  InferPlugin.cpp 中注册新 creator</h5><p>注册过程， 维护map结构，实现字符串到 creator 的映射。</p>
 <p>文件路径：<code>TensorRT/plugin/inferplugin.cpp</code></p>
 <p>将自定义的 plugin 创建器进行初始化。 系统最终通过 creator 映射关系来实现 plugin 的创建和调用</p>
 <pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;batchedNMSPlugin.h&quot;</span></span>
@@ -437,13 +446,12 @@ examples</code></pre>
     &#125;
 &#125; <span class="hljs-comment">// extern &quot;C&quot;</span>
 </code></pre>
-<h4 id="Step3-修改-CMakeLists-txt-并编译-nvinfer-plugin-库"><a href="#Step3-修改-CMakeLists-txt-并编译-nvinfer-plugin-库" class="headerlink" title="Step3: 修改 CMakeLists.txt 并编译 nvinfer_plugin 库"></a>Step3: 修改 CMakeLists.txt 并编译 nvinfer_plugin 库</h4><pre><code class="hljs cpp"><span class="hljs-comment">// 这里只是添加 plugin list 而已</span>
+<h5 id="Step3-修改-CMakeLists-txt-并编译-nvinfer-plugin-库"><a href="#Step3-修改-CMakeLists-txt-并编译-nvinfer-plugin-库" class="headerlink" title="Step3: 修改 CMakeLists.txt 并编译 nvinfer_plugin 库"></a>Step3: 修改 CMakeLists.txt 并编译 nvinfer_plugin 库</h5><pre><code class="hljs cpp"><span class="hljs-comment">// 这里只是添加 plugin list 而已</span>
 <span class="hljs-built_in">set</span>(PLUGIN_LISTS
     batchedNMSPlugin
     )</code></pre>
-<h4 id="setp-4-在-onnx-tensorrt-中注册新的-Plugin"><a href="#setp-4-在-onnx-tensorrt-中注册新的-Plugin" class="headerlink" title="setp 4: 在 onnx-tensorrt 中注册新的 Plugin"></a>setp 4: 在 onnx-tensorrt 中注册新的 Plugin</h4><p>文件路径： <code>TensorRT/parser/onnx/builtin_op_importers.cpp</code>。 添加方法如下所示：</p>
-<pre><code class="hljs cpp">
-DEFINE_BUILTIN_OP_IMPORTER(BatchNormalization)  <span class="hljs-comment">// OP 导入, 参数部分为 OP 名称， 需要与 onnx 一致</span>
+<h5 id="setp-4-在-onnx-tensorrt-中注册新的-Plugin"><a href="#setp-4-在-onnx-tensorrt-中注册新的-Plugin" class="headerlink" title="setp 4: 在 onnx-tensorrt 中注册新的 Plugin"></a>setp 4: 在 onnx-tensorrt 中注册新的 Plugin</h5><p>文件路径： <code>TensorRT/parser/onnx/builtin_op_importers.cpp</code>。 添加方法如下所示：</p>
+<pre><code class="hljs cpp">DEFINE_BUILTIN_OP_IMPORTER(BatchNormalization)  <span class="hljs-comment">// OP 导入, 参数部分为 OP 名称， 需要与 onnx 一致</span>
 &#123;
     <span class="hljs-comment">// Scale, bias, mean, and variance must be initializers</span>
     <span class="hljs-comment">// 解析输入信息</span>
@@ -463,95 +471,9 @@ DEFINE_BUILTIN_OP_IMPORTER(BatchNormalization)  <span class="hljs-comment">// OP
     <span class="hljs-keyword">bool</span> need_to_expand_dims = (dims.nbDims == <span class="hljs-number">3</span>);
 
 &#125;</code></pre>
-<h5 id="4-Plugin-编译支持"><a href="#4-Plugin-编译支持" class="headerlink" title="4. Plugin 编译支持"></a>4. Plugin 编译支持</h5><p>确保 TensorRT/Plugin/CMakeLists  保证新增加的 Plugin 能够被正常编译通过。</p>
-<h4 id="关于plugin的注册"><a href="#关于plugin的注册" class="headerlink" title="关于plugin的注册"></a>关于plugin的注册</h4><p>注册插件有两种方式，第一种如官方的 plugin 代码。</p>
-<pre><code class="hljs cpp"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> &#123;
-    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">initLibNvInferPlugins</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* logger, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* libNamespace)</span></span>&#123;
-        <span class="hljs-comment">// User defgined tdnn plugin</span>
-        initializePlugin&lt;nvinfer1::plugin::GridAnchorPluginCreator&gt;(logger, libNamespace);
-        initializePlugin&lt;nvinfer1::plugin::NMSPluginCreator&gt;(logger, libNamespace);
-        initializePlugin&lt;nvinfer1::plugin::RmsNormCreator&gt;(logger, libNamespace);
-        <span class="hljs-comment">// ...</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-    &#125;
-&#125; <span class="hljs-comment">// extern &quot;C&quot;</span></code></pre>
-<p>其中 <code>initializePlugin</code> 函数执行了 <code>addPluginCreator</code> 函数：</p>
-<pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> CreatorType&gt;
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">initializePlugin</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* logger, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* libNamespace)</span></span>
-<span class="hljs-function"></span>&#123;
-    PluginCreatorRegistry::getInstance().addPluginCreator&lt;CreatorType&gt;(logger, libNamespace);
-&#125;</code></pre>
-<p><code>addPluginCreator</code> 函数又执行了 <code>getPluginRegistry()-&gt;registerCreator</code> 对 <code>pluginCreator</code> 进行了注册，这样就完成注册任务了：</p>
-<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addPluginCreator</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* logger, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* libNamespace)</span></span>
-<span class="hljs-function"></span>&#123;
-    ...
-        <span class="hljs-keyword">if</span> (mRegistryList.find(pluginType) == mRegistryList.end())
-        &#123;
-            <span class="hljs-keyword">bool</span> status = getPluginRegistry()-&gt;registerCreator(*pluginCreator, libNamespace);
-            <span class="hljs-keyword">if</span> (status)
-            &#123;
-                mRegistry.push(<span class="hljs-built_in">std</span>::move(pluginCreator));
-                mRegistryList.insert(pluginType);
-                verboseMsg = <span class="hljs-string">&quot;Plugin creator registration succeeded - &quot;</span> + pluginType;
-            &#125;
-            <span class="hljs-keyword">else</span>
-            &#123;
-                errorMsg = <span class="hljs-string">&quot;Could not register plugin creator:  &quot;</span> + pluginType;
-            &#125;
-        &#125;
-        <span class="hljs-keyword">else</span>
-        &#123;
-            verboseMsg = <span class="hljs-string">&quot;Plugin creator already registered - &quot;</span> + pluginType;
-        &#125;
-    ...
-&#125;
-</code></pre>
-<p>在加载 <code>NvInferRuntimeCommon.h</code> 头文件的时候会得到一个 <code>getPluginRegistry</code> ，这里类中包含了所有已经注册了的 <code>IPluginCreator</code>，在使用的时候我们通过 <code>getPluginCreator</code> 函数得到相应的 <code>IPluginCreator</code>。</p>
-<p>另一种注册可以直接通过<code>REGISTER_TENSORRT_PLUGIN</code>来注册：</p>
-<pre><code class="hljs cpp"><span class="hljs-comment">//!</span>
-<span class="hljs-comment">//! \brief Return the plugin registry</span>
-<span class="hljs-comment">//!</span>
-<span class="hljs-comment">//  在加载`NvInferRuntimeCommon.h`头文件的时候会得到一个`getPluginRegistry`</span>
-<span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-function">TENSORRTAPI nvinfer1::IPluginRegistry* <span class="hljs-title">getPluginRegistry</span><span class="hljs-params">()</span></span>;
-
-<span class="hljs-keyword">namespace</span> nvinfer1
-&#123;
-
-<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PluginRegistrar</span></span>
-<span class="hljs-class">&#123;</span>
-<span class="hljs-keyword">public</span>:
-    PluginRegistrar() &#123; getPluginRegistry()-&gt;registerCreator(instance, <span class="hljs-string">&quot;&quot;</span>); &#125;
-<span class="hljs-keyword">private</span>:
-    T instance&#123;&#125;;
-&#125;;
-
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> REGISTER_TENSORRT_PLUGIN(name) \</span>
-    <span class="hljs-keyword">static</span> nvinfer1::PluginRegistrar&lt;name&gt; pluginRegistrar#<span class="hljs-meta">#name &#123;&#125;</span>
-
-&#125; <span class="hljs-comment">// namespace nvinfer1</span></code></pre>
-<p>也就是说，如果我们已经在plugin的<code>.h</code>文件中执行了<code>REGISTER_TENSORRT_PLUGIN(BatchedNMSPluginCreator);</code>就不需要再创建一个类似于官方的<code>initLibNvInferPlugins()</code>函数去一个一个注册了。</p>
-<p>看到这里了，希望对大家有所帮助，觉得有收获的大爷们点个赞呀。</p>
-<p>一个学习工具：TensorRT 工具 kaldi-onnx</p>
-<p><a target="_blank" rel="noopener" href="https://github/com/XiaoMi/kaldi-onnx">https://github/com/XiaoMi/kaldi-onnx</a></p>
+<h5 id="step-5-Plugin-编译支持"><a href="#step-5-Plugin-编译支持" class="headerlink" title="step 5. Plugin 编译支持"></a>step 5. Plugin 编译支持</h5><p>确保 TensorRT/Plugin/CMakeLists  保证新增加的 Plugin 能够被正常编译通过。</p>
+<p>补充一个学习工具：TensorRT 工具 kaldi-onnx   <a target="_blank" rel="noopener" href="https://github/com/XiaoMi/kaldi-onnx">https://github/com/XiaoMi/kaldi-onnx</a></p>
 <p>用于将 kaldi 语音识别工具包神经网络模型移植到onnx模型进行推理的工具。您可以使用 MACE 加快具有高度优化的 neon 内核的 android、ios， linux 或 windows 设备的推断，该工具支持转换 Nnet2 和 Nnet3 模型。</p>
-<p>onnx 模型快速验证：</p>
-<ul>
-<li><p>TensorRT OSS cmake 完成编译之后会生成 trtexxec</p>
-</li>
-<li><p>通过 trtexec 直接加载 onnx， 验证导出模型是否被 TensorRT 支持</p>
-</li>
-<li><p>根据支持情况，指定算子实现方案</p>
-<ul>
-<li>直接基于算子 op 进行开发， 涉及多个 kernel 启动，性能可能相对较差</li>
-<li>使用 plugin 进行开发</li>
-</ul>
-</li>
-</ul>
-<p>神经网络量化技术及混合推理的原理</p>
-<p>TensorRT 8bit 量化</p>
-<p>目标： 将 FP32 转化为 int8 并尽可能减少准确率损失</p>
-<p>效果：不需要额外的 finetune 和重新训练</p>
 
             </div>
             <hr>
