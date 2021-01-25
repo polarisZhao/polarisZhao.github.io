@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.2k 字
+      1.7k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      21
        分钟
     </span>
   
@@ -210,81 +210,92 @@
             <div class="markdown-body" id="post-body">
               <p>模型剪枝的相关工作记录</p>
 <a id="more"></a>
-<p>剪枝是指裁减掉冗余的卷积参数，减少参数量，从而降低模型参数加快推理速。剪枝可以分为结构化剪枝和非结构化剪枝。在非结构化剪枝中， 直接将参数置零，并没有进行剪枝， 通常需要搭配特定的硬件。结构化剪枝则是指在 filter 层面，通道层面，或者 shape 层面的剪枝， 直接删除相关参数，可以运行在通用的硬件设备上。 本文主要关注于结构化剪枝的相关工作。</p>
-<h3 id="一-解决方案"><a href="#一-解决方案" class="headerlink" title="一. 解决方案"></a>一. 解决方案</h3><h5 id="1-基于度量"><a href="#1-基于度量" class="headerlink" title="1. 基于度量"></a>1. 基于度量</h5><p><strong>(1) 基于权重</strong></p>
+<p>​        神经网络剪枝是指裁减掉网络中冗余的节点或参数，减少参数量，从而降低模型复杂度， 加快推理速度。 LeCun 于上世纪 90年代首次提出将剪枝应用于神经网络的压缩， 并论证其有效性。一个典型的网络剪枝过程如下所示， 其中最重要的是对节点或者参数重要性的评估。</p>
+<p><img src="/2020/11/24/network-pruning/2.png" srcset="/img/loading.gif" style="zoom:50%;"></p>
+<p>​       剪枝可以分为结构化剪枝和非结构化剪枝。在非结构化剪枝中， 直接将参数置零，并没有进行剪枝， 通常需要搭配特定的硬件。结构化剪枝则是指在 filter 层面，通道层面，或者 shape 层面的剪枝， 直接删除相关参数，可以运行在通用的硬件设备上。 本文主要关注于结构化剪枝的相关工作，较为典型的工作梳理如下：</p>
+<h3 id="一-解决方案"><a href="#一-解决方案" class="headerlink" title="一. 解决方案"></a>一. 解决方案</h3><h5 id="1-基于度量"><a href="#1-基于度量" class="headerlink" title="1. 基于度量"></a>1. 基于度量</h5><p>(1) 基于权重</p>
 <ul>
-<li><strong>Pruning Filters for Efficient ConvNets  ——  l1 norm</strong> 🌟</li>
-</ul>
-<p>衡量标准: Filter的L1 norm</p>
-<ul>
-<li><strong>Filter pruning via geometric median for deep convolutional neural networks acceleration</strong>    🌟</li>
-</ul>
-<p>衡量标准： 卷积核的几何中位数 </p>
-<ul>
-<li><p><strong>SFP Soft filter pruning —— l2 norm: soft pruning</strong>  🌟</p>
+<li><p>Pruning Filters for Efficient ConvNets   🌟</p>
+<p>以 Filter 的 L1 norm 作为衡量标准</p>
 </li>
-<li><p><strong>Learning both Weights and Connections for Efficient Neural Networks  —— no structured prune: weight</strong> 🌟</p>
+<li><p>Filter pruning via geometric median for deep convolutional neural networks acceleration    🌟</p>
+<p>以距离卷积核的几何中心的远近作为衡量标准。  对于神经网络中的某一层，计算所有 filter 的几何中心 (geometric median, GM)， 该几何中心附近的 filter 可以认为是冗余的， 可以将其移除。 </p>
 </li>
-</ul>
-<p><strong>(2) feature map</strong></p>
-<ul>
-<li><p><strong>APoZ: Network trimming: A data-driven neuron pruning approach towards efficient deep architectures</strong></p>
-<p>衡量标准: 激活层输出的feature map的的稀疏程度</p>
+<li><p>SFP Soft filter pruning</p>
+<p>利用卷积核的 l2 norm 作为衡量标准， 进行软剪枝</p>
 </li>
-<li><p>HRank</p>
+<li><p>Learning both Weights and Connections for Efficient Neural Networks  —— no structured prune: weight</p>
 </li>
 </ul>
-<p><strong>（3）loss func</strong></p>
-<p>​    <strong>Pruning Convolutional Neural Networks for Resource Efficient Inference ZAS</strong></p>
-<p>​    衡量标准: 修剪网络参数引起的损失函数的变化</p>
+<p>(2) feature map</p>
+<ul>
+<li><p>APoZ: Network trimming: A data-driven neuron pruning approach towards efficient deep architectures</p>
+<p>作者定义了 APoZ(Average Percentage of Zeros) 来衡量每一个 filter 中激活为 0 的值的数量，并以此作为 filter 是否重要的标准</p>
+</li>
+<li><p>HRank 🌟</p>
+<p>以 feature map 的秩作为衡量标准。 对 feature map 求秩并进行排序， 秩越小所含信息量越小，其重要性越低。根据秩的大小移除 feature map 对应的卷积核。 最后进行微调。</p>
+</li>
+</ul>
+<p>（3）loss func</p>
+<ul>
+<li><p>Pruning Convolutional Neural Networks for Resource Efficient Inference ZAS</p>
+<p>评测修剪网络参数引起的损失函数的变化</p>
+</li>
+</ul>
 <h5 id="2-基于重建误差"><a href="#2-基于重建误差" class="headerlink" title="2. 基于重建误差"></a>2. 基于重建误差</h5><ul>
-<li><strong>Channel pruning for accelerating very deep neural networks</strong>  🌟</li>
+<li>Channel pruning for accelerating very deep neural networks</li>
 </ul>
 <p>​      衡量标准: 通过最小化裁剪后特征图和裁剪前特征图之间的误差</p>
 <ul>
-<li><p><strong>ThiNet (Luo et al., 2017)</strong> 🌟</p>
+<li><p>ThiNet (Luo et al., 2017) 🌟</p>
 <p>衡量标准: 用输入子集代替原来的输入得到输出的相似度</p>
 </li>
 </ul>
 <h5 id="3-稀疏化"><a href="#3-稀疏化" class="headerlink" title="3. 稀疏化"></a>3. 稀疏化</h5><ul>
-<li><strong>(SSL) Learning Structured Sparsity in Deep Neural Networks</strong>  <strong>🌟</strong></li>
+<li>(SSL) Learning Structured Sparsity in Deep Neural Networks  <strong>🌟</strong></li>
 </ul>
 <p>​       使用 group Lasso 给损失函数加入相应的惩罚，进行结构化稀疏</p>
 <ul>
-<li><p><strong>(Network Slimming)  l1 norm: bn gamma</strong>  <strong>🌟</strong></p>
-<p>衡量标准: BN层的 γ 参数</p>
-<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">updateBN</span>():</span>
-    <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> model.modules():
-        <span class="hljs-keyword">if</span> isinstance(m, nn.BatchNorm2d):
-            m.weight.grad.data.add_(args.s*torch.sign(m.weight.data))  <span class="hljs-comment"># L1</span>
-              
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">train</span>(<span class="hljs-params">epoch</span>):</span>
-    <span class="hljs-keyword">for</span> batch_idx, (data, target) <span class="hljs-keyword">in</span> enumerate(train_loader):
-        // ...
-        loss.backward()
-        <span class="hljs-keyword">if</span> args.sr:
-            updateBN()
-        // ...</code></pre>
+<li><p>(Network Slimming)  l1 norm: bn gamma  <strong>🌟</strong></p>
+<p>利用 BN 层中的 γ 作为缩放因子，在训练过程当中来衡量 channel 的重要性，将不重要的 channel 进行删减，达到压缩模型大小，提升运算速度的效果。如下图所示，左边为训练当中的模型，中间一列是 scaling factors，也就是 BN 层当中的缩放因子 γ，当 γ 较小时(如图中0.001, 0.003)，所对应的 channel 就会被删减，得到右边所示的模型。 </p>
 </li>
 </ul>
-<h5 id="4-prune-nas"><a href="#4-prune-nas" class="headerlink" title="4. prune + nas"></a>4. prune + nas</h5><h5 id="5-理论思考和总结"><a href="#5-理论思考和总结" class="headerlink" title="5. 理论思考和总结"></a>5. 理论思考和总结</h5><ul>
+<h5 id="4-prune-nas"><a href="#4-prune-nas" class="headerlink" title="4. prune + nas"></a>4. prune + nas</h5><ul>
+<li><p>AMC：AutoML for Model Compression and Acceleration on Mobile Devices  🌟</p>
+<p>将强化学习引入剪枝，使用 nas 进行网络压缩和加速</p>
+</li>
+<li><p>AutoSlim：Towards One-Shot Architecture Search for Channel Numbers </p>
+<p>先训练出一个slimmable 模型，然后通过贪心的方式逐步对网络进行裁剪。</p>
+</li>
+<li><p>Network Pruning via Transformable Architecture Search</p>
+<p>融合可微分网络进行剪枝</p>
+</li>
+<li><p>Approximated Oracle Filter Pruning for Destructive CNN Width Optimization </p>
+<p>平行操作网络的所有层，用二分搜索的方式确定每层的剪枝数。</p>
+</li>
+<li><p>Fine-Grained Neural Architecture Search</p>
+<p>把NAS的粒度降到了通道</p>
+</li>
+</ul>
+<h5 id="5-理论思考和总结"><a href="#5-理论思考和总结" class="headerlink" title="5. 理论思考和总结"></a>5. 理论思考和总结</h5><ul>
 <li><p>Rethinking the value of network pruning   🌟</p>
-<p>​    这篇论文的作者实验过程中发现了模型修剪过后，微调得到的效果和重新从头训练几乎相同，于是便做了多组实验证明这一结论，推翻了包括自己的方法在内的很多方法，提出对参数修剪的一个新的认识：参数修剪的实际作用在于得到网络结构而非权值。</p>
+<p>参数修剪的实际作用在于得到网络结构而非权值。对于修剪后的模型，微调得到的效果和重新从头训练几乎相同。</p>
 </li>
 <li><p>The lottery ticket hypothesis: Finding sparse, trainable neural networks  🌟</p>
+<p>(未剪枝的)大型网络包含一个(剪枝获得的)小的子网络。 如果从一开始就训练这个子网络，且初始化数值一一对应地取自原网络的初始化数值集合， 则会得到和原始网络相似的准确率。 </p>
 </li>
-<li><p>Recovering from Random Pruning: On the Plasticity of Deep Convolutional Neural Networks</p>
+<li><p>Pruning from Scratch  🌟</p>
+<p>在相同的计算开支下，从随机初始化的权重(scratch)直接进行剪枝，也能获得较高性能的模型。该文抛弃了之前预训练、剪枝、fine-tune 的剪枝流程。降低了对预训练模型的依赖，也促使人们重新思考网络剪枝现有方法的有效性。</p>
 </li>
-<li><p>Pruning from Scratch</p>
-</li>
-<li><p>What is the state of neural network pruning</p>
+<li><p>What is the state of neural network pruning ?  🌟</p>
+<p>对神经网络的相关论文进行对比分析， 并提出了剪枝工作的基准 ShrinkBench 。</p>
 </li>
 </ul>
-<h5 id="6-简单应用"><a href="#6-简单应用" class="headerlink" title="6.简单应用"></a>6.简单应用</h5><p>(1) YOLO 剪枝</p>
+<h5 id="6-简单应用"><a href="#6-简单应用" class="headerlink" title="6.简单应用"></a>6.简单应用</h5><p>(1) YOLO 剪枝: 主要参考如下两篇论文</p>
 <ul>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/153496637"><strong>https://zhuanlan.zhihu.com/p/153496637</strong></a></p>
+<li><p>Learning Efficient Convolutional Networks through Network Slimming</p>
 </li>
-<li><p>基于 network slimming + 处理 beta 参数</p>
+<li><p>Rethinking the Smaller-Norm-Less-Informative Assumption in Channel Pruning of Convolution Layers</p>
 </li>
 </ul>
 <p>(2) GAN</p>
@@ -295,38 +306,34 @@
 </li>
 </ul>
 <h3 id="二-注意事项："><a href="#二-注意事项：" class="headerlink" title="二. 注意事项："></a>二. 注意事项：</h3><ol>
-<li><p>剪裁一个 conv layer 的 filter，需要修改后续 conv 的 filter. 即剪掉 $X<em>i$ 的一个 filter，会导致 $X</em>{i+1}$ 少一个 channel,  $X_{i+1}$ 对应的 filter 在 input_channel 维度上也要减 1。</p>
-</li>
-<li><p>剪裁完 $X<em>i$之后，根据注意事项 1 我们从$X</em>{i+1}$ 的 filter 中删除了一行，在计算$X_{i+1}$的filters的l1_norm(图中绿色一列)的时候，有两种选择</p>
-</li>
-</ol>
-<ul>
+<li>剪裁一个卷积层的 filter，需要修改后续卷积层的 filter. 即剪掉 $X<em>i$ 的一个 filter，会导致 $X</em>{i+1}$ 少一个 channel,  $X<em>{i+1}$ 对应的 filter 在 input_channel 维度上也要减 1。剪裁完 $X_i$之后，在计算 $X</em>{i+1}$ 的 filters 的 l1_norm  (下图中绿色一列)的时候，有两种选择<ul>
 <li>算上被删除的一行：independent pruning </li>
 <li>减去被删除的一行：greedy pruning</li>
 </ul>
-<ol>
-<li>在对ResNet等复杂网络剪裁的时候，还要考虑到后当前卷积层的修改对上一层卷积层的影响。在对 residual block 剪裁时，$X<em>{i+1}$ 层如何剪裁取决于 project shortcut 的剪裁结果，因为我们要保证 project shortcut 的 output 和 $X</em>{i+1}$ 的 output 能被正确的 concat.</li>
-</ol>
-<h5 id="2-敏感度的理解"><a href="#2-敏感度的理解" class="headerlink" title="2. 敏感度的理解"></a>2. 敏感度的理解</h5><p><img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleSlim/release/1.0.1/docs/images/algo/pruning_3.png" srcset="/img/loading.gif" style="zoom:33%;"></p>
-<p>如图所示，横坐标是将filter剪裁掉的比例，竖坐标是精度的损失，每条彩色虚线表示的是网络中的一个卷积层。 以不同的剪裁比例<strong>单独</strong>剪裁一个卷积层，并观察其在验证数据集上的精度损失，并绘出图中的虚线。虚线上升较慢的，对应的卷积层相对不敏感，我们优先剪不敏感的卷积层的filter.</p>
-<ul>
-<li><p>选择最优的剪裁率组合</p>
-<p>我们将上图中的折线拟合为下图中的曲线，每在竖坐标轴上选取一个精度损失值，就在横坐标轴上对应着一组剪裁率，如<strong>图8</strong>中黑色实线所示。 用户给定一个模型整体的剪裁率，我们通过移动<strong>图5</strong>中的黑色实线来找到一组满足条件的且合法的剪裁率。</p>
 </li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleSlim/release/1.0.1/docs/images/algo/pruning_4.png" srcset="/img/loading.gif" style="zoom:33%;"></p>
+</ol>
+<p><img src="/2020/11/24/network-pruning/5.png" srcset="/img/loading.gif" style="zoom:45%;"></p>
+<ol>
+<li><p>在对 ResNet 等复杂网络剪裁的时候，还要考虑到后当前卷积层的修改对上一层卷积层的影响。在对 residual block 剪裁时，$X<em>{i+1}$ 层如何剪裁取决于 project shortcut 的剪裁结果，因为我们要保证 project shortcut 的 output 和 $X</em>{i+1}$ 的 output 能被正确的 concat.</p>
+<p><img src="/2020/11/24/network-pruning/6.png" srcset="/img/loading.gif" style="zoom:45%;"></p>
+</li>
+</ol>
+<h5 id="2-敏感度的理解和迭代剪枝"><a href="#2-敏感度的理解和迭代剪枝" class="headerlink" title="2. 敏感度的理解和迭代剪枝"></a>2. 敏感度的理解和迭代剪枝</h5><p><img src="/2020/11/24/network-pruning/4.png" srcset="/img/loading.gif" style="zoom:50%;"></p>
+<p>​        如上图所示，横坐标是将 filter 剪裁掉的比例，竖坐标是精度，每条彩色虚线表示的是网络中的一个卷积层。 以不同的剪裁比例<strong>单独</strong>剪裁一个卷积层，并观察其在验证数据集上的精度损失，并绘出图中的虚线。虚线下降较慢的，对应的卷积层相对不敏感，我们优先修剪不敏感的卷积层的 filter。</p>
+<p>​        考虑到多个卷积层间的相关性，一个卷积层的修改可能会影响其它卷积层的敏感度，我们采取了多次剪裁的策略，步骤如下：</p>
 <ul>
-<li>迭代剪裁</li>
-</ul>
-<p>考虑到多个卷积层间的相关性，一个卷积层的修改可能会影响其它卷积层的敏感度，我们采取了多次剪裁的策略，步骤如下：</p>
-<ul>
-<li>step1: 统计各卷积层的敏感度信息</li>
-<li>step2: 根据当前统计的敏感度信息，对每个卷积层剪掉少量 filter, 并统计 FLOPS，如果 FLOPS 已满足要求，进入step4，否则进行step3。</li>
-<li>step3: 对网络进行简单的fine-tune，进入step1</li>
+<li>step1：统计各卷积层的敏感度信息</li>
+<li>step2: 根据当前统计的敏感度信息，对每个卷积层剪掉少量 filter,  并统计 FLOPS，如果 FLOPS 已满足要求，进入 step4，否则进行step3。</li>
+<li>step3: 对网络进行简单的 fine-tune，进入 step1</li>
 <li>step4: fine-tune训练至收敛</li>
 </ul>
-<p>​    </p>
-<p>​    </p>
+<h4 id="三-参考资料"><a href="#三-参考资料" class="headerlink" title="三. 参考资料"></a>三. 参考资料</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/153496637">https://zhuanlan.zhihu.com/p/153496637</a>    </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/coldlarry/YOLOv3-complete-pruning">https://github.com/coldlarry/YOLOv3-complete-pruning</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/97198052">https://zhuanlan.zhihu.com/p/97198052</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/jinzhuojun/article/details/100621397">https://blog.csdn.net/jinzhuojun/article/details/100621397</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/wujianing_110117/article/details/105526241?utm_medium=distribute.pc_relevant.none-task-blog-title-6&amp;spm=1001.2101.3001.4242">https://blog.csdn.net/wujianing_110117/article/details/105526241?utm_medium=distribute.pc_relevant.none-task-blog-title-6&amp;spm=1001.2101.3001.4242</a></li>
+</ul>
 
             </div>
             <hr>

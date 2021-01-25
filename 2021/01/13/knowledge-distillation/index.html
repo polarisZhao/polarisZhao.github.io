@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      578 字
+      477 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      5
        分钟
     </span>
   
@@ -208,27 +208,36 @@
             <h1 style="display: none">knowledge-distillation</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="知识蒸馏"><a href="#知识蒸馏" class="headerlink" title="知识蒸馏"></a>知识蒸馏</h2><h3 id="1-基本思想"><a href="#1-基本思想" class="headerlink" title="1. 基本思想"></a>1. 基本思想</h3><p>​        知识蒸馏通过采用预先训练好的教师模型( teacher model) 的输出作为监督信号去训练另外一个轻量化的网络( student model ) 。从而实现将复杂网络(老师模型)的知识迁移到小网络(学生模型) 中， 提高小网络的精度。常见的蒸馏方案有两种：</p>
-<p><img src="/Users/zhichaozhao/Documents/hexo-blog/source/_posts/浅谈DeepLearning落地与工程部署/5.png" srcset="/img/loading.gif" alt="img" style="zoom:30%;"></p>
-<ul>
-<li><p>用老师学习到的 soft label 来指导学生模型</p>
-<p>知识蒸馏首先由 Hinton 在 Distilling the Knowledge in a Neural Network 提出，使用 teacher 模型去指导一个参数量和运算量更少的 student 模型。student 模型的训练有两个目标：一个是 student 模型输出的类别概率和 label 的交叉熵，另一个是 student 模型输出的类别概率和 teacher 模型输出的类别概率的交叉熵，记为 soft target，这两个 loss 加权后得到最终的训练 loss，共同指导 student 模型的训练。 </p>
+              <h2 id="知识蒸馏"><a href="#知识蒸馏" class="headerlink" title="知识蒸馏"></a>知识蒸馏</h2><h4 id="1-基本思想"><a href="#1-基本思想" class="headerlink" title="1. 基本思想"></a>1. 基本思想</h4><p>​        知识蒸馏通过采用预先训练好的教师模型( teacher model) 的输出作为监督信号去训练另外一个轻量化的网络( student model ) 。从而实现将复杂网络(老师模型)的知识迁移到小网络(学生模型) 中， 提高小网络的精度。</p>
+<p>​        知识蒸馏首先由 Hinton 在 Distilling the Knowledge in a Neural Network 提出，使用 teacher 模型去指导一个参数量和运算量更少的 student 模型。student 模型的训练有两个目标：一个是 student 模型输出的类别概率和 label 的交叉熵，另一个是 student 模型输出的类别概率和 teacher 模型输出的类别概率的交叉熵，记为 soft target，这两个 loss 加权后得到最终的训练 loss，共同指导 student 模型的训练。 实际操作的时候，会将原来的 softmax 除以 T， 变为:</p>
+<script type="math/tex; mode=display">
+y_i = \frac{exp(x_i / T)}{\sum_j{exp(x_j/T)}}</script><p><img src="/2021/01/13/knowledge-distillation/5.png" srcset="/img/loading.gif" alt="img" style="zoom:30%;"></p>
+<h4 id="2-优缺点"><a href="#2-优缺点" class="headerlink" title="2. 优缺点"></a>2. 优缺点</h4><h5 id="2-1-优点"><a href="#2-1-优点" class="headerlink" title="2.1 优点"></a>2.1 优点</h5><ul>
+<li>知识蒸馏不局限于特定的网络， 可以实现任何网络的蒸馏。 </li>
+</ul>
+<h5 id="2-2-缺点"><a href="#2-2-缺点" class="headerlink" title="2.2 缺点"></a>2.2 缺点</h5><ul>
+<li><p>知识蒸馏的过程也是训练的过程， 同样需要足够多的数据并耗费大量的时间</p>
 </li>
-<li><p>用老师学习到的学习方法来指导学生模型</p>
+<li><p>需要精心设计学生网络。</p>
 </li>
 </ul>
-<p>​      该方法用小模型去拟合大模型不同层特征之间的转换关系，其用一个 FSP 矩阵（特征的内积）来表示不同层特征之间的关系，<strong>大模型和小模型不同层之间分别获得多个 FSP 矩阵，然后使用 L2 loss 让小模型的对应层 FSP 矩阵和大模型对应层的 FSP 矩阵尽量一致</strong>，具体如下图所示。这种方法的优势，通俗的解释是，比如将蒸馏类比成 teacher（大模型）教 student（小模型）解决一个问题，传统的蒸馏是直接告诉小模型问题的答案，让小模型学习，而<strong>学习 FSP 矩阵是让小模型学习解决问题的中间过程和方法，因此其学到的信息更多</strong>。</p>
-<p><img src="/Users/zhichaozhao/Documents/hexo-blog/source/_posts/浅谈DeepLearning落地与工程部署/7.png" srcset="/img/loading.gif" alt="img" style="zoom:45%;"></p>
-<h3 id="2-知识蒸馏的优缺点"><a href="#2-知识蒸馏的优缺点" class="headerlink" title="2. 知识蒸馏的优缺点"></a>2. 知识蒸馏的优缺点</h3><p>优点：不局限于特定的网络， 可以实现任何网络的蒸馏</p>
-<p>缺点：</p>
-<ul>
-<li>知识蒸馏的过程也是训练的过程， 同样需要足够的数据并耗费大量的时间</li>
-<li>需要精心设计 student 网络</li>
+<h5 id="2-3-相关改进"><a href="#2-3-相关改进" class="headerlink" title="2.3 相关改进"></a>2.3 相关改进</h5><ul>
+<li><p>使用 GAN 来生成相应的数据</p>
+<p>Data-free Learning of Student Networks</p>
+<p>Data-Free Adversarial Distillation</p>
+</li>
+<li><p>利用反向传播来更新数据</p>
+<p>Data-Free knowledge distillation for Deep Neural Networks</p>
+<p>Dreaming to Distill: Data-free Knowledge Transfer via DeepInversion</p>
+</li>
+<li><p>让教师模型和学生模型的FSP矩阵（特征的内积）尽量一致，降低了蒸馏的难度</p>
+<p>A Gift from Knowledge Distillation: Fast Optimization, Network Minimization and Transfer Learning</p>
+</li>
+<li><p>使用深层模型来指导浅层模型的学习，可以实现学生模型和教师模型的联合训练</p>
+<p>Be Your Own Teacher: Improve the Performance of Convolutional Neural Networks via Self Distillation</p>
+<p>FastBERT: a Self-distilling BERT with Adaptive Inference Time</p>
+</li>
 </ul>
-<h3 id="3-相关改进"><a href="#3-相关改进" class="headerlink" title="3. 相关改进"></a>3. 相关改进</h3><p>Data free 2 两篇 Data-free Learning of Student Nwtworks</p>
-<p>self-distillation</p>
-<p>[1] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1503.02531.pdf">Distilling the Knowledge in a Neural Network</a></p>
-<p>[2]  <a target="_blank" rel="noopener" href="http://openaccess.thecvf.com/content_cvpr_2017/papers/Yim_A_Gift_From_CVPR_2017_paper.pdf">A Gift from Knowledge Distillation: Fast Optimization, Network Minimization and Transfer Learning</a></p>
 
             </div>
             <hr>

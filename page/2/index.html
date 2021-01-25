@@ -160,18 +160,24 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/11/13/quantizing/">quantizing</a>
+        <a href="/2020/11/13/img2col/">img2col</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/11/13/quantizing/">
+        <a href="/2020/11/13/img2col/">
           
           
             
           
-          ​        量化， 也被称为定点化、离散化，是指用低精度整数来近似表示浮点数(权重和偏置)的方法。 在量化之后，可以在特定的硬件平台上使用特定的指令集对其加速， 另外，由于存储位宽的减小，模型的体积也会显著减小。常见的量化方案可以分为二值量化、三值量化、低比特量化(介于2-8bit之间) 和 int8 量化。
-1. 二值量化Binary Weight (只对权重进行二值化)
-🌟 [Bina
+          1. im2col 基本原理(1) 对于图像的变换：
+首先将每个卷积所卷积的区域作为一行，所有的卷积区域纵向排列，作为右乘矩阵。需要注意的是多个通道应该堆叠在下面。如下图所示：
+单通道：
+
+多通道：
+
+输入特征图转化得到的矩阵尺度 = (卷积组输入通道数*卷积核高*卷积核宽) * (卷积层输出单通道特征图高 * 卷积层输出单通道特征图宽)
+(2) 对于卷积核的变换
+将一个卷积核拉伸为一个横行，作为
         </a>
       </p>
 
@@ -179,7 +185,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-13 15:02" pubdate>
+            <time datetime="2020-11-13 23:15" pubdate>
               2020-11-13
             </time>
           </div>

@@ -169,11 +169,8 @@
           
             
           
-          知识蒸馏1. 基本思想​        知识蒸馏通过采用预先训练好的教师模型( teacher model) 的输出作为监督信号去训练另外一个轻量化的网络( student model ) 。从而实现将复杂网络(老师模型)的知识迁移到小网络(学生模型) 中， 提高小网络的精度。常见的蒸馏方案有两种：
-
-
-用老师学习到的 soft label 来指导学生模型
-知识蒸馏首先由 Hinton 在 Dis
+          知识蒸馏1. 基本思想​        知识蒸馏通过采用预先训练好的教师模型( teacher model) 的输出作为监督信号去训练另外一个轻量化的网络( student model ) 。从而实现将复杂网络(老师模型)的知识迁移到小网络(学生模型) 中， 提高小网络的精度。
+​        知识蒸馏首先由 Hinton 在 Distilling the Knowledge in a Neur
         </a>
       </p>
 
@@ -206,14 +203,14 @@
           
             
           
-          TensorRT 简介在推理过程中，基于TensorRT 的应用程序的执行速度可以比 CPU 平台速度快40 倍
+          1. TensorRT 简介在推理过程中，基于TensorRT 的应用程序的执行速度可以比 CPU 平台速度快40 倍
 
 不同的硬件需要匹配不同的cuda库，然后还需要进行测试， 比如选核等操作
 TensorRT 以  NVIDIA 的并行编程模型 CUDA 为基础构建围城
 TensorRT 针对多种深度学习推理应用的生产部署提供 INT8 和 FP 6 优化
 
 TensorRT 框架支持：
-Tenso
+Te
         </a>
       </p>
 
@@ -359,7 +356,7 @@ Tenso
           
             
           
-          这次要填坑了！！ 阐述一些底层的卷积实现方式：包含：滑动窗口、im2col + gemm、winograd 等
+          阐述一些底层的卷积实现方式：包含：滑动窗口、im2col + gemm、winograd 等
         </a>
       </p>
 
@@ -390,24 +387,18 @@ Tenso
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/12/12/img2col/">img2col</a>
+        <a href="/2020/12/12/quantizing/">quantizing</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/12/12/img2col/">
+        <a href="/2020/12/12/quantizing/">
           
           
             
           
-          1. im2col 基本原理(1) 对于图像的变换：
-首先将每个卷积所卷积的区域作为一行，所有的卷积区域纵向排列，作为右乘矩阵。需要注意的是多个通道应该堆叠在下面。如下图所示：
-单通道：
-
-多通道：
-
-输入特征图转化得到的矩阵尺度 = (卷积组输入通道数*卷积核高*卷积核宽) * (卷积层输出单通道特征图高 * 卷积层输出单通道特征图宽)
-(2) 对于卷积核的变换
-将一个卷积核拉伸为一个横行，作为
+          ​        量化， 也被称为定点化、离散化，是指用低精度整数来近似表示浮点数(权重和偏置)的方法。 在量化之后，可以在特定的硬件平台上使用特定的指令集对其加速， 另外，由于存储位宽的减小，模型的体积也会显著减小。常见的量化方案可以分为二值量化、三值量化、低比特量化(介于2-8bit之间) 和 int8 量化。
+1. 二值量化Binary Weight (只对权重进行二值化)
+🌟 [Bina
         </a>
       </p>
 
@@ -415,7 +406,7 @@ Tenso
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-12 23:15" pubdate>
+            <time datetime="2020-12-12 15:02" pubdate>
               2020-12-12
             </time>
           </div>

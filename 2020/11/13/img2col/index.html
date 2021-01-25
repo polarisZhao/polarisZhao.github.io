@@ -153,8 +153,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-12 23:15" pubdate>
-        December 12, 2020 pm
+      <time datetime="2020-11-13 23:15" pubdate>
+        November 13, 2020 pm
       </time>
     </span>
   
@@ -211,53 +211,53 @@
               <h4 id="1-im2col-基本原理"><a href="#1-im2col-基本原理" class="headerlink" title="1. im2col 基本原理"></a>1. im2col 基本原理</h4><p><strong>(1) 对于图像的变换：</strong></p>
 <p>首先将每个卷积所卷积的区域作为一行，所有的卷积区域纵向排列，作为右乘矩阵。需要注意的是多个通道应该堆叠在下面。如下图所示：</p>
 <p>单通道：</p>
-<p><img src="/2020/12/12/img2col/1.jpeg" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/2020/11/13/img2col/1.jpeg" srcset="/img/loading.gif" alt="img"></p>
 <p>多通道：</p>
-<p><img src="/2020/12/12/img2col/2.jpeg" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/2020/11/13/img2col/2.jpeg" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>输入特征图转化得到的矩阵尺度 = (卷积组输入通道数*卷积核高*卷积核宽) * (卷积层输出单通道特征图高 * 卷积层输出单通道特征图宽)</strong></p>
 <p><strong>(2) 对于卷积核的变换</strong></p>
 <p>将一个卷积核拉伸为一个横行，作为左乘矩阵：(为什么要拉伸为横行，在于对应的卷积区域拉伸为竖行，这样才能与之相对应，进行矩阵乘法)</p>
-<p><img src="/2020/12/12/img2col/3.jpeg" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/2020/11/13/img2col/3.jpeg" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>权值矩阵尺度 = (输出层通道数) * (卷积输入通道数*卷积核高*卷积核宽)</strong></p>
 <p><strong>(3) 将卷积核矩阵核图像矩阵相乘即可</strong></p>
-<p><img src="/2020/12/12/img2col/4.jpeg" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/2020/11/13/img2col/4.jpeg" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>卷积层输出尺度 = (卷积层输出通道数) * (卷积层输出单通道特征图高 * 卷积层输出单通道特征图宽)</strong></p>
 <p>最后需要将结果调整成为需要的大小： </p>
-<p><img src="/2020/12/12/img2col/5.jpeg" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/2020/11/13/img2col/5.jpeg" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>(4) 对于多个输出通道图像的卷积</strong></p>
 <p>应该纵向堆叠每个卷积层</p>
-<p><img src="/2020/12/12/img2col/6.jpeg" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/2020/11/13/img2col/6.jpeg" srcset="/img/loading.gif" alt="img"></p>
 <p>最后再调整输出矩阵：</p>
-<p><img src="/2020/12/12/img2col/7.jpeg" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/2020/11/13/img2col/7.jpeg" srcset="/img/loading.gif" alt="img"></p>
 <h4 id="2-总体简图："><a href="#2-总体简图：" class="headerlink" title="2. 总体简图："></a>2. 总体简图：</h4><p>下面是一个整体矩阵乘法的简图：</p>
-<p><img src="/2020/12/12/img2col/8.jpeg" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/2020/11/13/img2col/8.jpeg" srcset="/img/loading.gif" alt="img"></p>
 <h4 id="3-im2col-cpu-源码剖析"><a href="#3-im2col-cpu-源码剖析" class="headerlink" title="3. im2col_cpu 源码剖析"></a>3. im2col_cpu 源码剖析</h4><p>im2col_cpu函数将卷积层输入转化为矩阵相乘的右元，核心是5个for循环，首先第一个for循环表示按照输入的通道数逐个处理卷积层输入的特征图，下面笔者将用图示表示剩余的四个for循环操作，向读者朋友们展示卷积层输入的单通道特征图是通过怎样的方式转化为一个矩阵。在这里我们假设，卷积层输入单通道特征图原大小为5*5，高和宽方向的pad为1，高和宽方向步长为2，卷积核不进行扩展。</p>
 <p>  我们先计算一下，卷积层输入单通道特征图转化得到的矩阵的尺度，矩阵的行数应该为卷积核高<em>卷积核宽，即为9，列数应该为卷积层输出特征图高(output_h)</em>卷积层输出特征图宽(output_w)，也为9，那么，im2col算法起始由下图开始：</p>
-<p><img src="/2020/12/12/img2col/11.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/11.png" srcset="/img/loading.gif" alt></p>
 <p>首先kernel_row为0，kernel_col也为0。按照input_row = -pad_h + kernel_row * dilation_h计算input_row的值，在这里，pad_h为1，kernel_row为0，dilation_h为1，计算出input_row为-1，此时output_row为3，满足函数中的第一个if条件，那么在输出图像上先置output_w个零，因为output_w为3，因此得到下图：</p>
-<p><img src="/2020/12/12/img2col/12.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/12.png" srcset="/img/loading.gif" alt></p>
 <p> 然后input_row加上步长2，由-1变成1，此时output_rows为2，计算input_col等于-1，此时执行input_col定义下面的for循环，得到3个值：依次往目标矩阵中填入0，data_im[1*5+1]和data_im[1*5+3]，即填入0,7和9。得到下图：</p>
-<p><img src="/2020/12/12/img2col/13.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/13.png" srcset="/img/loading.gif" alt></p>
 <p>再接着执行，此时input_row再加上2变为3，此时output_rows变为1，计算input_col等于-1，执行input_col定义下面的for循环，得到3个值，分别为0，data_im[3*5+1]和data_im[3*5+3]，即填入0,17和19。得到下图：(以上操作是将第一个通道的卷积对应第一个对应位置进放好)</p>
-<p><img src="/2020/12/12/img2col/14.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/14.png" srcset="/img/loading.gif" alt></p>
 <p> 接着，kernel_col变成1，此时kernel_row为0，kernel_col为1。计算input_row又变成-1，第一个if条件成立，那么，再在输出矩阵上输出3个0。然后，input_row变成1，input_col分别为0(-1+1)，2(-1+1+2)和4(-1+1+2+2)时，输出矩阵上分别输出data_im[1*5+0]，data[1*5+2]，data[1*5+4]，即分别填入6,8,10。然后，input_row变成3，input_col分别为0，2，4时，输出矩阵上分别输出data_im[3*5+0]，data[3*5+2]，data[3*5+4]，即分别输出16,18,20。（将第一个通道的卷积对应第二个对应位置进放好）</p>
-<p><img src="/2020/12/12/img2col/15.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/15.png" srcset="/img/loading.gif" alt></p>
 <p>然后，kernel_col变成2，此时kernel_row为0，kernel_col为2。计算input_row又变成-1，第一个if条件成立，那么，再在输出矩阵上输出3个0。然后，input_row变成1，input_col分别为1(-1+2)，3(-1+2+2)和5(-1+2+2+2)时，输出矩阵上分别输出data_im[1*5+1]，data[1*5+3]，0，即分别填入7,9,0。然后，input_row变成3，input_col分别为1，3，5时，输出矩阵上分别输出data_im[3*5+0]，data[3*5+2]，0，即分别输出17,19,0。见下图：（将第一个通道的卷积对应第三个对应位置进放好）</p>
-<p><img src="/2020/12/12/img2col/16.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/16.png" srcset="/img/loading.gif" alt></p>
 <p>接着，kernel_row变成1，kernel_col变成0。计算input_row又变成0，input_col分别为-1(-1+0)，1(-1+0+2)和3(-1+0+2+2)，输出矩阵上分别输出0，data[0*5+1]，data[0*5+3]，即分别填入0,2,4。然后，input_row变成2，input_col分别为-1，1和3时，输出矩阵上分别输出0，data[2*5+1]，data[2*5+3]，即分别填入0,12,14。然后，input_row变成4，input_col分别为-1，1，3时，输出矩阵上分别输出0，data[4*5+1]，data[4*5+3]，即分别输出0,22,24。见下图：（将第一个通道的卷积对应第四个对应位置进放好）</p>
-<p><img src="/2020/12/12/img2col/17.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/17.png" srcset="/img/loading.gif" alt></p>
 <p>然后，kernel_row为1，kernel_col变成1。计算input_row为0，input_col分别为0(-1+1)，2(-1+1+2)和4(-1+1+2+2)，输出矩阵上分别输出data[0*5+0]，data[0*5+2]，data[0*5+4]，即分别填入1,3,5。然后，input_row变成2，input_col分别为0，2和4时，输出矩阵上分别输出data[2*5+0]，data[2*5+2]，data[2*5+4]，即分别填入11,13,15。然后，input_row变成4，input_col分别为0，2，4时，输出矩阵上分别输出data[4*5+0]，data[4*5+2]，data[4*5+4]，即分别输出21,23,25。见下图：（将第一个通道的卷积对应第五个对应位置进放好）</p>
-<p><img src="/2020/12/12/img2col/18.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/18.png" srcset="/img/loading.gif" alt></p>
 <p>然后，kernel_row为1，kernel_col变成2。计算input_row为0，input_col分别为1(-1+2)，3(-1+2+2)和5(-1+2+2+2)，输出矩阵上分别输出data[0*5+1]，data[0*5+3]，0，即分别填入2,4,0。然后，input_row变成2，input_col分别为1，3和5时，输出矩阵上分别输出data[2*5+1]，data[2*5+3]，0，即分别填入12,14,0。然后，input_row变成4，input_col分别为1，3，5时，输出矩阵上分别输出data[4*5+1]，data[4*5+3]，0，即分别输出22,24,0。见下图：（将第一个通道的卷积对应第六个对应位置进放好）</p>
-<p><img src="/2020/12/12/img2col/19.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/19.png" srcset="/img/loading.gif" alt></p>
 <p>   接着，kernel_row变成2，kernel_col变成0。计算input_row为1，input_col分别为-1(-1+0)，1(-1+0+2)和3(-1+0+2+2)，输出矩阵上分别输出0，data[1*5+1]，data[1*5+3]，即分别填入0,7,9。然后，input_row变成3，input_col分别为-1，1和3时，输出矩阵上分别输出0，data[3*5+1]，data[3*5+3]，即分别填入0,17,19。然后，input_row变成5，满足第一个if条件，直接输出三个0。见下图：（**将第一个通道的卷积对应第七个对应位置进放好）</p>
-<p><img src="/2020/12/12/img2col/20.png" srcset="/img/loading.gif" alt="Center"></p>
+<p><img src="/2020/11/13/img2col/20.png" srcset="/img/loading.gif" alt="Center"></p>
 <p>   然后，kernel_row为2，kernel_col变成1。计算input_row为1，input_col分别为0(-1+1)，2(-1+1+2)和4(-1+1+2+2)，输出矩阵上分别输出data[1*5+0]，data[1*5+2]，data[1*5+4]，即分别填入6,8,10。然后，input_row变成3，input_col分别为0，2和4时，输出矩阵上分别输出data[3*5+0]，data[3*5+2]，data[3*5+4]，即分别填入16,18,20。然后，input_row变成5，满足第一个if条件，直接输出三个0。见下图：（将第一个通道的卷积对应第八个对应位置进放好）</p>
-<p><img src="/2020/12/12/img2col/21.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/21.png" srcset="/img/loading.gif" alt></p>
 <p>   最后，kernel_row为2，kernel_col变成2。计算input_row为1，input_col分别为1(-1+2)，3(-1+2+2)和5(-1+2+2+2)，输出矩阵上分别输出data[1*5+1]，data[1*5+3]，0，即分别填入7,9,0。然后，input_row变成3，input_col分别为1，3和5时，输出矩阵上分别输出data[3*5+1]，data[3*5+3]，0，即分别填入17,19,0。然后，input_row变成5，满足第一个if条件，直接输出三个0。见下图：（将第一个通道的卷积对应第五个对应位置进放好）</p>
-<p><img src="/2020/12/12/img2col/22.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/22.png" srcset="/img/loading.gif" alt></p>
 <p>   到此卷积层单通道输入特征图就转化成了一个矩阵，请读者朋友们仔细看看，矩阵的各列就是卷积核操作的各小窗口。</p>
-<p><img src="/2020/12/12/img2col/23.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/11/13/img2col/23.png" srcset="/img/loading.gif" alt></p>
 <p><strong>!!! 注意点：</strong></p>
 <p><strong>（1）如果是多个通道的话，就要将其他通道放置在这个通道的下面，最终的结果是生成矩阵的每一列对应一个卷积核(多个通道)。</strong></p>
 <p><strong>（2）卷积中的zero-padding操作的实现，并不是真正在原始输入特征图周围添加0，而是在特征图转化得到的矩阵上的对应位置添加0。</strong></p>
@@ -322,9 +322,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/13/efficient-conv/">
+                      <a href="/2020/11/15/lightweight-cnn-architecture-design/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">efficient-conv</span>
+                        <span class="hidden-mobile">lightweight-cnn-architecture-design</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -332,8 +332,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/12/11/%E6%A8%A1%E5%9E%8B%E5%B1%82%E8%9E%8D%E5%90%88conv%E4%B8%8Ebn/">
-                        <span class="hidden-mobile">模型层融合conv与bn</span>
+                      <a href="/2020/10/21/principles-of-detection-network-design/">
+                        <span class="hidden-mobile">principles-of-detection-network-design</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

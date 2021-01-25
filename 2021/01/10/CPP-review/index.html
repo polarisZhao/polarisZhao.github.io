@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7.7k 字
+      8.4k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      98
+      104
        分钟
     </span>
   
@@ -210,44 +210,72 @@
             <div class="markdown-body" id="post-body">
               <p>C++ 复习</p>
 <a id="more"></a>
-<h2 id="零-导读"><a href="#零-导读" class="headerlink" title="零. 导读"></a>零. 导读</h2><h3 id="1-理念-勿在浮沙筑高台"><a href="#1-理念-勿在浮沙筑高台" class="headerlink" title="1. 理念: 勿在浮沙筑高台"></a>1. 理念: 勿在浮沙筑高台</h3><h3 id="2-内容"><a href="#2-内容" class="headerlink" title="2. 内容"></a>2. 内容</h3><p>  (1)  培养正规的，大气的编程习惯</p>
+<h2 id="零-导读"><a href="#零-导读" class="headerlink" title="零. 导读"></a>零. 导读</h2><h4 id="1-基本理念"><a href="#1-基本理念" class="headerlink" title="1. 基本理念"></a>1. 基本理念</h4><ul>
+<li>勿在浮沙筑高台</li>
+</ul>
+<h4 id="2-内容"><a href="#2-内容" class="headerlink" title="2. 内容"></a>2. 内容</h4><p>(1)  培养正规，大气的编程习惯</p>
 <ul>
 <li>基于对象(Object Based)： 面对的是单一的 class 的设计、将数据和函数封装成类，只有内部的函数可以处理数据；并通过类创建对象。 <code>Class(Data, Functions) -&gt; Objects</code></li>
-<li><p>面向对象(Object Oriented)： 学习 Classes 之间的关系: 继承(inheritance)、复合(composition)、委托(delegation)</p>
-<p>(2)  泛型编程(generic programming) </p>
-<p>(3) 深入探索面向对象之继承所形成的的对象模型(object model)，包含隐藏于底层的 this、虚指针、虚表、虚机制以及虚函数所造成的多态效果。</p>
+<li>面向对象(Object Oriented)： 学习 classes 之间的关系：继承(inheritance)、复合(composition)、委托(delegation)</li>
+</ul>
+<p>(2)   泛型编程(generic programming) </p>
+<p>(3)  深入探索面向对象之继承所形成的的对象模型(object model)，包含隐藏于底层的 this、虚指针、虚表、虚机制以及虚函数所造成的多态效果。</p>
+<h4 id="3-关于-C"><a href="#3-关于-C" class="headerlink" title="3. 关于 C++"></a>3. 关于 C++</h4><p>(1)  C++ 的历史: B语言(1969)  →  C语言(1972)   →  C++ 语言(1983) [new C → C with Class → C++] → Java 语言  →  C# 语言</p>
+<p>(2)  C++ 演化：<strong>C++ 98(1.0) ☆</strong>  →  C++ 03(TR1, Technical Report 1) →  <strong>C++ 11 (2.0) ☆</strong>  → C++ 14</p>
+<p>(3)  C++ 包括  C++语言 和 C++标准库 两部分</p>
+<h4 id="4-书籍推荐"><a href="#4-书籍推荐" class="headerlink" title="4. 书籍推荐:"></a>4. 书籍推荐:</h4><ul>
+<li><p>语言：C++ Primer (Fifth Edition)、The C++ Programming Language (Fourth Edition)</p>
+</li>
+<li><p>规范：Effective C++ (Third Edition) → Efficitive Modern c++</p>
+</li>
+<li><p>标准库： The C++ Standard Library、STL 源码剖析</p>
 </li>
 </ul>
-<h3 id="3-关于-C"><a href="#3-关于-C" class="headerlink" title="3. 关于 C++"></a>3. 关于 C++</h3><p>  (1) C++ 的历史: B语言(1969)  —&gt;  C语言(1972)   —&gt;  C++ 语言(1983) [new C -&gt; C with Class -&gt; C++] -&gt; Java 语言  -&gt; C#语言</p>
-<p>  (2) C++ 演化:<strong>C++ 98(1.0) ☆</strong>  -&gt; C++ 03(TR1, Technical Report 1)  -&gt; <strong>C++ 11 (2.0) ☆</strong>  -&gt; C++ 14</p>
-<p>  (3) C++ 包括 C++语言 和 C++ 标准库 两部分</p>
-<h3 id="4-书籍推荐"><a href="#4-书籍推荐" class="headerlink" title="4. 书籍推荐:"></a>4. 书籍推荐:</h3><p>语言：C++ Primer (Fifth Edition)、The C++ Programming Language (Fourth Edition)</p>
-<p>规范：Effective C++ (Third Edition) -&gt; Efficitive Modern c++</p>
-<p>标准库： The C++ Standard Library、STL 源码剖析</p>
 <h2 id="一-基础"><a href="#一-基础" class="headerlink" title="一. 基础"></a>一. 基础</h2><h3 id="1-代码的基本形式"><a href="#1-代码的基本形式" class="headerlink" title="1.代码的基本形式"></a>1.代码的基本形式</h3><p><img src="/2021/01/10/CPP-review/1.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<p>扩展名(extension file name) 不一定是 .h 或者 .cpp， 也可能是.hpp 或其他或无扩展名。</p>
+<p>扩展名 (extension file name) 不一定是 <code>.h</code> 或者 <code>.cpp</code>， 也可能是 <code>.hpp</code> 或其他或无扩展名。</p>
 <p>(1) 头文件引用</p>
-<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;   # 引用 C++ 头文件， 无须 .h</span></span>
-<span class="hljs-meta">#inlcude <span class="hljs-meta-string">&lt;cstdio&gt;   # 引用C头文件, 去掉头文件， 前面加 c</span></span>
+<pre><code class="hljs cpp"><span class="hljs-comment">// complex.cpp</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;   # 引用 C++ 头文件， 无须 .h</span></span>
+<span class="hljs-meta">#inlcude <span class="hljs-meta-string">&lt;cstdio&gt;     # 引用C头文件, 去掉头文件，前面加 c</span></span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;utils.h&quot;</span>    # 引用自定义的头文件 </span></code></pre>
 <p>(2) 头文件布局</p>
 <pre><code class="hljs cpp"><span class="hljs-comment">// complex.h</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">ifndef</span> __COMPLEX__   <span class="hljs-comment">// (1) 头文件的防卫式声明：防止重复定义</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">ifndef</span> __COMPLEX__    <span class="hljs-comment">// (1) 头文件的防卫式声明：防止重复定义</span></span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> __COMPLEX__</span>
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ostream</span>;</span> 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">complex</span>;</span> 
 
-<span class="hljs-built_in">complex</span>&amp; __doapl (<span class="hljs-built_in">complex</span>* ths, <span class="hljs-keyword">const</span> <span class="hljs-built_in">complex</span>&amp; r);  <span class="hljs-comment">// 1. 前置声明</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">complex</span> <span class="hljs-title">class</span> <span class="hljs-title">declarations</span> &#123;</span> ... &#125;;   <span class="hljs-comment">// 2. 类声明</span>
-<span class="hljs-built_in">complex</span>::function ...  <span class="hljs-comment">// 3. 类定义</span>
+<span class="hljs-built_in">complex</span>&amp; __doapl (<span class="hljs-built_in">complex</span>* ths, <span class="hljs-keyword">const</span> <span class="hljs-built_in">complex</span>&amp; r);   <span class="hljs-comment">// 1. 前置声明</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">complex</span> <span class="hljs-title">class</span> <span class="hljs-title">declarations</span> &#123;</span> ... &#125;;            <span class="hljs-comment">// 2. 类声明</span>
+<span class="hljs-built_in">complex</span>::function ...                                <span class="hljs-comment">// 3. 类定义</span>
 <span class="hljs-meta"># <span class="hljs-meta-keyword">endif</span> </span></code></pre>
-<h3 id="2-类的声明与定义-class-head-class-body"><a href="#2-类的声明与定义-class-head-class-body" class="headerlink" title="2. 类的声明与定义  class head + class body"></a>2. 类的声明与定义  class head + class body</h3><p>(1) access level(访问级别)</p>
-<p>访问级别分为 private , public, protected 三类，其位置可以交错。 数据放在 private 区，封装在类内，然后通过函数访问数据。</p>
-<p>(2) inline </p>
-<p>​            有些函数可以直接定义在 body 中，另外一些在 body 之外定义。函数若在 class body 内定义，会被默认成为 inline 函数。具体是否内联，需要有编译器而定。</p>
-<p>(3) const</p>
-<p>​    const 表示不会改变数据的内容, const 可以修饰对象、成员函数和成员变量。如下所示:</p>
+<h3 id="2-类的声明与定义-class-head-class-body"><a href="#2-类的声明与定义-class-head-class-body" class="headerlink" title="2. 类的声明与定义  class head + class body"></a>2. 类的声明与定义  class head + class body</h3><h5 id="2-1-access-level-访问级别"><a href="#2-1-access-level-访问级别" class="headerlink" title="2.1 access level(访问级别)"></a>2.1 access level(访问级别)</h5><p>​        访问级别分为 <code>private</code> , <code>public</code>, <code>protected</code> 三类，其位置可以交错。 数据放在 <code>private</code> 区，封装在类内，然后通过函数访问数据。</p>
+<h5 id="2-2-修饰关键字"><a href="#2-2-修饰关键字" class="headerlink" title="2.2 修饰关键字"></a>2.2 修饰关键字</h5><p>(1)  inline </p>
+<p>​        有些函数可以直接定义在 body 中，另外一些在 body 之外定义。函数若在 class body 内定义，会被默认成为 inline 函数。具体是否内联，需要有编译器而定。 将函数声明为 inline，<strong>表示要求编译器在每个函数调用点上，将函数的内容展开。</strong>面对一个 inline 函数， 编译器可将该函数的操作改为以一份函数代码副本代替。这将使我们获得性能改善。</p>
+<p>！编译器一般不会内联包含循环、递归、switch 等复杂操作的内联函数。在类声明中定义的函数，除了虚函数的其他函数都会自动隐式地当成内联函数。</p>
+<p>优点：</p>
+<ul>
+<li><p>内联函数同宏函数一样将在被调用处进行代码展开，省去了参数压栈、栈帧开辟与回收，结果返回等，从而提高程序运行速度。</p>
+</li>
+<li><p>内联函数相比宏函数来说，在代码展开时，<strong>会做安全检查或自动类型转换（同普通函数）</strong>，而宏定义则不会。</p>
+</li>
+<li><p>在类中声明同时定义的成员函数，自动转化为内联函数，因此内联函数<strong>可以访问类的成员变量</strong>，宏定义则不能。</p>
+</li>
+<li><p>内联函数在<strong>运行时可调试</strong>，而宏定义不可以。</p>
+</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li><p>代码膨胀。内联是以代码膨胀（复制）为代价，消除函数调用带来的开销。如果执行函数体内代码的时间，相比于函数调用的开销较大，那么效率的收获会很少。另一方面，每一处内联函数的调用都要复制代码，将使程序的总代码量增大，消耗更多的内存空间。</p>
+</li>
+<li><p>inline 函数无法随着函数库升级而升级。inline函数的改变需要重新编译，不像 non-inline 可以直接链接。</p>
+</li>
+<li><p>是否内联，程序员不可控。内联函数只是对编译器的建议，是否对函数内联，决定权在于编译</p>
+</li>
+</ul>
+<p>(2) const : 常  🌟🌟</p>
+<p>​        const 表示不会改变数据的内容, const 可以修饰对象、成员函数和成员变量。const 修饰对象表示该对象的成员变量不可改变， const 修饰成员函数表示成员函数不能改变成员变量的值。</p>
 <pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">real</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123;<span class="hljs-keyword">return</span> re;&#125;
 <span class="hljs-built_in">complex</span>&amp; <span class="hljs-keyword">operator</span> += (<span class="hljs-keyword">const</span> <span class="hljs-built_in">complex</span>&amp;);
 <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span> <span class="hljs-title">str</span><span class="hljs-params">(<span class="hljs-string">&quot;Hello World!&quot;</span>)</span></span>;</code></pre>
@@ -257,40 +285,46 @@
 <thead>
 <tr>
 <th></th>
-<th>const object(data members 不得变动)</th>
-<th>non-const object(data members 可变动)</th>
+<th>const object</th>
+<th>non-const object</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>const member functions(保证不更改 data members)</td>
+<td>const member functions</td>
 <td><strong>√</strong></td>
 <td><strong>√</strong></td>
 </tr>
 <tr>
-<td>non-const member functions(不保证 data members 不变)</td>
+<td>non-const member functions</td>
 <td><strong>×</strong></td>
 <td><strong>√</strong></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>用法一:  不能由 const object 调用 non-const member functions, 设计的时候应该注意。</p>
-<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">const</span> String <span class="hljs-title">str</span><span class="hljs-params">(<span class="hljs-string">&quot;hello world&quot;</span>)</span></span>;
-str.print();</code></pre>
-<p>如果当初设计 string::print() 的时候未指明 const， 那么上行便是经由 const object 调用 non-const member function，会出错。</p>
-<p>用法二: 通过 const 进行函数签名区分，实现静态和非静态函数的分开调用。 如下是 STL 中 string 的代码片段：</p>
+<p>使用的基本原则：</p>
+<ul>
+<li><p>不能通过 const 对象调用 non-const 成员函数</p>
+</li>
+<li><p>当成员函数的 const 和 non-const 版本同时存在， const object 只会(只能) 调用 const 版本。 non-const object 只会(只能) 调用 non-const 版本。如下所示的代码, 通过 const 进行函数签名的区分，实现 const 函数和 non-const 函数的分开调用：</p>
 <pre><code class="hljs cpp"><span class="hljs-comment">// 该段代码存在于 class template std::basic_string&lt;...&gt; </span>
-<span class="hljs-comment">// 实现了 [] 的函数重载, </span>
+<span class="hljs-comment">// 实现了操作符 [] 的 const 和 non-const 的函数重载, 其中 const 函数并不会更改对象</span>
+<span class="hljs-comment">// 也不用过多的考虑引用计数和写时复制， 其设计相对简单。</span>
 charT <span class="hljs-keyword">operator</span>[](size_type pos) <span class="hljs-keyword">const</span>
 &#123;    ...... <span class="hljs-comment">/* 不需要考虑 Copy On Write */</span>  &#125;
 
 reference <span class="hljs-keyword">operator</span>[](size_type pos)
-&#123;    ...... <span class="hljs-comment">/* 需要考虑 Copy On Write */</span> &#125;</code></pre>
-<p>​    CPP 设计有一个规则：当成员函数的 const 和 non-const 版本同时存在， const object 只会(只能) 调用 const 版本。 non-const object 只会(只能) 调用 non-const 版本。</p>
-<p>如上所示代码，如果对象为 const 类型, 那么只能调用 const 类型的 operator[] 函数，此时并不会更改对象， 也不用过多的考虑引用计数和写时复制问题。 如果对象为 non-const 类型， 那么只能调用 non-const 类型的 operator[] 函数， 此时函数设计会相对复杂，需要考虑引用计数和写时复制问题。</p>
-<p>(4) static </p>
-<p>​    当成员变量或者成员函数是 non-static 的时候， 每个对象会有一个内存存储。通过对象调用这个 non-static 的成员函数时，会将该对象的地址传递给这个成员函数</p>
+&#123;    ...... <span class="hljs-comment">/* 需要考虑 Copy On Write */</span>   &#125;</code></pre>
+</li>
+</ul>
+<p>(3) static: 静态  🌟🌟</p>
+<p>这里的静态是指对象的生存周期：</p>
+<ul>
+<li>静态生存期：其生命在作用域 (scope)  结束之后仍然存在，直到整个程序结束</li>
+<li>动态生存期： 起始于定义的位置，终止于最近的 <code>“&#125;”</code></li>
+</ul>
+<p>​        当成员变量或者成员函数是 non-static 的时候， 每个对象会有一个内存存储。通过对象调用这个 non-static 的成员函数时，会将该对象的地址传递给这个成员函数</p>
 <pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">complex</span>&#123;</span>
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">real</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> re; &#125;  <span class="hljs-comment">// return re; 会默认翻译为 return this-&gt;re;</span>
@@ -301,7 +335,12 @@ reference <span class="hljs-keyword">operator</span>[](size_type pos)
 <span class="hljs-built_in">complex</span> c1, c2, c3;
 <span class="hljs-built_in">cout</span> &lt;&lt; c1.real();  <span class="hljs-comment">// 翻译为 cout &lt;&lt; complex::real(&amp;c1);</span>
 <span class="hljs-built_in">cout</span> &lt;&lt; c2.real();  <span class="hljs-comment">// 翻译为 cou &lt;&lt; complex::real(&amp;c2);</span></code></pre>
-<p>当成员变量或者成员函数是 static 的时候， 整个类共享一份成员变量。 这个成员变量不属于任何对象，而属于整个类。需要注意一点，静态成员函数不能调用非静态成员变量。</p>
+<p>​        当成员变量或者成员函数是 static 的时候， 整个类共享一份成员变量。 这个成员变量不属于任何对象，而属于整个类。</p>
+<ul>
+<li>static 函数可以通过类或者对象进行调用。 </li>
+<li>需要在类定义的外部对这个成员变量进行定义。</li>
+<li>静态成员函数不能调用非静态成员变量。</li>
+</ul>
 <pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Account</span>&#123;</span>
 <span class="hljs-keyword">public</span>:
     <span class="hljs-keyword">static</span> <span class="hljs-keyword">double</span> m_rate;
@@ -317,50 +356,51 @@ reference <span class="hljs-keyword">operator</span>[](size_type pos)
     Account a;
     a.set_rate(<span class="hljs-number">7.0</span>);
 &#125;</code></pre>
-<p><strong>3. 函数</strong></p>
-<p><strong>(1) 参数传递和返回值传递</strong></p>
+<h5 id="2-3-函数"><a href="#2-3-函数" class="headerlink" title="2.3 函数"></a>2.3 函数</h5><p>(1) 参数传递和返回值传递</p>
 <ul>
-<li>参数传递 pass by value vs pass by reference(to const)</li>
+<li>参数传递 pass by value  vs    pass by reference(to const)</li>
 </ul>
 <p>​      尽量不用 pass by value(小于4个字节的可以传值)，而要使用 pass by reference。 如果传递引用并不希望修改，前面需要加上 const。</p>
 <ul>
 <li>返回值传递  return by value vs return by reference(to const)</li>
 </ul>
 <p>​      返回值的传递也尽量使用引用传递。局部变量不能传递引用，因为局部变量会在返回时被销毁。</p>
-<p><strong>(2) 设计构造函数</strong></p>
+<p>(2) 设计构造函数</p>
 <ul>
 <li>构造函数尽量使用初始值列表的语法形式，这是在初始化时设定初值，而不是在初始化之后再进行赋值。</li>
 <li>构造函数的函数名称和类名相同，没有返回值，并且可以重载。</li>
 <li>不能显示调用，而是在初始化的时候进行自动调用。</li>
-<li>与构造函数相对应的是析构函数:，不带指针类的设计不需要写析构函数</li>
+<li>与构造函数相对应的是析构函数，不带指针类的设计不需要写析构函数</li>
 </ul>
-<p><strong>(3) 默认参数和函数重载 (overloading)</strong></p>
+<p>(3) 默认参数和函数重载 (overloading)</p>
 <ul>
 <li>默认参数多个时候，有默认参数的参数需要放在后面。</li>
 <li>参数的个数和类型不同，返回值不同不能重载</li>
 <li>默认参数和函数重载可能会发生冲突。编译器会无法确认需要调用的函数</li>
 </ul>
-<p><strong>(4) 友元 friend</strong></p>
-<p>​    友元可以获取类的数据， 但是破坏了封装性。相同 class 的各个 objects 互为友元。</p>
-<p><strong>(5) 操作符重载 与 this 指针</strong></p>
+<p>(4) 友元 friend：友元可以获取类的数据， 但是破坏了封装性。相同 class 的各个 objects 互为友元。</p>
+<p>(5) 操作符重载 与 this 指针</p>
 <p>​    this 指针：所有的成员函数都带有一个隐藏的指针，指向调用者。</p>
-<p>- 成员函数(有this)</p>
+<ul>
+<li>成员函数(有this)</li>
+</ul>
 <pre><code class="hljs cpp"><span class="hljs-built_in">complex</span>::<span class="hljs-keyword">operator</span> += (<span class="hljs-keyword">const</span> cimplex&amp; x)&#123;
     <span class="hljs-keyword">return</span> __dopal(<span class="hljs-keyword">this</span>, r);
 &#125;</code></pre>
 <p>   PS: 传递者无需要知道接受者是以什么形式接受的</p>
-<p>- 非成员函数(无this)</p>
+<ul>
+<li>非成员函数(无this)</li>
+</ul>
 <pre><code class="hljs cpp"><span class="hljs-keyword">inline</span> <span class="hljs-built_in">complex</span> <span class="hljs-keyword">operator</span> +(<span class="hljs-keyword">const</span> <span class="hljs-built_in">complex</span>&amp; x, <span class="hljs-keyword">const</span> <span class="hljs-built_in">complex</span>&amp; y)&#123;
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">complex</span>(real(x) + real(y), imag(x) + imag(y));
 &#125;
-     PS: <span class="hljs-keyword">typename</span>()  创建临时对象</code></pre>
-<p>​    <strong>&lt;&lt; 重载</strong></p>
+<span class="hljs-comment">// PS: typename()  创建临时对象</span></code></pre>
+<p>(6) &lt;&lt; 重载</p>
 <pre><code class="hljs cpp">ostream&amp; <span class="hljs-keyword">operator</span> &lt;&lt; (ostream &amp; os, <span class="hljs-keyword">const</span> <span class="hljs-built_in">complex</span> &amp; x)&#123;
        <span class="hljs-keyword">return</span> os &lt;&lt; <span class="hljs-string">&#x27;(&#x27;</span> &lt;&lt; real(x) &lt;&lt; <span class="hljs-string">&#x27;,&#x27;</span> &lt;&lt; imag(x) &lt;&lt; <span class="hljs-string">&#x27;)&#x27;</span>;
    &#125;</code></pre>
-<h2 id="二-拷贝构造、拷贝复制、析构函数"><a href="#二-拷贝构造、拷贝复制、析构函数" class="headerlink" title="二. 拷贝构造、拷贝复制、析构函数"></a>二. 拷贝构造、拷贝复制、析构函数</h2><p>​    类定义的时候，编译器会默认生成六个成员函数：构造函数、拷贝构造函数、拷贝赋值函数、析构函数、取地址运算符、取地址运算符(const版本)。其中拷贝构造函数、拷贝赋值函数、析构函数被称为三大函数(Big Three)。</p>
-<p>​    但是如果自定义的类带有指针，则需要自己去定义拷贝构造函数和拷贝复制函数。</p>
-<p>​    why?  默认的拷贝构造函数仅仅是将值拷贝过去，反映在指针上就是改变指针的指向。如下图所示，默认拷贝构造和默认的拷贝赋值会将 b 的指针也指向 a，这也就所谓的浅拷贝。这会导致两个问题:</p>
+<h2 id="二-拷贝构造、拷贝复制、析构函数"><a href="#二-拷贝构造、拷贝复制、析构函数" class="headerlink" title="二. 拷贝构造、拷贝复制、析构函数"></a>二. 拷贝构造、拷贝复制、析构函数</h2><p>​        类定义的时候，编译器会默认生成六个成员函数：构造函数、拷贝构造函数、拷贝赋值函数、析构函数、取地址运算符、取地址运算符(const版本)。其中拷贝构造函数、拷贝赋值函数、析构函数被称为三大函数(Big Three)。</p>
+<p>​        如果自定义的类带有指针，则需要自己去定义拷贝构造函数和拷贝复制函数。 why?<br>​        默认的拷贝构造函数仅仅是将值拷贝过去，反映在指针上就是改变指针的指向。如下图所示，默认拷贝构造和默认的拷贝赋值会将 b 的指针也指向 a，这也就所谓的浅拷贝。这会导致两个问题：</p>
 <p>(1) 别名 alias: a 和 b 的指针指向同一块内存, 这种操作很危险</p>
 <p>(2) b 原有的指向的内容没有释放，从而产生内存泄漏</p>
 <p><img src="/2021/01/10/CPP-review/2.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
@@ -424,6 +464,432 @@ reference <span class="hljs-keyword">operator</span>[](size_type pos)
     <span class="hljs-built_in">cout</span> &lt;&lt; s3 &lt;&lt; <span class="hljs-built_in">endl</span>;
 &#125;</code></pre>
 <p>   如果没有自我赋值检查， 左右两个 pointers 指向同一个 memory block。 前述 operator= 做的第一件事情就是 delete，此时自身对象的 m_data 将会被释放， m_data 指向的内容将不存在。然后，当企图访问 rhs时， 会产生不确定行为(undefined behavior)。</p>
+<h2 id="三-内存管理"><a href="#三-内存管理" class="headerlink" title="三. 内存管理"></a>三. 内存管理</h2><h4 id="1-指针和引用的区别-🌟🌟"><a href="#1-指针和引用的区别-🌟🌟" class="headerlink" title="1. 指针和引用的区别 ?  🌟🌟"></a>1. 指针和引用的区别 ?  🌟🌟</h4><pre><code class="hljs cpp"><span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">int</span>* p = &amp;x; <span class="hljs-comment">// p is a point to x: p 本身是一个变量，但是存储的是 x 的地址</span>
+             <span class="hljs-comment">// 一个小小的技巧: 这里的 * 是靠近 int 的, 表示 p 是 int* 类型</span>
+<span class="hljs-keyword">int</span> &amp;r = x;  <span class="hljs-comment">// r is a reference to x: r 代表 x。r, 此时 x 都是 0</span></code></pre>
+<p>(1) 指针是在内存中的四/八字节存储空间，指针存储的内容就是一个地址，根据这个地址可以找到另外一片内存，指针就是这片内存的索引。简单的讲，指针就是一种保存变量地址的变量。</p>
+<p>​    引用则相当于是为对象起了一个别名, 引用和原来的对象具有相同的大小和地址。</p>
+<p>(2) 在编译器方面，两者是一样的，编译器会将两者编译为相同的汇编指令。有一句很好的话可以来形容：reference 就是漂亮的 point。</p>
+<p>(3) 两者主要的区别是在语法层面：</p>
+<ul>
+<li><p>sizeof(指针) 的大小是4/8，sizeof(引用) 的大小是被引用对象的大小；</p>
+</li>
+<li><p><strong>初始化</strong>(引用必须初始化为一个对象的引用、指针则可以初始化为空)、<strong>可改变</strong>(引用不可以改变、指针则可以更改指向)、<strong>传参</strong>(作为<strong>参数传递</strong>时，指针需要被解引用才可进行操作，引用可直接修改)</p>
+</li>
+<li><p><strong>静态</strong>(没有静态引用、但是有静态指针)、<strong>自加运算符</strong>(含义不一样，引用是对其值进行自加， 指针则是表示指针进行移动)</p>
+</li>
+</ul>
+<p>(4) 使用：</p>
+<ul>
+<li><p><strong>引用相对于指针更加安全。平时编程时，在能使用引用的情况下，就不要轻易使用指针</strong>，当然，在操作数组或者大面积内存时，用指针更好。 </p>
+</li>
+<li><p>reference 通常不用于声明变量，而用于参数类型和返回值类型的描述。 reference 的一个优点是可以保持调用端和被调用端的写法与传值写法相同。</p>
+</li>
+<li><p><strong>引用</strong>并不能作为函数签名的区别，这会引起二义性。 但是 const 可以。</p>
+</li>
+</ul>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 如下两个函数声明, 会产生二义性!</span>
+<span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">imag</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span>&amp; im)</span> </span>&#123; ... &#125;
+<span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">imag</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span> im)</span> </span>&#123;...&#125;</code></pre>
+<h4 id="2-所谓-stack-栈-，-所谓-heap-堆-🌟🌟"><a href="#2-所谓-stack-栈-，-所谓-heap-堆-🌟🌟" class="headerlink" title="2. 所谓 stack(栈)， 所谓 heap(堆)    🌟🌟"></a>2. 所谓 stack(栈)， 所谓 heap(堆)    🌟🌟</h4><p>在 C++ 中， 内存分为 5 个区， 分别是堆、栈、自由存储区、全局/静态存储区和常量存储区。</p>
+<ul>
+<li>栈：存在于某作用于<strong>某作用域(scope) 的一块内存空间(memory space)</strong>。内存<strong>由编译器在需要时自动分配和释放</strong>。通常用来存储局部变量和函数参数(为运行函数而分配的<strong>局部变量、函数参数、返回地址</strong>等存放在栈区)。栈运算分配内置于处理器的指令集中，效率很高，但是分配的内存容量有限。</li>
+<li>堆：由操作系统提供的一块 global 的内存空间，程序<strong>可动态分配 dynamic allocated</strong> 从中获得若干区块。一般是<strong>使用由 new 进行分配，使用 delete 或 delete[] 释放</strong>。如果未能对内存进行正确的释放，会造成内存泄漏。但在程序结束时，会由操作系统自动回收。</li>
+<li>自由存储区：和堆类似，不过存储那些有 malloc 分配，用 free 释放的内存块。</li>
+<li>全局/静态存储区：用于存储全局变量和静态变量</li>
+<li>常量存储区：存放常量，且不允许更改</li>
+</ul>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Complex</span> &#123;</span> ... &#125;;
+
+...
+&#123;
+    <span class="hljs-function">Complex <span class="hljs-title">c1</span><span class="hljs-params">(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span></span>;  <span class="hljs-comment">// c1 占用的空间来自 stack</span>
+    Complex* p = <span class="hljs-keyword">new</span> Complex(<span class="hljs-number">3</span>);  <span class="hljs-comment">// complex(3) 是个临时对象，</span>
+                                  <span class="hljs-comment">// 所占用的空间是 new 在 heap 动态分配而得， 并由 p 指向</span>
+&#125;</code></pre>
+<h4 id="3-区分四种对象"><a href="#3-区分四种对象" class="headerlink" title="3. 区分四种对象"></a>3. 区分四种对象</h4><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Complex</span> &#123;</span> ... &#125;;
+...
+&#123;
+    <span class="hljs-function"><span class="hljs-built_in">complex</span> <span class="hljs-title">c1</span><span class="hljs-params">(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span></span>;   <span class="hljs-comment">// stack object: 其生命在作用域结束之际结束，</span>
+                        <span class="hljs-comment">// 这种作用域内的 object，又称为 auto object， 因为它会被自动清理。</span>
+    <span class="hljs-function"><span class="hljs-keyword">static</span> Complex <span class="hljs-title">c2</span><span class="hljs-params">(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span></span>;  <span class="hljs-comment">//  static object: 其生命在作用域(scope) 结束之后仍然存在，直到整个程序结束</span>
+    
+    Complex * p = <span class="hljs-keyword">new</span> Complex; <span class="hljs-comment">// heap object: 其生命周期随着 deleted 之际结束。</span>
+                               <span class="hljs-comment">// 当你申请了一段内存，你就有责任释放它， 否则就会产生内存泄漏。</span>
+    ...
+    <span class="hljs-keyword">delete</span> p;  
+&#125;
+
+<span class="hljs-function">Complex <span class="hljs-title">c3</span><span class="hljs-params">(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span></span>;  <span class="hljs-comment">// global object: 其生命在整个程序结束之后才结束。</span>
+                   <span class="hljs-comment">// 你也可以视为一种 static object， 其作用域是整个函数。</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;
+  ...
+&#125;</code></pre>
+<h4 id="4-new-和-delete"><a href="#4-new-和-delete" class="headerlink" title="4. new 和 delete"></a>4. new 和 delete</h4><p>(1) new：先分配 memory， 再调用 ctor</p>
+<pre><code class="hljs cpp">Complex * pc = <span class="hljs-keyword">new</span> Complex(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+
+<span class="hljs-comment">// 编译器会将其转化为如下语句:</span>
+Complex * pc;
+<span class="hljs-keyword">void</span> mem = <span class="hljs-keyword">operator</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">sizeof</span>(Complex));  <span class="hljs-comment">// (1) 分配内存 --&gt; 其内部调用 malloc(n)</span>
+pc = <span class="hljs-keyword">static_cast</span>&lt;Complex*&gt;(mem);   <span class="hljs-comment">// (2) 转型</span>
+pc -&gt; Complex::Complex(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);      <span class="hljs-comment">// (3) 构造函数 --&gt; Complex::complex(pc, 1, 2);</span></code></pre>
+<p>(2) delete: 先调用 dtor, 再释放内存</p>
+<pre><code class="hljs cpp">String * ps = <span class="hljs-keyword">new</span> String(<span class="hljs-string">&quot;Hello&quot;</span>);
+...
+<span class="hljs-keyword">delete</span> ps;
+
+<span class="hljs-comment">// 编译器将其转化为:</span>
+String::~String(ps);   <span class="hljs-comment">// 析构函数</span>
+<span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">delete</span><span class="hljs-params">(ps)</span></span>;    <span class="hljs-comment">// 释放内存 -&gt; 其内部调用 free(ps)</span></code></pre>
+<h4 id="5-动态分配所得的内存块"><a href="#5-动态分配所得的内存块" class="headerlink" title="5. 动态分配所得的内存块"></a>5. 动态分配所得的内存块</h4><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">complex</span>&#123;</span>
+...
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">double</span> re, im;
+&#125;;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">String</span>&#123;</span>
+...
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">char</span>* m_data;
+&#125;;</code></pre>
+<pre><code class="hljs cpp">Complex * pc = <span class="hljs-keyword">new</span> Complex(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+String * ps = <span class="hljs-keyword">new</span> String(<span class="hljs-string">&quot;Hello!&quot;</span>);</code></pre>
+<p>(1)  内存的分配情况</p>
+<ul>
+<li>实际所占用的内存    complex: (4*2)  string: (4)                                绿色部分</li>
+<li>debug header     (32+4)                           -&gt; 在 debug 模式下才有       灰色部分</li>
+<li>字节对齐           complex:(3/0)   string: (0/1)   -&gt; 调整为8的倍数             青色部分</li>
+<li>上下cookies       (4*2)                                                      粉红色部分</li>
+</ul>
+<p><img src="/2021/01/10/CPP-review/3.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>(2)  动态分配数组所得的 array</p>
+<pre><code class="hljs cpp">Complex * p = <span class="hljs-keyword">new</span> Complex[<span class="hljs-number">3</span>];
+String * p = <span class="hljs-keyword">new</span> String[<span class="hljs-number">3</span>];</code></pre>
+<ul>
+<li>实际所占用的内存(含有一个整数来标记数组的长度)    complex: (3*4*2+4)   string: (4*3+4)    灰色部分+中间白色</li>
+<li>debug header     (32+4)                         → 在 debug 模式下才有             黄色部分</li>
+<li>字节对齐           complex:(2/3)   string: (1/1)  → 调整为8的倍数                    青色部分</li>
+<li>上下cookies       (4*2)                                                             上下白色部分</li>
+</ul>
+<p><img src="/2021/01/10/CPP-review/4.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>(2) arrary new 一定要搭配 array delete </p>
+<p>如果 delete 的时候没有使用 []， 则之后调用一次析构函数， 默认只删除了 array[0]。 对于数组的其他元素则没有删除。 会造成内存泄漏。</p>
+<p><img src="/2021/01/10/CPP-review/5.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<h4 id="6-简述一下-new、delete、malloc、free-的关系"><a href="#6-简述一下-new、delete、malloc、free-的关系" class="headerlink" title="6. 简述一下 new、delete、malloc、free 的关系?"></a>6. 简述一下 new、delete、malloc、free 的关系?</h4><p>​        malloc 与 free 是C++/C 语言标准库函数， new/delete 是C++ 的运算符， 他们分别用于申请动态内存(malloc)和释放内存(free)。<br>​        对于非内部数据类型的对象而言，对象在创建的同时要自动执行构造函数， 对象在消亡之前要自动执行析构函数。 由于malloc/free 是库函数而不是运算符，不在编译器控制权限之内，不能够把执行构造函数和析构函数的任务强加于 malloc/free， 所以只用 malloc/free 无法满足动态对象的要求。 因此， C++ 语言需要一个能完成动态内存分配和初始化工作的运算符 new, 以及一个能完成清理和释放内存工作的运算符 delete。<br>​        实际上， new 首先调用 operator new 函数申请空间(底层通过 malloc 实现)，然后调用构造函数进行初始化，最后返回自定义类型的指针; delete 首先调用析构函数，然后调用 operator delete 释放空间(底层通过 free 实现)。</p>
+<h2 id="四-OOP-Object-Oriented-Programming"><a href="#四-OOP-Object-Oriented-Programming" class="headerlink" title="四. OOP(Object Oriented Programming)"></a>四. OOP(Object Oriented Programming)</h2><p>​        面向对象谈的是对象和对象之间的关系，对象是由类派生而来，所以其实质是类和类之间的关系。<strong>常见的类之间的关系有三种：Inheritance 继承、Composition 组合 和 Delegation 委托。</strong></p>
+<h4 id="1-composition-复合-：-has-a"><a href="#1-composition-复合-：-has-a" class="headerlink" title="1. composition(复合) ： has-a"></a>1. composition(复合) ： has-a</h4><p>(1) 代码示例</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 这里体现了 23 个设计模式中的  -- adapter: 利用一个类来实现另一个类</span>
+<span class="hljs-comment">// queue 里面有一个 deque, 这种关系叫做 composition 复合</span>
+<span class="hljs-comment">// queue 借用 deque 的已有的实现来实现自己</span>
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T</span>&gt;</span>
+<span class="hljs-class"><span class="hljs-title">class</span> <span class="hljs-title">queue</span> &#123;</span>
+    ...
+<span class="hljs-keyword">protected</span>:
+    <span class="hljs-built_in">deque</span>&lt;T&gt; c;  <span class="hljs-comment">// 底层容器</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">// 以下完全利用 c 的操作完成</span>
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">empty</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> c.empty(); &#125;
+    <span class="hljs-function">size_type <span class="hljs-title">size</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> c.size(); &#125;
+    <span class="hljs-function">reference <span class="hljs-title">front</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> c.front(); &#125;
+   <span class="hljs-function">reference <span class="hljs-title">back</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> c.back(); &#125;
+   <span class="hljs-comment">//</span>
+   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">push</span><span class="hljs-params">(<span class="hljs-keyword">const</span> value_type&amp; x)</span> </span>&#123; c.push_back(x); &#125;
+   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">pop</span><span class="hljs-params">()</span> </span>&#123;c.pop_front(); &#125; 
+&#125;;
+</code></pre>
+<p>(2) 复合的 UML 表示</p>
+<p><img src="/2021/01/10/CPP-review/6.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>(3) 内存表示</p>
+<p><img src="/2021/01/10/CPP-review/7.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>(4)  Composition(复合) 关系下的构造和析构</p>
+<p>  构造由内而外： Container 的构造函数首先调用 Component 的 default 构造函数，然后才执行自己。</p>
+<pre><code class="hljs cpp">Container::Container(...):Component() &#123; ... &#125;;</code></pre>
+<p>析构由外而内: Container 的析构函数首先执行自己，然后才调用 Component 的析构函数。</p>
+<pre><code class="hljs cpp">Container::~Container(...)&#123; ... ~Component() &#125;;</code></pre>
+<h4 id="2-Delegation-委托-：Compostion-by-reference"><a href="#2-Delegation-委托-：Compostion-by-reference" class="headerlink" title="2. Delegation(委托) ：Compostion by reference"></a>2. Delegation(委托) ：Compostion by reference</h4><p>(1) 示例代码:</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 这个示例体现了设计模式中的 handle/Body(pImpl)  point to implementation</span>
+<span class="hljs-comment">// String 有一个 StringRep， 但是这个 &quot;有&quot; 是通过指针来实现的</span>
+<span class="hljs-comment">// 一个类的真正的实现通过另一个类来实现，该类只是对外的接口， </span>
+<span class="hljs-comment">// 当该类需要某个行为的时候，都调用另一个类的函数来服务</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StringRep</span>;</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">String</span>&#123;</span>
+    <span class="hljs-keyword">public</span>:
+        String();
+        String(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* s);
+        String(<span class="hljs-keyword">const</span> String&amp; s);
+        String &amp;<span class="hljs-keyword">operator</span>=(<span class="hljs-keyword">const</span> String&amp; s);
+        ~String();
+...
+<span class="hljs-keyword">private</span>:
+    StringRep* rep; <span class="hljs-comment">// piml</span>
+&#125;
+
+<span class="hljs-comment">// file String.cpp </span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;String.hpp&quot;</span> </span>
+<span class="hljs-keyword">namespace</span> &#123; 
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StringRep</span> &#123;</span>
+<span class="hljs-keyword">friend</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">String</span>;</span> 
+    StringRep(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* s); 
+    ~StringRep(); 
+    <span class="hljs-keyword">int</span> count; 
+    <span class="hljs-keyword">char</span>* rep; 
+&#125;; 
+&#125;
+
+String::String()&#123; ... &#125; ...</code></pre>
+<p>(2) UML 表示</p>
+<p><img src="/2021/01/10/CPP-review/8.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<h4 id="3-Inheritance-继承-表示-is-a"><a href="#3-Inheritance-继承-表示-is-a" class="headerlink" title="3. Inheritance(继承) 表示 is-a"></a>3. Inheritance(继承) 表示 is-a</h4><p><strong>函数的继承继承的是调用权！</strong></p>
+<p>(1) 示例代码:</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">List_node_base</span> _<span class="hljs-title">List_node_base</span> &#123;</span>
+    _List_node_base* _M_next;
+    _List_node_base* _M_prev; 
+&#125;;
+
+<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> _Tp&gt; 
+<span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">List_node</span> :</span> <span class="hljs-keyword">public</span> _List_node_base&#123;
+    _Tp _M_data; 
+&#125;;</code></pre>
+<p>(2) UML 表示和内存表示</p>
+<p><img src="/2021/01/10/CPP-review/9.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>！base class 的 dtor 必须是 virtual ， 否则会出现undefined behavior</p>
+<p>(3)  <strong>Inheritance(继承)关系下的构造和析构</strong></p>
+<p>构造由内而外：Derived 的构造函数必须调用 Base 的 default 构造函数， 然后才执行自己。</p>
+<pre><code class="hljs cpp">Derived::Derived(...): Base() &#123;...&#125;;</code></pre>
+<p>析构由外而内: Derived 的析构函数首先执行自己，然后才调用 Base 的析构函数。</p>
+<pre><code class="hljs cpp">Derived::~Derived(...)&#123;... ~Base() &#125;</code></pre>
+<p><strong>(4) Inheritance(继承) + Composition(复合)</strong></p>
+<p>构造由内而外：Derived 的构造函数首先调用 <strong>Base</strong> 的 default 构造函数， 然后调用 <strong>Component</strong> 的 default 构造函数，然后才执行自己。</p>
+<pre><code class="hljs cpp">Derived::Derived(...): Base()，Component()  &#123;...&#125;;</code></pre>
+<p>析构由外而内: Derived 的析构函数首先执行自己， 然后调用 <strong>Component</strong> 的析构函数， 然后调用 Base 的析构函数。</p>
+<pre><code class="hljs cpp">Derived::~Derived(...)&#123;... ~Component(), ~Base() &#125;</code></pre>
+<h4 id="4-基于-Delegation-委托-和-Inheritance-继承-的设计模式"><a href="#4-基于-Delegation-委托-和-Inheritance-继承-的设计模式" class="headerlink" title="4. 基于 Delegation(委托) 和 Inheritance(继承) 的设计模式"></a>4. 基于 Delegation(委托) 和 Inheritance(继承) 的设计模式</h4><h5 id="4-1-观察者模式"><a href="#4-1-观察者模式" class="headerlink" title="4.1  观察者模式"></a>4.1  观察者模式</h5><p>​        观察者组合到某个对象中，当更新的时候，通知观察者。 如下所示：Observer 和 Subject 是 Delegation 关系， 另外 Observer 可以作为父类，派生出许多子类, 并且子类可以组合到 Subject 类中。</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Observer</span>&#123;</span>
+    <span class="hljs-keyword">public</span>:
+        <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(Subject* sub, <span class="hljs-keyword">int</span> value)</span> </span>= <span class="hljs-number">0</span>;
+&#125;;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Subject</span>&#123;</span>
+    <span class="hljs-keyword">int</span> m_value;
+    <span class="hljs-built_in">vector</span>&lt;Observer *&gt; m_views;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">// 添加观察者</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">attach</span><span class="hljs-params">(Observer* obs)</span></span>&#123;
+        m_views.push_back(obs);
+    &#125;
+    
+    <span class="hljs-comment">// 更新数据， 将该数据 更新到所有的观察者</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">set_val</span><span class="hljs-params">(<span class="hljs-keyword">int</span> value)</span></span>&#123;
+        m_value = value;
+        notify();
+    &#125;
+    
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">notify</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m_views.size(); ++i)&#123;
+            m_views[i]-&gt;update(<span class="hljs-keyword">this</span>, m_value);
+        &#125;
+    &#125;
+    <span class="hljs-comment">// 删除操作 </span>
+    <span class="hljs-comment">// ...</span>
+&#125;
+</code></pre>
+<h5 id="4-2-composite-复合"><a href="#4-2-composite-复合" class="headerlink" title="4.2 composite(复合)"></a>4.2 composite(复合)</h5><p>​    如下图所示， 父类为 Component， 两个子类均继承自 Component。 然后 Primitive 和 Composite 为委托关系。</p>
+<p><img src="/2021/01/10/CPP-review/10.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Component</span> &#123;</span>
+    <span class="hljs-keyword">int</span> value; 
+<span class="hljs-keyword">public</span>:
+    Component(<span class="hljs-keyword">int</span> val) &#123; value = val; &#125;
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">( Component* )</span> </span>&#123; &#125; 
+&#125;;
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Primitive</span>:</span> <span class="hljs-keyword">public</span> Component &#123; 
+<span class="hljs-keyword">public</span>:
+    Primitive(<span class="hljs-keyword">int</span> val): Component(val) &#123;&#125; 
+&#125;;
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Composite</span>:</span> <span class="hljs-keyword">public</span> Component &#123;
+    <span class="hljs-built_in">vector</span> &lt;Component*&gt; c; 
+<span class="hljs-keyword">public</span>:
+    Composite(<span class="hljs-keyword">int</span> val): Component(val) &#123; &#125;
+   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(Component* elem)</span> </span>&#123;
+       c.push_back(elem); 
+   &#125; 
+   <span class="hljs-comment">// ...</span>
+&#125;;</code></pre>
+<h5 id="4-3-prototype"><a href="#4-3-prototype" class="headerlink" title="4.3 prototype"></a>4.3 prototype</h5><p>​     考虑如下一种情况，需要一个继承体系，父类(抽象类)想要去创建未来才会出现的子类。其中父类由框架编写者编写，子类则由其他开发者编写。 解决方法为：让派生类创建自身，让父类有办法看到子类(注册)，并进行复制。</p>
+<p>父类如何做: (1) 实现 findAndClone: 实现子类的创建 (2) addPrototype 函数， 实现注册</p>
+<p>子类如何做?  </p>
+<p>(1) 声明一个静态对象，然后将构造函数声明为私有，并在其中进行注册(调用 addPrototype)。</p>
+<p>如下所示的 _LSAT: LandSatImage 和 -LandSatImage()，在其中调用了 addPrototype 进行注册。</p>
+<p>(2) 实现 clone 函数，然后借助一个 protected 的 构造函数返回新建对象。</p>
+<p>如下所示的 clone 函数，借助于 #LandSatImage(int) 新建对象并返回。</p>
+<p><img src="/2021/01/10/CPP-review/11.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<h4 id="5-Inheritance-继承-with-virtual-functions-虚函数"><a href="#5-Inheritance-继承-with-virtual-functions-虚函数" class="headerlink" title="5. Inheritance(继承) with virtual functions(虚函数)"></a>5. Inheritance(继承) with virtual functions(虚函数)</h4><h5 id="5-1-虚函数和纯虚函数"><a href="#5-1-虚函数和纯虚函数" class="headerlink" title="5.1 虚函数和纯虚函数"></a>5.1 虚函数和纯虚函数</h5><p>(1)  成员函数可以分为三类：</p>
+<ul>
+<li>非虚函数: 你并不希望 derived class(子类)  重新定义(override, 覆写/重写) 它。</li>
+<li>虚函数: (在函数前添加 virtual)：你希望 derived class 重新定义(override, 覆写/重写) 它， 并且它已有默认定义。</li>
+<li>春旭函数函数: 你希望 derived class 一定要重新定义(override, 覆写/重写)它， 你对它没有默认定义。</li>
+</ul>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Shape</span>&#123;</span>
+  <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>= <span class="hljs-number">0</span>;   <span class="hljs-comment">// pure virtual</span>
+  <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">error</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>&amp; msg)</span></span>;   <span class="hljs-comment">// impure virtual</span>
+  <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">objectID</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;   <span class="hljs-comment">// non-virtual  </span>
+&#125;;</code></pre>
+<p>重载(overload)、覆盖( 重写override) 的区别是什么?</p>
+<ul>
+<li><p>overload 重载: 在 C++ 程序中，可以将语义、功能相似的几个函数用同一个名字表示，但参数不同(包括类型、顺序、个数不同)。重载的调用时根据参数列表来决定调用哪一个函数。其特征是：</p>
+<p> 相同的范围(在同一个类中), 函数名字相同, 参数不同)</p>
+</li>
+<li><p>override 覆盖: 是指派生类函数覆盖基类函数。覆盖的调用时根绝对象类型的不同决定调用哪一个。特征是：</p>
+<p> 不同的范围(分别位于派生类与基类); 函数名字相同; 参数相同; 基类函数必须有 virtual 关键字</p>
+</li>
+</ul>
+<h5 id="5-2-模板方法-Template-method"><a href="#5-2-模板方法-Template-method" class="headerlink" title="5.2 模板方法 Template method"></a>5.2 模板方法 Template method</h5><p>​        借助于虚函数和多态，可以实现模板方法：父类把其中的一个动作写成虚函数，延缓到子类来进行实现，在调用时通过子类进行调用。 这就是著名的 Template method。</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 开发者实现的内容: 对于没有办法写出的 Serialize()， 所以将其定义为虚函数 </span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CDocument</span></span>
+<span class="hljs-class">&#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnFileOpen</span><span class="hljs-params">()</span></span>&#123;
+         <span class="hljs-comment">// 这是个算法， 每个cout 输出代表一个实际动作</span>
+         <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;dialog ...&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
+         <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;check file status ... &quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
+         <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;open file ... &quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
+         Serialize();
+         <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;close file ... &quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
+         <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;update all views ... &quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
+    &#125;
+    
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Serialize</span><span class="hljs-params">()</span> </span>&#123;&#125;;  
+&#125;;
+
+
+<span class="hljs-comment">// 使用者继承父类，并自己去实现 Serialize() 函数</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CMyDoc</span>:</span> <span class="hljs-keyword">public</span> CDocument
+&#123;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Serilize</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-comment">// 只有应用程序本身才知道如何读取文件</span>
+        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;CMyDoc::Serialize() &quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    CMyDoc myDoc;    <span class="hljs-comment">// 假设对应(File/Open)</span>
+    myDoc.OnFileOpen();
+&#125;</code></pre>
+<h4 id="6-虚指针-和-虚表"><a href="#6-虚指针-和-虚表" class="headerlink" title="6. 虚指针 和 虚表"></a>6. 虚指针 和 虚表</h4><p>(1) 只要类有虚函数，其含有成员就有一个虚指针， 指向虚表， 然后在运行时，通过这个虚指针，找到这个虚表，进而调用这个函数</p>
+<p><img src="/2021/01/10/CPP-review/12.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
+<p>(2) 动态绑定要满足三个条件: 子类成员函数声明为虚函数、指针向上转型、调用虚函数</p>
+<p>(3) 动态绑定 与静态绑定的区别：</p>
+<ul>
+<li><p>静态绑定和动态绑定的主要区别在于：在什么时候将函数实现和函数调用关联起来，是在编译期间还是运行期间。</p>
+</li>
+<li><p>静态绑定是指在编译期间就可以确定函数的调用地址，并产生代码。也就是说函数调用地址是早早绑定的。 其代码直接编译为：<br> <code>call xxxx</code></p>
+</li>
+<li><p>动态绑定的函数调用的地址不能在编译期间确定，需要等到运行时才确定，这被叫做延迟绑定。动态绑定往往通过虚函数来实现，虚函数允许派生类重新定义成员函数，而派生类重新定义基类成员函数并实现动态绑定。动态绑定的代码一般编译为 <code>call dword ptr [edx]</code>。这里不再是一个固定的地址，而是通过虚指针找到虚表，然后找到第 n 个函数， 然后将其当做函数指针进行调用。</p>
+</li>
+</ul>
+<h2 id="五-泛型编程"><a href="#五-泛型编程" class="headerlink" title="五. 泛型编程"></a>五. 泛型编程</h2><p>模板 template</p>
+<h4 id="1-函数模板"><a href="#1-函数模板" class="headerlink" title="1. 函数模板"></a>1. 函数模板</h4><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">complex</span>&#123;</span>
+   ....
+
+   T re,im;
+
+&#125;
+
+<span class="hljs-function"><span class="hljs-built_in">complex</span>&lt;<span class="hljs-keyword">double</span>&gt; <span class="hljs-title">c1</span><span class="hljs-params">(<span class="hljs-number">2.5</span>,<span class="hljs-number">1.5</span>)</span></span>;</code></pre>
+<h4 id="2-类模板"><a href="#2-类模板" class="headerlink" title="2. 类模板"></a>2. 类模板</h4><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">complex</span> &#123;</span> 
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">complex</span> (T r = <span class="hljs-number">0</span>, T i = <span class="hljs-number">0</span>) : re (r), im (i) &#123; &#125; 
+    <span class="hljs-built_in">complex</span>&amp; <span class="hljs-keyword">operator</span> += (<span class="hljs-keyword">const</span> <span class="hljs-built_in">complex</span>&amp;); 
+    <span class="hljs-function">T <span class="hljs-title">real</span> <span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> re; &#125; 
+    <span class="hljs-function">T <span class="hljs-title">imag</span> <span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> im; &#125;
+
+<span class="hljs-keyword">private</span>:
+    T re, im;
+    <span class="hljs-keyword">friend</span> <span class="hljs-built_in">complex</span>&amp; __doapl (<span class="hljs-built_in">complex</span>*, <span class="hljs-keyword">const</span> <span class="hljs-built_in">complex</span>&amp;); 
+&#125;;
+
+
+<span class="hljs-comment">// 调用</span>
+&#123;
+    <span class="hljs-function"><span class="hljs-built_in">complex</span>&lt;<span class="hljs-keyword">double</span>&gt; <span class="hljs-title">c1</span><span class="hljs-params">(<span class="hljs-number">2.5</span>,<span class="hljs-number">1.5</span>)</span></span>; c2(<span class="hljs-number">2</span>,<span class="hljs-number">6</span>);
+    <span class="hljs-built_in">complex</span>&lt;<span class="hljs-keyword">int</span>&gt; ...
+&#125;
+</code></pre>
+<h4 id="3-函数模板"><a href="#3-函数模板" class="headerlink" title="3. 函数模板"></a>3. 函数模板</h4><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">stone</span>&#123;</span> 
+<span class="hljs-keyword">public</span>:
+    stone(<span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span> h, <span class="hljs-keyword">int</span> we)
+    : _w(w), _h(h), _weight(we) &#123;  &#125;
+
+<span class="hljs-keyword">bool</span> <span class="hljs-keyword">operator</span>&lt; (<span class="hljs-keyword">const</span> stone&amp; rhs) <span class="hljs-keyword">const</span>&#123; 
+    <span class="hljs-keyword">return</span> _weight &lt; rhs._weight;
+&#125;
+
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">int</span> _w, _h, _weight;
+&#125;;
+
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T</span>&gt;</span>
+<span class="hljs-class"><span class="hljs-title">inline</span> <span class="hljs-title">const</span> <span class="hljs-title">T</span>&amp; <span class="hljs-title">min</span>(<span class="hljs-title">const</span> <span class="hljs-title">T</span>&amp; <span class="hljs-title">a</span>, <span class="hljs-title">const</span> <span class="hljs-title">T</span>&amp; <span class="hljs-title">b</span>)&#123;</span>
+    <span class="hljs-keyword">return</span> b &lt; a ? b : a;  <span class="hljs-comment">// 需要类 T 对 &lt; 进行函数重载 </span>
+&#125;
+
+<span class="hljs-comment">// 调用</span>
+stone r1(2,3), r2(3,3), r3;
+r3 = min(r1, r2);  <span class="hljs-comment">// 参数推导的结果，T 为 stone，于是调用 stone::operator &lt;</span></code></pre>
+<h2 id="六、C-11"><a href="#六、C-11" class="headerlink" title="六、C++11"></a>六、C++11</h2><h4 id="1-namespace"><a href="#1-namespace" class="headerlink" title="1. namespace"></a>1. namespace</h4><p>通过 namespace 将代码包起来，防止冲突</p>
+<p>当使用的时候可以有两种:</p>
+<ul>
+<li>using directive:  using namespace std;    cin;  cout</li>
+<li>usding declaration：  std::cout;  std::cin;</li>
+</ul>
+<h4 id="2-auto"><a href="#2-auto" class="headerlink" title="2. auto"></a>2. auto</h4><pre><code class="hljs cpp"><span class="hljs-built_in">list</span>&lt;<span class="hljs-built_in">string</span>&gt; c:
+<span class="hljs-keyword">auto</span> ite = find(c.begin(), c.end(), target);</code></pre>
+<h4 id="3-ranged-base-for"><a href="#3-ranged-base-for" class="headerlink" title="3. ranged-base for"></a>3. ranged-base for</h4><pre><code class="hljs cpp"><span class="hljs-keyword">for</span>(decl : coll)&#123;
+    statement
+&#125;
+
+<span class="hljs-comment">// 例如</span>
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i: &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>&#125;)&#123;
+    <span class="hljs-built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="hljs-built_in">endl</span>;
+&#125;
+
+<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">double</span>&gt; vec;
+...
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> elem : vec)&#123;
+    <span class="hljs-built_in">cout</span> &lt;&lt; elem &lt;&lt; <span class="hljs-built_in">endl</span>;  <span class="hljs-comment">// pass by value</span>
+&#125;
+
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp; elem: vec)&#123;  <span class="hljs-comment">// pass by reference</span>
+    elem *= <span class="hljs-number">3</span>;
+&#125;</code></pre>
+<h4 id="4-variadic-templates"><a href="#4-variadic-templates" class="headerlink" title="4. variadic templates"></a>4. variadic templates</h4><h2 id="七-STL-容器"><a href="#七-STL-容器" class="headerlink" title="七. STL 容器"></a>七. STL 容器</h2><h2 id="八、常见问题"><a href="#八、常见问题" class="headerlink" title="八、常见问题 ?"></a>八、常见问题 ?</h2><h4 id="1-class-和-struct-的区别"><a href="#1-class-和-struct-的区别" class="headerlink" title="1. class 和 struct 的区别?"></a>1. class 和 struct 的区别?</h4><p>class 和 struct 的区别在于 class 默认的成员是 private，而 struct 默认的成员是 public 类型的</p>
+<h4 id="2-quot-xx-quot-和-lt-xx-gt-的引用方式的区别"><a href="#2-quot-xx-quot-和-lt-xx-gt-的引用方式的区别" class="headerlink" title="2. &quot;xx&quot; 和 &lt;xx&gt; 的引用方式的区别!"></a>2. <code>&quot;xx&quot;</code> 和 <code>&lt;xx&gt;</code> 的引用方式的区别!</h4><p><code>&lt;&gt;</code> 先去系统目录中找头文件，如果没有在到当前目录下找。所以像标准的头文件 stdio.h、stdlib.h等用这个方法。</p>
+<p>而 <code>&quot; &quot;</code> 首先在当前目录下寻找，如果找不到，再到系统目录中寻找。 这个用于include自定义的头文件，让系统优先使用当前目录中定义的</p>
+<h4 id="3-private、public-和-protected-的继承体系"><a href="#3-private、public-和-protected-的继承体系" class="headerlink" title="3. private、public 和 protected 的继承体系?"></a>3. private、public 和 protected 的继承体系?</h4><h4 id="4-单例模式-Singleton-中需要将-constructor-放在-private-中-试实现一个单例模式"><a href="#4-单例模式-Singleton-中需要将-constructor-放在-private-中-试实现一个单例模式" class="headerlink" title="4. 单例模式 (Singleton) 中需要将 constructor 放在 private 中, 试实现一个单例模式?"></a>4. 单例模式 (Singleton) 中需要将 constructor 放在 private 中, 试实现一个单例模式?</h4><h4 id="5-从空间大小、碎片问题、生成方向、分配方式和分配效率对栈和堆进行比较："><a href="#5-从空间大小、碎片问题、生成方向、分配方式和分配效率对栈和堆进行比较：" class="headerlink" title="5. 从空间大小、碎片问题、生成方向、分配方式和分配效率对栈和堆进行比较："></a>5. 从空间大小、碎片问题、生成方向、分配方式和分配效率对栈和堆进行比较：</h4><p>(1) 空间大小<strong>：</strong>一般来讲在 32 位系统下，堆内存可以达到 4G 的空间<strong>。但是</strong>对于栈来讲，一般都是有一定的空间大小的，例如，在 VC6 下面，默认的栈空间大小是 1M（好像是，记不清楚了）。</p>
+<p>(2) 碎片问题：对于堆来讲，频繁的 new/delete 势必会造成内存空间的不连续，从而造成大量的碎片，使程序效率降低<strong>。</strong>对于栈来讲，则不会存在这个问题，因为栈是先进后出的队列，以至于永远都不可能有一个内存块从栈中间弹出。</p>
+<p>(3) 生长方向：对于堆来讲，生长方向是向上的，也就是向着内存地址增加的方向；对于栈来讲，它的生长方向是向下的，是向着内存地址减小的方向增长。</p>
+<p>(4) 分配方式<strong>：</strong>堆都是动态分配的，没有静态分配的堆<strong>。</strong>栈有 2 种分配方式：静态分配和动态分配。静态分配是编译器完成的，比如局部变量的分配。动态分配由 alloca 函数进行分配，但是栈的动态分配和堆是不同的，他的动态分配是由编译器进行释放，无需我们手工实现。</p>
+<p>(5) 分配效率：栈是机器系统提供的数据结构，计算机会在底层对栈提供支持：分配专门的寄存器存放栈的地址，压栈出栈都有专门的指令执行，这就决定了栈的效率比较高。堆则是 C/C++函数库提供的，它的机制很复杂，堆的效率比栈要低得多</p>
+<h2 id="TBD"><a href="#TBD" class="headerlink" title="TBD"></a>TBD</h2><p>四种类型转换：static_cast, dynamic_cast, const_cast, reinterpret_cast</p>
+<p>模板特化、偏特化，萃取 traits 技巧</p>
+<p>继承、虚继承、菱形继承等</p>
+<p>volatile、extern</p>
+<p>智能指针原理：引用计数、RAII（资源获取即初始化）思想</p>
+<p>智能指针使用：shared_ptr、weak_ptr、unique_ptr等</p>
+<p>C++11 部分新特性，比如右值引用、完美转发等</p>
 <p><strong>转换函数</strong></p>
 <p>​    类型转换运算符(conversion operator) 是类的一种特殊成员函数， 它负责将一个类类型的值转换未其他类型。 其一般形式如下所示:</p>
 <pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">type</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;</code></pre>
@@ -467,119 +933,6 @@ reference <span class="hljs-keyword">operator</span>[](size_type pos)
 <span class="hljs-comment">// 可以使用构造函数，将 4 转换为 Fraction， 然后两者进行相加</span>
 <span class="hljs-comment">// 也可以将 f 转换为 double, 然后两个 double 相加</span>
 <span class="hljs-comment">// 可以使用 explicit 进行声明， 在构造函数之前添加 explicit 关键字， 然后进行隐式转换。</span></code></pre>
-<h2 id="三-内存管理"><a href="#三-内存管理" class="headerlink" title="三. 内存管理"></a>三. 内存管理</h2><p><strong>1. 指针和引用的区别 ?</strong></p>
-<pre><code class="hljs cpp"><span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>;
-<span class="hljs-keyword">int</span>* p = &amp;x; <span class="hljs-comment">// p is a point to x: p 本身是一个变量，但是存储的是 x 的地址</span>
-             <span class="hljs-comment">// 一个小小的技巧: 这里的 * 是靠近 int 的, 表示 p 是 int* 类型</span>
-<span class="hljs-keyword">int</span> &amp;r = x;  <span class="hljs-comment">// r is a reference to x: r 代表 x。r, 此时 x 都是 0</span></code></pre>
-<p>(1) 指针是在内存中的四/八字节存储空间，指针存储的内容就是一个地址，根据这个地址可以找到另外一片内存，指针就是这片内存的索引。简单的讲，指针就是一种保存变量地址的变量。</p>
-<p>​    引用则相当于是为对象起了一个别名, 引用和原来的对象具有相同的大小和地址。</p>
-<p>(2) 在编译器方面，两者是一样的，编译器会将两者编译为相同的汇编指令。有一句很好的话可以来形容：reference 就是漂亮的 point。</p>
-<p>(3) 两者主要的区别是在语法层面：</p>
-<p>​    - sizeof(指针) 的大小是4/8，sizeof(引用) 的大小是被引用对象的大小；</p>
-<p>​    - <strong>初始化</strong>(引用必须初始化为一个对象的引用、指针则可以初始化为空)、<strong>可改变</strong>(引用不可以改变、指针则可以更改指向)、<strong>传参</strong>(作为<strong>参数传递</strong>时，指针需要被解引用才可进行操作，引用可直接修改)</p>
-<p>​    - <strong>静态</strong>(没有静态引用、但是有静态指针)、<strong>自加运算符</strong>(含义不一样，引用是对其值进行自加， 指针则是表示指针进行移动)</p>
-<p>(4) 使用：</p>
-<p>​    - <strong>引用相对于指针更加安全。平时编程时，在能使用引用的情况下，就不要轻易使用指针</strong>，当然，在操作数组或者大面积内存时，用指针更好。 </p>
-<p>​    - reference 通常不用于声明变量，而用于参数类型和返回值类型的描述。 reference 的一个优点是可以保持调用端和被调用端的写法与传值写法相同。</p>
-<p>​    - <strong>引用</strong>并不能作为函数签名的区别，这会引起二义性。 但是 const 可以。</p>
-<pre><code class="hljs cpp"><span class="hljs-comment">// 如下两个函数声明, 会产生二义性!</span>
-<span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">imag</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span>&amp; im)</span> </span>&#123; ... &#125;
-<span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">imag</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span> im)</span> </span>&#123;...&#125;
-
-<span class="hljs-comment">// 如下两个函数声明，不会产生二义性</span>
-<span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">imag</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span> im)</span> </span>&#123; ... &#125;
-<span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">imag</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span> im)</span> <span class="hljs-keyword">const</span> </span>&#123; ... &#125;</code></pre>
-<p><strong>2.</strong> 所谓 stack(栈)， 所谓 heap(堆)</p>
-<p>在 C++ 中， 内存分为 5 个区， 分别是堆、栈、自由存储区、全局/静态存储区和常量存储区。</p>
-<ul>
-<li>栈：存在于某作用于<strong>某作用域(scope) 的一块内存空间(memory space)</strong>。内存<strong>由编译器在需要时自动分配和释放</strong>。通常用来存储局部变量和函数参数(为运行函数而分配的<strong>局部变量、函数参数、返回地址</strong>等存放在栈区)。栈运算分配内置于处理器的指令集中，效率很高，但是分配的内存容量有限。</li>
-<li>堆：由操作系统提供的一块 global 的内存空间，程序<strong>可动态分配 dynamic allocated</strong> 从中获得若干区块。一般是<strong>使用由 new 进行分配，使用 delete 或 delete[] 释放</strong>。如果未能对内存进行正确的释放，会造成内存泄漏。但在程序结束时，会由操作系统自动回收。</li>
-<li>自由存储区：和堆类似，不过存储那些有 malloc 分配，用 free 释放的内存块。</li>
-<li>全局/静态存储区：用于存储全局变量和静态变量</li>
-<li>常量存储区：存放常量，且不允许更改</li>
-</ul>
-<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Complex</span> &#123;</span> ... &#125;;
-
-...
-&#123;
-    <span class="hljs-function">Complex <span class="hljs-title">c1</span><span class="hljs-params">(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span></span>;  <span class="hljs-comment">// c1 占用的空间来自 stack</span>
-    Complex* p = <span class="hljs-keyword">new</span> Complex(<span class="hljs-number">3</span>);  <span class="hljs-comment">// complex(3) 是个临时对象，</span>
-                                  <span class="hljs-comment">// 所占用的空间是 new 在 heap 动态分配而得， 并由 p 指向</span>
-&#125;</code></pre>
-<ol>
-<li>区分四种对象</li>
-</ol>
-<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Complex</span> &#123;</span> ... &#125;;
-...
-&#123;
-    <span class="hljs-function"><span class="hljs-built_in">complex</span> <span class="hljs-title">c1</span><span class="hljs-params">(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span></span>;   <span class="hljs-comment">// stack object: 其生命在作用域结束之际结束，</span>
-                        <span class="hljs-comment">// 这种作用域内的 object，又称为 auto object， 因为它会被自动清理。</span>
-    <span class="hljs-function"><span class="hljs-keyword">static</span> Complex <span class="hljs-title">c2</span><span class="hljs-params">(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span></span>;  <span class="hljs-comment">//  static object: 其生命在作用域(scope) 结束之后仍然存在，直到整个程序结束</span>
-    
-    Complex * p = <span class="hljs-keyword">new</span> Complex; <span class="hljs-comment">// heap object: 其生命周期随着 deleted 之际结束。</span>
-                               <span class="hljs-comment">// 当你申请了一段内存，你就有责任释放它， 否则就会产生内存泄漏。</span>
-    ...
-    <span class="hljs-keyword">delete</span> p;  
-&#125;
-
-<span class="hljs-function">Complex <span class="hljs-title">c3</span><span class="hljs-params">(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span></span>;  <span class="hljs-comment">// global object: 其生命在整个程序结束之后才结束。</span>
-                   <span class="hljs-comment">// 你也可以视为一种 static object， 其作用域是整个函数。</span>
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;
-  ...
-&#125;</code></pre>
-<p>\4. new 和 delete</p>
-<p>(1) new: 先分配 memory， 再调用 ctor</p>
-<pre><code class="hljs cpp">Complex * pc = <span class="hljs-keyword">new</span> Complex(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);</code></pre>
-<p>编译器会将其转化为:</p>
-<pre><code class="hljs cpp">Complex * pc;
-<span class="hljs-keyword">void</span> mem = <span class="hljs-keyword">operator</span> <span class="hljs-keyword">new</span>(<span class="hljs-keyword">sizeof</span>(Complex));  <span class="hljs-comment">// (1) 分配内存 --&gt; 其内部调用 malloc(n)</span>
-pc = <span class="hljs-keyword">static_cast</span>&lt;Complex*&gt;(mem);   <span class="hljs-comment">// (2) 转型</span>
-pc -&gt; Complex::Complex(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);      <span class="hljs-comment">// (3) 构造函数 --&gt; Complex::complex(pc, 1, 2);</span></code></pre>
-<p>(2) delete: 先调用 dtor, 再释放内存</p>
-<pre><code class="hljs cpp">String * ps = <span class="hljs-keyword">new</span> String(<span class="hljs-string">&quot;Hello&quot;</span>);
-...
-<span class="hljs-keyword">delete</span> ps;</code></pre>
-<p>编译器将其转化为:</p>
-<pre><code class="hljs cpp">String::~String(ps);   <span class="hljs-comment">// 析构函数</span>
-<span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">delete</span><span class="hljs-params">(ps)</span></span>;    <span class="hljs-comment">// 释放内存 -&gt; 其内部调用 free(ps)</span></code></pre>
-<ol>
-<li>动态分配所得的内存块</li>
-</ol>
-<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">complex</span>&#123;</span>
-...
-<span class="hljs-keyword">private</span>:
-    <span class="hljs-keyword">double</span> re, im;
-&#125;;
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">String</span>&#123;</span>
-...
-<span class="hljs-keyword">private</span>:
-    <span class="hljs-keyword">char</span>* m_data;
-&#125;;</code></pre>
-<pre><code class="hljs cpp">Complex * pc = <span class="hljs-keyword">new</span> Complex(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
-String * ps = <span class="hljs-keyword">new</span> String(<span class="hljs-string">&quot;Hello!&quot;</span>);</code></pre>
-<p>(1)  内存的分配情况</p>
-<ul>
-<li>实际所占用的内存    complex: (4*2)  string: (4)                                绿色部分</li>
-<li>debug header     (32+4)                           -&gt; 在 debug 模式下才有       灰色部分</li>
-<li>字节对齐           complex:(3/0)   string: (0/1)   -&gt; 调整为8的倍数             青色部分</li>
-<li>上下cookies       (4*2)                                                      粉红色部分</li>
-</ul>
-<p><img src="/2021/01/10/CPP-review/3.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<p>(2) 动态分配数组所得的 array</p>
-<pre><code class="hljs cpp">Complex * p = <span class="hljs-keyword">new</span> Complex[<span class="hljs-number">3</span>];
-String * p = <span class="hljs-keyword">new</span> String[<span class="hljs-number">3</span>];</code></pre>
-<ul>
-<li>实际所占用的内存(含有一个整数来标记数组的长度)    complex: (3<em>4</em>2+4)   string: (4*3+4)    灰色部分+中间白色</li>
-<li>debug header     (32+4)                           -&gt; 在 debug 模式下才有             黄色部分</li>
-<li>字节对齐           complex:(2/3)   string: (1/1)   -&gt; 调整为8的倍数                    青色部分</li>
-<li>上下cookies       (4*2)                                                             上下白色部分</li>
-</ul>
-<p><img src="/2021/01/10/CPP-review/4.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<p>(2) arrary new 一定要搭配 array delete </p>
-<p>如果 delete 的时候没有使用 []， 则之后调用一次析构函数， 默认只删除了 array[0]。 对于数组的其他元素则没有删除。 会造成内存泄漏。</p>
-<p><img src="/2021/01/10/CPP-review/5.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
 <p><strong>5. 智能指针</strong></p>
 <p>  智能指针的本质是类模板，主要是为了我们更加方便(也更加安全的)使用动态内存，它的行为类似于常规指针，重要的区别是它负责自动释放所指向的对象。</p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T</span>&gt;</span>
@@ -594,351 +947,6 @@ String * p = <span class="hljs-keyword">new</span> String[<span class="hljs-numb
     <span class="hljs-keyword">long</span> * pn;
     ...
 &#125;</code></pre>
-<h2 id="四-OOP-Object-Oriented-Programming"><a href="#四-OOP-Object-Oriented-Programming" class="headerlink" title="四. OOP(Object Oriented Programming)"></a>四. OOP(Object Oriented Programming)</h2><p>​    面向对象谈的是对象和对象之间的关系，对象是由类派生而来，所以其实质是类和类之间的关系。<strong>常见的类之间的关系有三种：Inheritance 继承、Composition 组合 和 Delegation 委托。</strong></p>
-<p><strong>1. composition(复合)表示 has-a</strong></p>
-<p><strong>(1)</strong> 代码示例</p>
-<pre><code class="hljs cpp"><span class="hljs-comment">// 这里体现了 23 个设计模式中的  -- adapter: 利用一个类来实现另一个类</span>
-<span class="hljs-comment">// queue 里面有一个 deque, 这种关系叫做 composition 复合</span>
-<span class="hljs-comment">// queue 借用 deque 的已有的实现来实现自己</span>
-
-<span class="hljs-keyword">template</span> &lt;<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T</span>&gt;</span>
-<span class="hljs-class"><span class="hljs-title">class</span> <span class="hljs-title">queue</span> &#123;</span>
-    ...
-<span class="hljs-keyword">protected</span>:
-    <span class="hljs-built_in">deque</span>&lt;T&gt; c;  <span class="hljs-comment">// 底层容器</span>
-<span class="hljs-keyword">public</span>:
-    <span class="hljs-comment">// 以下完全利用 c 的操作完成</span>
-    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">empty</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> c.empty(); &#125;
-    <span class="hljs-function">size_type <span class="hljs-title">size</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> c.size(); &#125;
-    <span class="hljs-function">reference <span class="hljs-title">front</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> c.front(); &#125;
-   <span class="hljs-function">reference <span class="hljs-title">back</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> c.back(); &#125;
-   <span class="hljs-comment">//</span>
-   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">push</span><span class="hljs-params">(<span class="hljs-keyword">const</span> value_type&amp; x)</span> </span>&#123; c.push_back(x); &#125;
-   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">pop</span><span class="hljs-params">()</span> </span>&#123;c.pop_front(); &#125; 
-&#125;;
-</code></pre>
-<p>(2) 复合的 UML 表示:</p>
-<p><img src="/2021/01/10/CPP-review/6.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<p>(3) 内存表示:</p>
-<p><img src="/2021/01/10/CPP-review/7.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<p>(4) <strong>Composition(复合) 关系下的构造和析构</strong></p>
-<p>  构造由内而外： Container 的构造函数首先调用 Component 的 default 构造函数，然后才执行自己。</p>
-<pre><code class="hljs cpp">Container::Container(...):Component() &#123; ... &#125;;</code></pre>
-<p>析构由外而内: Container 的析构函数首先执行自己，然后才调用 Component 的析构函数。</p>
-<pre><code class="hljs cpp">Container::~Container(...)&#123; ... ~Component() &#125;;</code></pre>
-<p><strong>2. Delegation(委托)   Compostion by reference</strong></p>
-<p>(1) 示例代码:</p>
-<pre><code class="hljs cpp"><span class="hljs-comment">// 这个示例体现了设计模式中的 handle/Body(pImpl)  point to implementation</span>
-<span class="hljs-comment">// (1) String 有一个 StringRep， 但是这个有是通过指针来实现的</span>
-<span class="hljs-comment">// 一个类的真正的实现通过另一个类来实现，该类只是对外的接口， </span>
-<span class="hljs-comment">// 当该类需要动作的时候，都调用另一个类的函数来服务</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StringRep</span>;</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">String</span>&#123;</span>
-    <span class="hljs-keyword">public</span>:
-        String();
-        String(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* s);
-        String(<span class="hljs-keyword">const</span> String&amp; s);
-        String &amp;<span class="hljs-keyword">operator</span>=(<span class="hljs-keyword">const</span> String&amp; s);
-        ~String();
-...
-<span class="hljs-keyword">private</span>:
-    StringRep* rep; <span class="hljs-comment">// piml</span>
-&#125;
-
-<span class="hljs-comment">// file String.cpp </span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;String.hpp&quot;</span> </span>
-<span class="hljs-keyword">namespace</span> &#123; 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StringRep</span> &#123;</span>
-<span class="hljs-keyword">friend</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">String</span>;</span> 
-    StringRep(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* s); 
-    ~StringRep(); 
-    <span class="hljs-keyword">int</span> count; 
-    <span class="hljs-keyword">char</span>* rep; 
-&#125;; 
-&#125;
-
-String::String()&#123; ... &#125; ...</code></pre>
-<p>(2) UML 表示</p>
-<p><img src="/2021/01/10/CPP-review/8.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<p><strong>3. Inheritance(继承) 表示 is-a</strong></p>
-<p><strong>函数的继承继承的是调用权！</strong></p>
-<p>(1) 示例代码:</p>
-<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">List_node_base</span> _<span class="hljs-title">List_node_base</span> &#123;</span>
-    _List_node_base* _M_next;
-    _List_node_base* _M_prev; 
-&#125;;
-
-<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> _Tp&gt; 
-<span class="hljs-class"><span class="hljs-keyword">struct</span> _<span class="hljs-title">List_node</span> :</span> <span class="hljs-keyword">public</span> _List_node_base&#123;
-    _Tp _M_data; 
-&#125;;</code></pre>
-<p>(2) UML 表示和内存表示</p>
-<p><img src="/2021/01/10/CPP-review/9.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<p>！base class 的 dtor 必须是 virtual ， 否则会出现undefined behavior</p>
-<p>(3)  <strong>Inheritance(继承)关系下的构造和析构</strong></p>
-<p>构造由内而外：Derived 的构造函数必须调用 Base 的 default 构造函数， 然后才执行自己。</p>
-<pre><code class="hljs cpp">Derived::Derived(...): Base() &#123;...&#125;;</code></pre>
-<p>析构由外而内: Derived 的析构函数首先执行自己，然后才调用 Base 的析构函数。</p>
-<pre><code class="hljs cpp">Derived::~Derived(...)&#123;... ~Base() &#125;</code></pre>
-<p><strong>(4) Inheritance(继承) + Composition(复合)</strong></p>
-<p>构造由内而外：Derived 的构造函数首先调用 <strong>Base</strong> 的 default 构造函数， 然后调用 <strong>Component</strong> 的 default 构造函数，然后才执行自己。</p>
-<pre><code class="hljs cpp">Derived::Derived(...): Base()，Component()  &#123;...&#125;;</code></pre>
-<p>析构由外而内: Derived 的析构函数首先执行自己， 然后调用 <strong>Component</strong> 的析构函数， 然后调用 Base 的析构函数。</p>
-<pre><code class="hljs cpp">Derived::~Derived(...)&#123;... ~Component(), ~Base() &#125;</code></pre>
-<p><strong>4. 基于 Delegation(委托) 和 Inheritance(继承) 的设计模式</strong></p>
-<p>(1) <strong>观察者模式</strong></p>
-<p>​    观察者组合到某个对象中，当更新的时候，通知观察者。 如下所示： Observer 和 Subject 是 Delegation 关系， 另外 Observer 可以作为父类，派生出许多子类, 并且子类可以组合到 Subject 类中。</p>
-<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Observer</span>&#123;</span>
-    <span class="hljs-keyword">public</span>:
-        <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(Subject* sub, <span class="hljs-keyword">int</span> value)</span> </span>= <span class="hljs-number">0</span>;
-&#125;;
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Subject</span>&#123;</span>
-    <span class="hljs-keyword">int</span> m_value;
-    <span class="hljs-built_in">vector</span>&lt;Observer *&gt; m_views;
-<span class="hljs-keyword">public</span>:
-    <span class="hljs-comment">// 添加观察者</span>
-    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">attach</span><span class="hljs-params">(Observer* obs)</span></span>&#123;
-        m_views.push_back(obs);
-    &#125;
-    
-    <span class="hljs-comment">// 更新数据， 将该数据 更新到所有的观察者</span>
-    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">set_val</span><span class="hljs-params">(<span class="hljs-keyword">int</span> value)</span></span>&#123;
-        m_value = value;
-        notify();
-    &#125;
-    
-    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">notify</span><span class="hljs-params">()</span></span>&#123;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m_views.size(); ++i)&#123;
-            m_views[i]-&gt;update(<span class="hljs-keyword">this</span>, m_value);
-        &#125;
-    &#125;
-    <span class="hljs-comment">// 删除操作 </span>
-    <span class="hljs-comment">// ...</span>
-&#125;
-</code></pre>
-<p>(2) <strong>composite(复合)</strong></p>
-<p>​    如下图所示， 父类为 Component， 两个子类均继承自 Component。 然后 Primitive 和 Composite 为委托关系。</p>
-<p><img src="/2021/01/10/CPP-review/10.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Component</span> &#123;</span>
-    <span class="hljs-keyword">int</span> value; 
-<span class="hljs-keyword">public</span>:
-    Component(<span class="hljs-keyword">int</span> val) &#123; value = val; &#125;
-    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">( Component* )</span> </span>&#123; &#125; 
-&#125;;
-
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Primitive</span>:</span> <span class="hljs-keyword">public</span> Component &#123; 
-<span class="hljs-keyword">public</span>:
-    Primitive(<span class="hljs-keyword">int</span> val): Component(val) &#123;&#125; 
-&#125;;
-
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Composite</span>:</span> <span class="hljs-keyword">public</span> Component &#123;
-    <span class="hljs-built_in">vector</span> &lt;Component*&gt; c; 
-<span class="hljs-keyword">public</span>:
-    Composite(<span class="hljs-keyword">int</span> val): Component(val) &#123; &#125;
-   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(Component* elem)</span> </span>&#123;
-       c.push_back(elem); 
-   &#125; 
-   <span class="hljs-comment">// ...</span>
-&#125;;</code></pre>
-<p>(3) <strong>prototype</strong></p>
-<p>​     考虑如下一种情况，需要一个继承体系，父类(抽象类)想要去创建未来才会出现的子类。其中父类由框架编写者编写，子类则由其他开发者编写。 解决方法为：让派生类创建自身，让父类有办法看到子类(注册)，并进行复制。</p>
-<p>父类如何做: (1) 实现 findAndClone: 实现子类的创建 (2) addPrototype 函数， 实现注册</p>
-<p>子类如何做?  </p>
-<p>(1) 声明一个静态对象，然后将构造函数声明为私有，并在其中进行注册(调用 addPrototype)。</p>
-<p>如下所示的 _LSAT: LandSatImage 和 -LandSatImage()，在其中调用了 addPrototype 进行注册。</p>
-<p>(2) 实现 clone 函数，然后借助一个 protected 的 构造函数返回新建对象。</p>
-<p>如下所示的 clone 函数，借助于 #LandSatImage(int) 新建对象并返回。</p>
-<p><img src="/2021/01/10/CPP-review/11.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<p>\5. <strong>Inheritance(继承) with virtual functions(虚函数)</strong> </p>
-<p>(1) 成员函数可以分为三类：</p>
-<ul>
-<li>非虚函数: 你并不希望 derived class(子类) 重新定义(override, 覆写) 它。</li>
-<li>虚函数: (在函数前添加 virtual)： 你希望 derived class 重新定义(override, 覆写) 它， 并且它已有默认定义。</li>
-<li>pure vritual 函数: 你希望 derived class 一定要重新定义(override, 覆写)它， 你对它没有默认定义。</li>
-</ul>
-<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Shape</span>&#123;</span>
-  <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>= <span class="hljs-number">0</span>;   <span class="hljs-comment">// pure virtual</span>
-  <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">error</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>&amp; msg)</span></span>;   <span class="hljs-comment">// impure virtual</span>
-  <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">objectID</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;   <span class="hljs-comment">// non-virtual  </span>
-&#125;;</code></pre>
-<p>(2) 模板方法 Template method</p>
-<p>​    借助于虚函数和多态，可以实现模板方法：父类把其中的一个动作写成虚函数，延缓到子类来进行实现，在调用时通过子类进行调用。 这就是著名的 Template method。</p>
-<pre><code class="hljs cpp"><span class="hljs-comment">// 开发者实现的内容: 对于没有办法写出的 Serialize()， 所以将其定义为虚函数 </span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
-<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CDocument</span></span>
-<span class="hljs-class">&#123;</span>
-<span class="hljs-keyword">public</span>:
-    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnFileOpen</span><span class="hljs-params">()</span></span>&#123;
-         <span class="hljs-comment">// 这是个算法， 每个cout 输出代表一个实际动作</span>
-         <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;dialog ...&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
-         <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;check file status ... &quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
-         <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;open file ... &quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
-         Serialize();
-         <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;close file ... &quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
-         <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;update all views ... &quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
-    &#125;
-    
-    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Serialize</span><span class="hljs-params">()</span> </span>&#123;&#125;;  
-&#125;;
-
-
-<span class="hljs-comment">// 使用者继承父类，并自己去实现 Serialize() 函数</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CMyDoc</span>:</span> <span class="hljs-keyword">public</span> CDocument
-&#123;
-<span class="hljs-keyword">public</span>:
-    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Serilize</span><span class="hljs-params">()</span></span>&#123;
-        <span class="hljs-comment">// 只有应用程序本身才知道如何读取文件</span>
-        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;CMyDoc::Serialize() &quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;
-    &#125;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-comment">// 实现向上转型:</span>
-    <span class="hljs-comment">//  (1) 子类声明为虚函数   (2) 指针向上转型   (3) 通过子类调用虚函数</span>
-    CMyDoc myDoc;    <span class="hljs-comment">// 假设对应(File/Open)</span>
-    myDoc.OnFileOpen();
-&#125;</code></pre>
-<p><strong>6. 虚指针 和 虚表</strong></p>
-<p><strong>(1) 只要类有虚函数，其含有成员就有一个虚指针， 指向虚表， 然后在运行时，通过这个虚指针，找到这个虚表，进而调用这个函数</strong></p>
-<p><img src="/2021/01/10/CPP-review/12.png" srcset="/img/loading.gif" style="zoom:35%;"></p>
-<p><strong>(2) 动态绑定要满足三个条件:</strong></p>
-<p>​    <strong>(1) 子类声明为虚函数   (2) 指针向上转型   (3) 调用虚函数</strong></p>
-<p><strong>(3) 动态绑定 与静态绑定的 汇编区别</strong></p>
-<p>静态绑定: 直接编译为 call xxx</p>
-<p>动态绑定: call dword ptr [edx]   -&gt;   这里不再是一个固定的地址，而是通过指针找到虚指针，再通过虚指针找到虚表， 然后找到第n个函数， 然后将其当做函数指针进行调用。</p>
-<h2 id="五-泛型编程"><a href="#五-泛型编程" class="headerlink" title="五. 泛型编程"></a>五. 泛型编程</h2><p>模板 template</p>
-<p><strong>1. 函数模板</strong></p>
-<pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">complex</span>&#123;</span>
-   ....
-
-   T re,im;
-
-&#125;
-
-<span class="hljs-function"><span class="hljs-built_in">complex</span>&lt;<span class="hljs-keyword">double</span>&gt; <span class="hljs-title">c1</span><span class="hljs-params">(<span class="hljs-number">2.5</span>,<span class="hljs-number">1.5</span>)</span></span>;</code></pre>
-<p><strong>2. 类模板、函数模板</strong></p>
-<p>类模板</p>
-<pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">complex</span> &#123;</span> 
-<span class="hljs-keyword">public</span>:
-    <span class="hljs-built_in">complex</span> (T r = <span class="hljs-number">0</span>, T i = <span class="hljs-number">0</span>) : re (r), im (i) &#123; &#125; 
-    <span class="hljs-built_in">complex</span>&amp; <span class="hljs-keyword">operator</span> += (<span class="hljs-keyword">const</span> <span class="hljs-built_in">complex</span>&amp;); 
-    <span class="hljs-function">T <span class="hljs-title">real</span> <span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> re; &#125; 
-    <span class="hljs-function">T <span class="hljs-title">imag</span> <span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>&#123; <span class="hljs-keyword">return</span> im; &#125;
-
-<span class="hljs-keyword">private</span>:
-    T re, im;
-    <span class="hljs-keyword">friend</span> <span class="hljs-built_in">complex</span>&amp; __doapl (<span class="hljs-built_in">complex</span>*, <span class="hljs-keyword">const</span> <span class="hljs-built_in">complex</span>&amp;); 
-&#125;;
-
-
-<span class="hljs-comment">// 调用</span>
-&#123;
-    <span class="hljs-function"><span class="hljs-built_in">complex</span>&lt;<span class="hljs-keyword">double</span>&gt; <span class="hljs-title">c1</span><span class="hljs-params">(<span class="hljs-number">2.5</span>,<span class="hljs-number">1.5</span>)</span></span>; c2(<span class="hljs-number">2</span>,<span class="hljs-number">6</span>);
-    <span class="hljs-built_in">complex</span>&lt;<span class="hljs-keyword">int</span>&gt; ...
-&#125;
-</code></pre>
-<p>函数模板</p>
-<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">stone</span>&#123;</span> 
-<span class="hljs-keyword">public</span>:
-    stone(<span class="hljs-keyword">int</span> w, <span class="hljs-keyword">int</span> h, <span class="hljs-keyword">int</span> we)
-    : _w(w), _h(h), _weight(we) &#123;  &#125;
-
-<span class="hljs-keyword">bool</span> <span class="hljs-keyword">operator</span>&lt; (<span class="hljs-keyword">const</span> stone&amp; rhs) <span class="hljs-keyword">const</span>&#123; 
-    <span class="hljs-keyword">return</span> _weight &lt; rhs._weight;
-&#125;
-
-<span class="hljs-keyword">private</span>:
-    <span class="hljs-keyword">int</span> _w, _h, _weight;
-&#125;;
-
-
-<span class="hljs-keyword">template</span> &lt;<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T</span>&gt;</span>
-<span class="hljs-class"><span class="hljs-title">inline</span> <span class="hljs-title">const</span> <span class="hljs-title">T</span>&amp; <span class="hljs-title">min</span>(<span class="hljs-title">const</span> <span class="hljs-title">T</span>&amp; <span class="hljs-title">a</span>, <span class="hljs-title">const</span> <span class="hljs-title">T</span>&amp; <span class="hljs-title">b</span>)&#123;</span>
-    <span class="hljs-keyword">return</span> b &lt; a ? b : a;  <span class="hljs-comment">// 需要类 T 对 &lt; 进行函数重载 </span>
-&#125;
-
-<span class="hljs-comment">// 调用</span>
-stone r1(2,3), r2(3,3), r3;
-r3 = min(r1, r2);  <span class="hljs-comment">// 参数推导的结果，T 为 stone，于是调用 stone::operator &lt;</span></code></pre>
-<h2 id="六、C-11"><a href="#六、C-11" class="headerlink" title="六、C++11"></a>六、C++11</h2><ol>
-<li><p>namespace: 通过 namespace 将代码包起来，防止冲突</p>
-<p>当使用的时候可以有两种:</p>
-</li>
-</ol>
-<ul>
-<li>using directive:  using namespace std;    cin;  cout</li>
-<li>usding declaration：  std::cout;  std::cin;</li>
-</ul>
-<ol>
-<li>auto</li>
-</ol>
-<pre><code class="hljs cpp"><span class="hljs-built_in">list</span>&lt;<span class="hljs-built_in">string</span>&gt; c:
-<span class="hljs-keyword">auto</span> ite = find(c.begin(), c.end(), target);</code></pre>
-<ol>
-<li>ranged-base for</li>
-</ol>
-<pre><code class="hljs cpp"><span class="hljs-keyword">for</span>(decl : coll)&#123;
-    statement
-&#125;
-
-<span class="hljs-comment">// 例如</span>
-<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i: &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>&#125;)&#123;
-    <span class="hljs-built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="hljs-built_in">endl</span>;
-&#125;
-
-<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">double</span>&gt; vec;
-...
-<span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> elem : vec)&#123;
-    <span class="hljs-built_in">cout</span> &lt;&lt; elem &lt;&lt; <span class="hljs-built_in">endl</span>;  <span class="hljs-comment">// pass by value</span>
-&#125;
-
-<span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp; elem: vec)&#123;  <span class="hljs-comment">// pass by reference</span>
-    elem *= <span class="hljs-number">3</span>;
-&#125;</code></pre>
-<ol>
-<li>variadic templates</li>
-</ol>
-<h2 id="七、常见问题"><a href="#七、常见问题" class="headerlink" title="七、常见问题 ?"></a>七、常见问题 ?</h2><ol>
-<li>class 和 struct 的区别? </li>
-</ol>
-<p>class 和 struct 的区别在于 class 默认的成员是 private，而 struct 默认的成员是 public 类型的</p>
-<ol>
-<li><code>&quot;xx&quot;</code> 和 <code>&lt;xx&gt;</code> 的引用方式的区别!</li>
-</ol>
-<p>&lt;&gt; 先去系统目录中找头文件，如果没有在到当前目录下找。所以像标准的头文件 stdio.h、stdlib.h等用这个方法。</p>
-<p>而 “ “ 首先在当前目录下寻找，如果找不到，再到系统目录中寻找。 这个用于include自定义的头文件，让系统优先使用当前目录中定义的</p>
-<p>\3. private、public 和 protected 的继承体系?</p>
-<p>\4. 什么样的函数适合声明为 inline 函数? inline 的优缺点?</p>
-<p>A： 函数的模块化会影响其执行性能，为了弥补这个缺点，可以将函数声明为 inline，<strong>表示要求编译器在每个函数调用点上，将函数的内容展开。</strong>面对一个 inline 函数， 编译器可将该函数的操作改为以一份函数代码副本代替。这将使我们获得性能改善。</p>
-<p>! 编译器一般不内联包含循环、递归、switch 等复杂操作的内联函数。在类声明中定义的函数，除了虚函数的其他函数都会自动隐式地当成内联函数。</p>
-<p><strong>优点:</strong></p>
-<p>​    - 内联函数同宏函数一样将在被调用处进行代码展开，省去了参数压栈、栈帧开辟与回收，结果返回等，从而提高程序运行速度。</p>
-<p>​    - 内联函数相比宏函数来说，在代码展开时，<strong>会做安全检查或自动类型转换（同普通函数）</strong>，而宏定义则不会。</p>
-<p>​    - 在类中声明同时定义的成员函数，自动转化为内联函数，因此内联函数<strong>可以访问类的成员变量</strong>，宏定义则不能。</p>
-<p>​    - 内联函数在<strong>运行时可调试</strong>，而宏定义不可以。</p>
-<p><strong>缺点:</strong></p>
-<p>​    - 代码膨胀。内联是以代码膨胀（复制）为代价，消除函数调用带来的开销。如果执行函数体内代码的时间，相比于函数调用的开销较大，那么效率的收获会很少。另一方面，每一处内联函数的调用都要复制代码，将使程序的总代码量增大，消耗更多的内存空间。</p>
-<p>​    - inline 函数无法随着函数库升级而升级。inline函数的改变需要重新编译，不像 non-inline 可以直接链接。</p>
-<p>​    - 是否内联，程序员不可控。内联函数只是对编译器的建议，是否对函数内联，决定权在于编译器</p>
-<ol>
-<li><p>单例模式(Singleton)中需要将 constructor 放在 private 中, 试实现一个单例模式?</p>
-</li>
-<li><p>从空间大小、碎片问题、生成方向、分配方式和分配效率对栈和堆进行比较：</p>
-</li>
-</ol>
-<p><strong>(1) 空间大小</strong>：<strong>一般来讲在 32 位系统下，堆内存可以达到 4G 的空间</strong>。但是<strong>对于栈来讲，一般都是有一定的空间大小的，例如，在 VC6 下面，默认的栈空间大小是 1M</strong>（好像是，记不清楚了）。</p>
-<p><strong>(2) 碎片问题：对于堆来讲，频繁的 new/delete 势必会造成内存空间的不连续，从而造成大量的碎片，使程序效率降低</strong>。<strong>对于栈来讲，则不会存在这个问题，因为栈是先进后出的队列</strong>，以至于永远都不可能有一个内存块从栈中间弹出。</p>
-<p><strong>(3) 生长方向：对于堆来讲，生长方向是向上的</strong>，也就是向着内存地址增加的方向；<strong>对于栈来讲，它的生长方向是向下的，是向着内存地址减小的方向增长。</strong></p>
-<p><strong>(4) 分配方式</strong>：<strong>堆都是动态分配的，没有静态分配的堆</strong>。<strong>栈有 2 种分配方式：静态分配和动态分配。</strong>静态分配是编译器完成的，比如局部变量的分配。动态分配由 alloca 函数进行分配，但是栈的动态分配和堆是不同的，他的动态分配是由编译器进行释放，无需我们手工实现。</p>
-<p><strong>(5) 分配效率</strong>：栈是机器系统提供的数据结构，计算机会在底层对栈提供支持：分配专门的寄存器存放栈的地址，压栈出栈都有专门的指令执行，这就决定了栈的效率比较高。堆则是 C/C++函数库提供的，它的机制很复杂，堆的效率比栈要低得多</p>
 
             </div>
             <hr>
