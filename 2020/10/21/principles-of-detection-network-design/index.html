@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.8k 字
+      6.2k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      58
+      73
        分钟
     </span>
   
@@ -210,10 +210,10 @@
             <div class="markdown-body" id="post-body">
               <p>​    对于一个深度学习问题， 我们应该尽量从模型、数据、算法三个方向进行处理。对于目标检测也不例外。 这里，我们将从模型、数据和算法三个角度对目标检测这个问题进行展开探讨。 由于很多问题都是行业内有待讨论，值得商榷的， 所以一些观点也会附上链接， 并挑选出笔者认为合适的方案。</p>
 <a id="more"></a>
-<h3 id="一-模型部分："><a href="#一-模型部分：" class="headerlink" title="一. 模型部分："></a>一. 模型部分：</h3><p>一个典型的目标检测的前向推导流程为：</p>
-<p>输入图像  -&gt; 提取特征  -&gt; 特征融合 -&gt; 解析为 bbox -&gt; nms -&gt; result</p>
+<h3 id="一-模型部分："><a href="#一-模型部分：" class="headerlink" title="一. 模型部分："></a>一. 模型部分：</h3><p>一个典型的目标检测的前向推理流程为：</p>
+<p>输入图像  →  提取特征 → 特征融合 →  解析为 bbox →  nms → result</p>
 <p>目标检测训练的典型流程为：</p>
-<p>输入图像 -&gt; 提取特征 -&gt; 特征融合  -&gt; 解析为 bbox -&gt; bbox 匹配 -&gt; 计算 loss 并反向传播</p>
+<p>输入图像 → 提取特征→  特征融合 →  解析为 bbox → bbox 匹配 → 计算 loss 并反向传播</p>
 <p>在此以 YOLOv3 为例， 来探讨一下检测模型的几个核心部分：</p>
 <ul>
 <li>网络主体框架：包括特征提取 backbone、特征融合 neck、特征输出 head</li>
@@ -243,7 +243,8 @@
 </ul>
 </li>
 </ul>
-<h4 id="2-IoU-设计"><a href="#2-IoU-设计" class="headerlink" title="2. IoU 设计"></a>2. IoU 设计</h4><h5 id="IoU"><a href="#IoU" class="headerlink" title="IoU"></a>IoU</h5><p>IoU就是我们所说的交并比，是目标检测中最常用的指标。 他的作用不仅用来确定正样本和负样本，还可以用来评价输出框 (predict box) 和 ground-truth 的距离。</p>
+<h4 id="2-nms-设计"><a href="#2-nms-设计" class="headerlink" title="2. nms 设计"></a>2. nms 设计</h4><p>nms 设计要点在于判定两个 bbox 的 IoU。常见的 IoU 如下所示：</p>
+<h5 id="IoU"><a href="#IoU" class="headerlink" title="IoU"></a>IoU</h5><p>IoU就是我们所说的交并比，是目标检测中最常用的指标。 他的作用不仅用来确定正样本和负样本，还可以用来评价输出框 (predict box) 和 ground-truth 的距离。</p>
 <script type="math/tex; mode=display">
 IoU = \frac{A \cup B}{ A \cap B}</script><p>其拥有几个特性：</p>
 <ul>
@@ -344,7 +345,7 @@ v = \frac{4}{\pi^2} (arctan \frac{w^{gt}}{h^{gt}} - arctan \frac{w}{h})^2, \\
 <ul>
 <li>l1、l2、smooth l1 </li>
 <li>IOU loss</li>
-<li>其他本文未展开loss： softer nms 的 KL loss、 GHM-R loss、IoU-bounded loss、 huber loss 的概率解释新 loss， libra RCNN 的 balanced l1 loss</li>
+<li>其他本文未展开 loss： softer nms 的 KL loss、 GHM-R loss、IoU-bounded loss、 huber loss 的概率解释新 loss， libra RCNN 的 balanced l1 loss</li>
 </ul>
 <h5 id="3-1-分类损失"><a href="#3-1-分类损失" class="headerlink" title="3.1  分类损失"></a>3.1  分类损失</h5><h5 id="3-1-1-cross-entropy-交叉熵损失"><a href="#3-1-1-cross-entropy-交叉熵损失" class="headerlink" title="3. 1.1 cross entropy 交叉熵损失"></a>3. 1.1 cross entropy 交叉熵损失</h5><p>交叉熵损失是我们再计算分类损失的时候最常用的损失函数， 其公式如下：</p>
 <script type="math/tex; mode=display">
@@ -385,7 +386,7 @@ p,&& if \ \ p^* = 0
 \end{aligned}
 \right.</script><p>其中 $p$ 是模型预测的概率， $p^<em>$ 是 ground-truth 的标签， $p^</em>$ 的取值为 0 或 1。</p>
 <p><strong>g 正比于检测的难易程度， g 越大则检测难度越大。</strong> 注意到梯度模长和样本数量的关系如下图所示：</p>
-<p><img src alt="此处应该有个图"></p>
+<p><img src="/2020/10/21/principles-of-detection-network-design/6.png" srcset="/img/loading.gif" style="zoom:40%;"></p>
 <p>可以看到， 梯度模长接近于 0 的样本数量最多， 随着梯度模长的增长， 样本数量迅速减少， 但是在梯度模长接近于1 时， 样本数量也挺多。  GHM 的想法是， 我们确实应该如 focal loss 所说的不应该过分关系易分样本，但是特别难分的样本(outliers, 离群点) 也不该关注。所以作者认为应该同时衰减易分样本和难分样本， 区分的方法是定义了梯度密度 $GD(g)$ 这个变量， 来衡量出一定梯度范围内的样本数量。</p>
 <script type="math/tex; mode=display">
 GD(g) = \frac{1}{l_\varepsilon (g)} \sum_{k=1}^{N} \delta_\epsilon(g_k, g)</script><p>其中 $\delta<em>\epsilon(g_k, g)$ 表明了样本 1- N 中， 梯度模长分布在 $(g-\frac{\epsilon}{2}, g+\frac{\epsilon}{2})$ 范围内的样本个数， $l</em>\epsilon(g)$ 代表了 $(g-\frac{\epsilon}{2}, g+\frac{\epsilon}{2})$ 区间的长度。梯度密度的含义是：单位梯度模长 g 部分的样本个数。所谓的 GHM 损失  $l_{GHM-C}$ 就是 交叉熵CE 除以该样本的梯度密度即可。</p>
@@ -403,8 +404,8 @@ smooth_{L1}(x) &= \left\{
 \right.
 
 \end{align}</script><p>​        smooth L1 loss 相对于 l2 loss 的优点： 当预测框与 ground truth 差别过大时，梯度值不至于过大；当预测框与 ground truth 差别很小时，梯度值足够小。</p>
-<h5 id="3-2-2-IoU-loss"><a href="#3-2-2-IoU-loss" class="headerlink" title="3. 2.2  IoU loss"></a>3. 2.2  IoU loss</h5><p>​        首次将 IoU 的概念引入 loss 损失函数由旷视提出， 发表于 UnitBox: An Advanced Object Detection Network。 论文指出，通过 4 个点回归坐标框的方式是假设4个坐标点是相互独立的，没有考虑其相关性，实际 4 个坐标点具有一定的相关性。其中 $IoU_{loss} = 1 - IoU + 修正项$。其中， IoU 可以是 IoU， GIoU， DIoU 和 CIoU。</p>
-<h4 id="4-nms-设计"><a href="#4-nms-设计" class="headerlink" title="4. nms 设计"></a>4. nms 设计</h4><h3 id="二-数据增强技术-含标签增强"><a href="#二-数据增强技术-含标签增强" class="headerlink" title="二. 数据增强技术(含标签增强)"></a>二. 数据增强技术(含标签增强)</h3><p>常见的数据增强方式可以分为四种： 几何变换、光学变换、增强噪声、数据源扩充。</p>
+<h5 id="3-2-2-IoU-loss"><a href="#3-2-2-IoU-loss" class="headerlink" title="3.2.2  IoU loss"></a>3.2.2  IoU loss</h5><p>​        首次将 IoU 的概念引入 loss 损失函数由旷视提出， 发表于 UnitBox: An Advanced Object Detection Network。 论文指出，通过 4 个点回归坐标框的方式是假设4个坐标点是相互独立的，没有考虑其相关性，实际 4 个坐标点具有一定的相关性。其中 $IoU_{loss} = 1 - IoU + 修正项$。其中， IoU 可以是 IoU， GIoU， DIoU 和 CIoU。</p>
+<h3 id="二-数据增强技术-含标签增强"><a href="#二-数据增强技术-含标签增强" class="headerlink" title="二. 数据增强技术(含标签增强)"></a>二. 数据增强技术(含标签增强)</h3><p>常见的数据增强方式可以分为四种： 几何变换、光学变换、增强噪声、数据源扩充。</p>
 <ul>
 <li><p>几何变换：可以丰富物体在图像中出现的位置和尺度等， 从而满足模型的平移不变性与尺度不变性。例如平移， 翻转、翻转、缩放和裁剪等操作。尤其是水平翻转 180度， 在多个物体检测算法中都有使用， 效果很好。</p>
 </li>
@@ -414,44 +415,85 @@ smooth_{L1}(x) &= \left\{
 </li>
 <li>数据源头： 有时为了扩充数据集， 可以将检测物体与其他背景图像融合，通过替换物体背景的方式来增加数据集的丰富性。  比如比较时髦的 CutOut、Mixup、CutMix、Mosaic、label-smoothing 等方案。</li>
 </ul>
-<p>数据增强方案的选定？ 什么时候使用什么增强方案：</p>
 <p>一些比较有用的数据增强方案的代码解析</p>
-<h3 id="三-算法优化"><a href="#三-算法优化" class="headerlink" title="三. 算法优化"></a>三. 算法优化</h3><h5 id="（1）常见的设置"><a href="#（1）常见的设置" class="headerlink" title="（1）常见的设置"></a>（1）常见的设置</h5><p>学习率：</p>
-<p>常见的几种学习率的调整方法：  ReduceLROnPlateau、余弦退火、StepLR</p>
+<h3 id="三-算法优化"><a href="#三-算法优化" class="headerlink" title="三. 算法优化"></a>三. 算法优化</h3><h4 id="1-学习率"><a href="#1-学习率" class="headerlink" title="1. 学习率"></a>1. 学习率</h4><p>常见的几种学习率的调整方法：  ReduceLROnPlateau、余弦退火、StepLR</p>
 <ul>
-<li><p>ReduceLROnPlateau：当指定指标不下降（上升）的时候， 将学习率降低为原来的十分之一。是这三种方案里面最优的， 他可以根据训练的情况进行动态调整， 需要注意的是， 用的时候最好设置一下最小学习率，不然后期会因为学习率衰减得过小导致模型不再训练。</p>
+<li>ReduceLROnPlateau：当指定指标不下降（上升）的时候， 将学习率降低为原来的十分之一。是这三种方案里面最优的， 他可以根据训练的情况进行动态调整， 需要注意的是， 用的时候最好设置一下最小学习率，不然后期会因为学习率衰减得过小导致模型不再训练。</li>
+<li>余弦退火使用的时候，最大学习率和最小学习率相差的数量级不要太大(比如1e-1和1e-4)，不然会导致在该快的时候太慢，在该慢的时候太快，特别的接近最优解的时候，太大就直接跑偏。</li>
+<li>StepLR就很传统，也挺好用的，但是灵活度不如 ReduceLROnPlateau。</li>
+</ul>
+<p>warmup：warmup 是在 resnet 论文中提到的一种学习率预热的方法，它在训练开始的时候先选择使用一个较小的学习率，训练了一些 epoches 或者 steps (比如 4 个epoches, 10000steps)， 再修改为预先设置的学习来进行训练。由于刚开始训练时，模型的权重(weights)是随机初始化的，此时若选择一个较大的学习率,可能带来模型的不稳定(振荡)，选择 Warmup 预热学习率的方式，可以使得开始训练的几个 epoches 或者一些 steps 内学习率较小，在预热的小学习率下，模型可以慢慢趋于稳定,等模型相对稳定后再选择预先设置的学习率进行训练,使得模型收敛速度变得更快，模型效果更佳。</p>
+<h4 id="2-优化器"><a href="#2-优化器" class="headerlink" title="2. 优化器"></a>2. 优化器</h4><h4 id="3-归一化"><a href="#3-归一化" class="headerlink" title="3. 归一化"></a>3. 归一化</h4><p>常见的归一化方式如下图所示，其中 N 是 batch size， C 表示的是 channel， H 和 W 表示单张图片的宽度和高度, 蓝色区域的部分就是需要归一化的部分。</p>
+<p><img src="/2020/10/21/principles-of-detection-network-design/7.png" srcset="/img/loading.gif" style="zoom:60%;"></p>
+<p>归一化步骤</p>
+<ul>
+<li><p>计算归一化部分的均值 $\mu$，方差 $\sigma^2$ , 进行归一化  $x’ = \frac{x-\mu}{\sqrt{\sigma^2 + t}}$ </p>
 </li>
-<li><p>余弦退火使用的时候，最大学习率和最小学习率相差的数量级不要太大(比如1e-1和1e-4)，不然会导致在该快的时候太慢，在该慢的时候太快，特别的接近最优解的时候，太大就直接跑偏。</p>
-</li>
-<li><p>StepLR就很传统，也挺好用的，但是灵活度不如ReduceLROnPlateau。</p>
+<li><p>加入缩放和平移变量 $\gamma$ 和 $\beta$， 归一化后的值 $y = \gamma x’ + \beta$</p>
 </li>
 </ul>
-<p>优化器：</p>
-<p>正则化：</p>
-<p>归一化：</p>
-<p>损失函数：</p>
-<h3 id="四-其他"><a href="#四-其他" class="headerlink" title="四. 其他"></a>四. 其他</h3><p>编写代码的基本原则：</p>
+<p>Batch Normalization：<strong>BN适用于判别模型，比如图片分类模型</strong>。BN 注重对每个 batch 进行归一化，从而保证数据分布的一致性，而判别模型的结果正是取决于数据整体分布。但是 BN 对 batchsize 的大小比较敏感，由于每次计算的均值和方差是在一个 batch 上，所以如果 batchsize 太小，则计算的均值方差不足以代表整个数据分布。</p>
+<p>Instance Normalization<strong>: </strong>IN 适用于生成模型，比如图片分割、迁移。因为图片生成的结果主要依赖于某个图像实例，所以对整个 batch 归一化不适合图像风格化中，在风格迁移中使用Instance Norm 不仅可以加速模型收敛，并且可以保持图像实例之间的独立。</p>
+<p>Group Normalization:为了解决 Batch Normalization 对较小的 mini-batch 效果差的问题(没办法通过几个样本的数据量，来近似总体的均值和标准差)。其主要思想是在 channel 方向 group，然后每个 group 内做归一化<em>*，计算 (C/G)</em>H*W 的均值和方差，这样就与 batch size 无关，不受其约束。Group Normalization 把每一个样本特征图的通道分成 G 组，对每组求均值和标准差，并独立地进行归一化。</p>
+<p>Layer Normlization：Layer Normalization 的一个优势是不需要批训练，在单条数据内部就能归一化，因此可以用于 batch size 为 1 和 RNN 中。<strong>Layer Normalization 用于 RNN 效果比较明显，但是在CNN上，效果不如BN</strong> </p>
+<h4 id="4-初始化"><a href="#4-初始化" class="headerlink" title="4. 初始化"></a>4. 初始化</h4><p>网络参数初始化的优劣在极大程度上决定了网络的最终性能。网络参数初始化方式主要有以下几种：</p>
 <ul>
+<li>全零初始化：全零初始化会导致神经元的输出相同，相同的输出导致梯度更新完全一样，这样便会令更新后的参数仍然保持一样的状态，从而无法对模型进行训练。</li>
+<li>随机初始化：将参数值随机设定为接近0的一个很小的随机数（有正有负）。比如使用高斯分布或者均匀分布。比较推荐的模型包括： Xavier 初始化方式和 Kaiming 初始化方式。</li>
+<li><p>预训练模型初始化</p>
+</li>
+<li><p>数据敏感的参数初始化方式  <a target="_blank" rel="noopener" href="https://github.com/philkr/magic_init">https://github.com/philkr/magic_init</a></p>
+</li>
+</ul>
+<h3 id="四-其他"><a href="#四-其他" class="headerlink" title="四. 其他"></a>四. 其他</h3><h4 id="1-编写代码的基本流程"><a href="#1-编写代码的基本流程" class="headerlink" title="1. 编写代码的基本流程"></a>1. 编写代码的基本流程</h4><ul>
 <li>构建网络， 输入随机 Tensor， 检查输入和输出是否正确。</li>
 <li>构建数据集读取接口， 查看是否能够准确的读取数据、可视化，并检测数据</li>
 <li>编写损失函数、评价指标，优化方法</li>
 <li>组合优化、数据和网络</li>
 </ul>
-<p>网络设计的考虑点：</p>
-<ul>
+<h4 id="2-网络设计的考虑点"><a href="#2-网络设计的考虑点" class="headerlink" title="2. 网络设计的考虑点"></a>2. 网络设计的考虑点</h4><ul>
 <li>现有精度能否得到需求的指标</li>
 <li>运算资源是否足够</li>
 </ul>
-<h3 id="九-常见问题"><a href="#九-常见问题" class="headerlink" title="九. 常见问题"></a>九. 常见问题</h3><h5 id="多尺度问题"><a href="#多尺度问题" class="headerlink" title=". 多尺度问题"></a>. 多尺度问题</h5><p>我们总结了 6 种 有效解决多尺度问题的方案， 其中前四种是比较通用的提升多尺度检测的经典方法</p>
+<h3 id="五-常见问题"><a href="#五-常见问题" class="headerlink" title="五. 常见问题"></a>五. 常见问题</h3><h5 id="1-多尺度问题"><a href="#1-多尺度问题" class="headerlink" title="1. 多尺度问题"></a>1. 多尺度问题</h5><p>我们总结了 6 种 有效解决多尺度问题的方案， 其中前四种是比较通用的提升多尺度检测的经典方法</p>
 <p>（1） 降低下采样率和使用空洞卷积可以显著提高小物体的检测性能： 对于小物体检测而言， 降低网络的下采样率是最为简单的提升方式， 通常的做法是直接去掉 pooling 层。 如果仅仅去掉 pooling 层， 则后序层的感受野会较小， 由于后序层的感受野和预训练模型对应层的感受野不同， 从而会导致不能很好的收敛， 一个比较常见的做法是<strong>去掉 pooling 层后，将后序的一个 3x3 卷积变为 空洞数为 2 的卷积， 可以达到有效的降低下采样的目的</strong>。</p>
 <p>（2） 设计更好的 anchor 可以有效提升 proposal 的质量：由于不同的数据集合任务中， 由于物体的尺度、大小会有所差异， 与通用的标签会有所区别， 这时需要调整 anchor 的大小和宽高。 <strong>一个比较经典的做法是 yolo 采用的 anchor 聚类算法</strong>。</p>
 <p>（3）多尺度训练(MST, Multi Scale Training， MST)可以近似构建出图像金字塔， 增加样本的多样性：通常是指<strong>设置几种不同的图片输入尺度， 训练时从多个尺度中随机选取一种尺度， 将输入图片缩放到该尺度并送入网络中</strong>。 在测试中， <strong>为了得到精准的检测效果，可以将测试图片的尺度放大， 例如放大 4 倍。 这样可以避免小物体的漏检</strong>。</p>
-<p>（4） 特征融合可以构建出特征金字塔， 将浅层与深层特征优势互补：随着网络层数的增加， 感受野会增大，语义信息也更为丰富， 但是对于小物体， 其特征会随着层数的加深而逐渐丢失， 从而导致检测性能的降低。 <strong>将深浅层特征进行融合，可以实现底层特征和高层语义信息的融合</strong>。 常见的做法有： FPN的特征金字塔、 DetNet 的空洞卷积与残差、HyperNet 的反卷积与通道拼接、DSSD 的反卷积与特征相乘、RefineDet 的反卷积与逐元素相加， YOLOv3的上采样与通道拼接。</p>
+<p>（4） 特征融合可以构建出特征金字塔， 将浅层与深层特征优势互补：随着网络层数的增加， 感受野会增大，语义信息也更为丰富， 但是对于小物体， 其特征会随着层数的加深而逐渐丢失， 从而导致检测性能的降低。 <strong>将深浅层特征进行融合，可以实现底层特征和高层语义信息的融合</strong>。 常见的做法有： FPN的特征金字塔、 DetNet 的空洞卷积与残差、HyperNet 的反卷积与通道拼接、DSSD 的反卷积与特征相乘、RefineDet 的反卷积与逐元素相加， YOLOv3 的上采样与通道拼接。</p>
 <p>（5） SNIP: SNIP 使用了累死 MST 的多尺度训练方法， 构建了 3 个 尺度的图像金字塔， 3 个尺度分别拥有各自的 RPN 模块， 各自预测指定范围内的物体。但是在训练时， 只对指定范围的 proposal 进行反向传播。</p>
-<p><img src alt="此处应该有个图"></p>
+<p><img src="/2020/10/21/principles-of-detection-network-design/9.png" srcset="/img/loading.gif" style="zoom:40%;"></p>
 <p>（6） TridentNet：提出了一个拥有三个分支的网络结构， 3个不同的分支使用了空洞数不同的空洞卷积， 感受野由大到小， 更好的覆盖了多尺度的物体分布。 三个分支检测的内容是相同的， 要学习的特征也相同， 不过是形成不同的感受野来检测不同尺度的物体， 借鉴了 SNIP 的思想， 每一个分支只训练一定范围内的样本。</p>
-<p><img src alt="此处应该有个图"></p>
-<h5 id="2-拥挤和遮挡物体检测"><a href="#2-拥挤和遮挡物体检测" class="headerlink" title="2. 拥挤和遮挡物体检测"></a>2. 拥挤和遮挡物体检测</h5><h5 id="3-物体不均衡的问题"><a href="#3-物体不均衡的问题" class="headerlink" title="3. 物体不均衡的问题"></a>3. 物体不均衡的问题</h5><h5 id="4-长尾问题"><a href="#4-长尾问题" class="headerlink" title="4. 长尾问题"></a>4. 长尾问题</h5><h5 id="5-高效-detection"><a href="#5-高效-detection" class="headerlink" title="5. 高效 detection"></a>5. 高效 detection</h5>
+<p><img src="/2020/10/21/principles-of-detection-network-design/8.png" srcset="/img/loading.gif" style="zoom:49%;"></p>
+<h5 id="2-拥挤和遮挡物体检测"><a href="#2-拥挤和遮挡物体检测" class="headerlink" title="2. 拥挤和遮挡物体检测"></a>2. 拥挤和遮挡物体检测</h5><p>(1) 改进 nms： 由于 nms 对遮挡检测影响较大， 因此改进 nms 是一个思路。 比如使用 soft nms 和 IoU-Net 等方法都能在一定程度上提升检测的性能。</p>
+<p>(2) 增加语义信息： 遮挡会造成部分信息的缺失， 因此可以尝试引入额外的特征， 如分割信息、梯度和边缘信息等。如 CVPR 2017 的论文 HyperLearner。</p>
+<p>(3) 划分多个 part 处理：比如行人之间的形状较为类似， 因此可以利用这个先验信息， 将行人按照不同部位， 如头部、上身、手臂等划分为多个 part 进行单独处理， 然后再综合考虑。</p>
+<p>(4) repulsion los: CVPR 2018 的 Repulsion Loss 方法从损失函数的角度出发， 引入了新颖的排斥损失。</p>
+<p>(5) OR-CNN: ECCV 2018 的 ORCNN 设计引入了一种新的损失 Aggregation Loss， 使得多个匹配到同一物体标签的 anchor 尽量地靠近； 在 RoI pooling 处根据行人部位分为了 5 个不同的模块， 提出了 PORoI Pooling 方法。</p>
+<h5 id="3-高效-detection"><a href="#3-高效-detection" class="headerlink" title="3. 高效 detection"></a>3. 高效 detection</h5><ul>
+<li><p>可以从模型压缩和加速的角度进行考虑：使用轻量级网络、剪枝、量化、蒸馏等方法对主干网络进行简化。</p>
+</li>
+<li><p>可以从检测框架的角度进行考虑：通过合理的设计 backbone、FPN、head 甚至是重新设计网络结构。</p>
+</li>
+</ul>
+<h5 id="4-样本不均衡的问题"><a href="#4-样本不均衡的问题" class="headerlink" title="4. 样本不均衡的问题"></a>4. 样本不均衡的问题</h5><p>很多问题， 应该从三个方向进行考虑： 模型(model + loss + nms)、数据、算法</p>
+<ul>
+<li>一个很直观的方向：修改损失函数， 比如 focal loss 和 OHGM</li>
+<li>从数据集的角度进行分析：进行数据的重采样、数据的增强、cutmix 操作等</li>
+<li></li>
+</ul>
+<h5 id="5-其他的几个问题"><a href="#5-其他的几个问题" class="headerlink" title="5. 其他的几个问题"></a>5. 其他的几个问题</h5><ul>
+<li>物体不均衡的问题 &amp; 长尾问题</li>
+<li>重新思考 nms 和 anchor</li>
+<li>物体的关系： relation network</li>
+<li>nas</li>
+<li>实际场景结合：<ul>
+<li>传感器融合</li>
+<li>实际场景的检测：雾霾、雨天、夜晚</li>
+</ul>
+</li>
+<li>其他</li>
+</ul>
+
             </div>
             <hr>
             <div>
