@@ -160,6 +160,140 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/09/13/%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E8%AE%BE%E8%AE%A1%E6%8A%80%E5%B7%A7/">推理引擎设计技巧</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/13/%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E8%AE%BE%E8%AE%A1%E6%8A%80%E5%B7%A7/">
+          
+          
+            
+          
+          1. 基于C/C++的基本优化
+编译器很牛逼，GCC/CLANG 都有运行速度的优化选项，打开这些选项能帮助程序显著提升速度，虽然这还远远不够，但聊胜于无吧。
+下面是 ncnn 示例项目中的一段代码:
+# ncnn/examples/squeezencnn/jni/Android.mk
+LOCAL_CFLAGS := -O2 -fvisibility=hidden -fomit-frame-poi
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-13 00:26" pubdate>
+              2020-09-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/08/18/rk3399%E7%B3%BB%E7%BB%9F%E7%83%A7%E5%86%99/">rk3399系统烧写</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/08/18/rk3399%E7%B3%BB%E7%BB%9F%E7%83%A7%E5%86%99/">
+          
+          
+            
+          
+          一. 相关工具的准备
+下载 烧写工具:
+
+git clone https://github.com/rockchip-linux/rkbin.git
+
+下载相关的 ubuntu 镜像。下载地址  https://github.com/lanseyujie/tn3399_v3/release
+
+二. 刷机
+板卡进入刷机模式
+
+连接 usb-c 和 PC 主机。断开电源， 按住 recovey 键， 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-08-18 09:25" pubdate>
+              2020-08-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/05/17/pytorch2ncnn/">pytorch2ncnn</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/17/pytorch2ncnn/">
+          
+          
+            
+          
+          借助 onnx 实现 pytorch 到 ncnn 的转换
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-17 18:15" pubdate>
+              2020-05-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E8%AF%AD%E8%A8%80%E5%92%8C%E5%BA%93/">语言和库</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/02/06/RNN/">RNN</a>
       </h1>
 
@@ -442,131 +576,11 @@ horovod： Uber 开源外部解决方案
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2019/04/23/YOLO/">YOLO</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/04/23/YOLO/">
-          
-          
-            
-          
-          YOLO series: YOLO v1. YOLO v2 and. YOLO v3
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-04-23 16:00" pubdate>
-              2019-04-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%96%B9%E5%90%91/">基本方向</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2019/04/21/recent-convolutions/">recent convolutions</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/04/21/recent-convolutions/">
-          
-          
-            
-          
-          octave conv(octconv)、hetconv、res2net
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-04-21 21:36" pubdate>
-              2019-04-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%96%B9%E5%90%91/">基本方向</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2019/04/21/receptive-size-and-anchor-design/">receptive_size_and_anchor_design</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/04/21/receptive-size-and-anchor-design/">
-          
-          
-            
-          
-          octave conv(octconv)、hetconv、res2net
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-04-21 21:36" pubdate>
-              2019-04-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%9F%BA%E7%A1%80/">基础</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

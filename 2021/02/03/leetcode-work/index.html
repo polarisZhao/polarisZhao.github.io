@@ -1,0 +1,718 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="zhichao zhao">
+  <meta name="keywords" content="">
+  <title>leetcode-work - 假欢畅 又何妨 无人共享</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/tomorrow.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>假欢畅，又何妨，无人共享</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-02-03 08:58" pubdate>
+        February 3, 2021 am
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">leetcode-work</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <a id="more"></a>
+<h3 id="一些工作中经常会用到的算法"><a href="#一些工作中经常会用到的算法" class="headerlink" title="一些工作中经常会用到的算法"></a>一些工作中经常会用到的算法</h3><ul>
+<li><p>IOU 的计算</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isRectangleOverlap</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; rec1, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; rec2)</span> </span>&#123;
+    <span class="hljs-keyword">int</span> area_rec1 = (rec1[<span class="hljs-number">3</span>] - rec1[<span class="hljs-number">1</span>]) * (rec1[<span class="hljs-number">2</span>] - rec1[<span class="hljs-number">0</span>]);
+    <span class="hljs-keyword">int</span> aera_rec2 = (rec2[<span class="hljs-number">3</span>] - rec2[<span class="hljs-number">1</span>]) * (rec2[<span class="hljs-number">2</span>] - rec2[<span class="hljs-number">0</span>]);
+
+    <span class="hljs-keyword">int</span> w = max(<span class="hljs-number">0.0</span>, min(rec1[<span class="hljs-number">2</span>], rec2[<span class="hljs-number">2</span>]) - max(rec1[<span class="hljs-number">0</span>], rec2[<span class="hljs-number">0</span>]));
+    <span class="hljs-keyword">int</span> h = max(<span class="hljs-number">0.0</span>, min(rec1[<span class="hljs-number">3</span>], rec2[<span class="hljs-number">3</span>]) - max(rec1[<span class="hljs-number">1</span>], rec2[<span class="hljs-number">1</span>]));
+
+    <span class="hljs-keyword">int</span> intersect = w * h;
+    <span class="hljs-keyword">return</span> intersect /(rec1_area + rec1_area - intersect);
+&#125;</code></pre>
+</li>
+<li><p>resnet 残差(pytorch)</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BasicBlock</span>(<span class="hljs-params">nn.Module</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot; 假设输入通道和输出通道一致 &quot;&quot;&quot;</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, in_channels, out_channels</span>):</span>
+        super(BasicBlock, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels, out_channels, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)
+        self.bn1 = nn.BatchNorm(out_channels)
+        self.relu = nn.ReLU(inplace = <span class="hljs-literal">True</span>);
+        
+        self.conv2 = nn.Conv2d(out_channels, out_channels, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)
+        self.bn2 = nn.BatchNorm(out_channels)
+        
+        self.shortcut = nn.Sequential()
+        <span class="hljs-keyword">if</span> in_channels != out_channels:
+          self.short_cut = nn.Sequential(nn.Conv2d(in_channels, out_channels, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>),
+                                         nn.BatchNorm(out_channels))
+        
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">forward</span>(<span class="hljs-params">self, x</span>):</span>
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(x))
+        out += self.shortcut(x)
+        <span class="hljs-keyword">return</span> self.relu(out)</code></pre>
+</li>
+<li><p>翻转图像、反转图像、旋转矩阵、图像渲染、图像重叠</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 832. 翻转图像</span>
+<span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">flipAndInvertImage</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; A)</span> </span>&#123;
+    <span class="hljs-keyword">if</span>(A.size() == <span class="hljs-number">0</span> || A[<span class="hljs-number">0</span>].size() == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> A;
+
+    <span class="hljs-keyword">int</span> m = A.size();
+    <span class="hljs-keyword">int</span> n = A[<span class="hljs-number">0</span>].size();
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n/<span class="hljs-number">2</span>; j++)&#123;
+            swap(A[i][j], A[i][n-j<span class="hljs-number">-1</span>]);
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++)&#123;
+            A[i][j] = <span class="hljs-number">1</span> - A[i][j];
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> A;
+&#125;
+
+<span class="hljs-comment">// 48. 旋转矩阵</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">rotate</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; matrix)</span> </span>&#123;
+    <span class="hljs-keyword">if</span>(matrix.size() == <span class="hljs-number">0</span> || matrix[<span class="hljs-number">0</span>].size() == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">int</span> row = matrix.size(), col = matrix[<span class="hljs-number">0</span>].size();
+    <span class="hljs-comment">// 沿主对角线对折</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; row; i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i; j &lt; col; j++)&#123;
+            swap(matrix[i][j], matrix[j][i]);
+        &#125;
+    &#125;
+    <span class="hljs-comment">// 水平翻转</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; row; i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; col / <span class="hljs-number">2</span>; j++)&#123;
+            swap(matrix[i][j], matrix[i][col<span class="hljs-number">-1</span>-j]);
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span>;
+&#125;
+
+<span class="hljs-comment">// 733.图像渲染 颜色填充</span>
+<span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">floodFill</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; image, <span class="hljs-keyword">int</span> sr, <span class="hljs-keyword">int</span> sc, <span class="hljs-keyword">int</span> newColor)</span> </span>&#123;
+    <span class="hljs-keyword">if</span>(image.size() == <span class="hljs-number">0</span> || image[<span class="hljs-number">0</span>].size() == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> image;
+    <span class="hljs-keyword">int</span> oriColor = image[sr][sc];
+    bfs(image, sr, sc, newColor, oriColor);
+    <span class="hljs-keyword">return</span> image;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; image, <span class="hljs-keyword">int</span> sr, <span class="hljs-keyword">int</span> sc, <span class="hljs-keyword">int</span> newColor, <span class="hljs-keyword">int</span> oriColor)</span></span>&#123;
+    <span class="hljs-keyword">if</span>(sr &gt;= image.size() || sc &gt;= image[<span class="hljs-number">0</span>].size()  || sc &lt; <span class="hljs-number">0</span> || sr &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">if</span>(image[sr][sc] == oriColor &amp;&amp; image[sr][sc] != newColor)&#123;
+        image[sr][sc] = newColor;
+        bfs(image, sr<span class="hljs-number">-1</span>, sc, newColor, oriColor);
+        bfs(image, sr+<span class="hljs-number">1</span>, sc, newColor, oriColor);
+        bfs(image, sr, sc<span class="hljs-number">-1</span>, newColor, oriColor);
+        bfs(image, sr, sc+<span class="hljs-number">1</span>, newColor, oriColor);
+    &#125;
+&#125;</code></pre>
+</li>
+<li><p>BN 层的实现</p>
+<pre><code class="hljs python"><span class="hljs-comment"># 简化版</span>
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">batchnorm_forward</span>(<span class="hljs-params">x, gamma, beta, eps</span>):</span>
+    <span class="hljs-comment"># calculate mean &amp; var</span>
+    batch_mean = np.mean(x, axis=(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>), keepdims=<span class="hljs-literal">True</span>)
+    batch_var = np.var(x, axis=(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>), keepdims=<span class="hljs-literal">True</span>)
+
+    <span class="hljs-comment"># normalize</span>
+    x_hat = (inp - batch_mean) / np.sqrt(batch_var + eps)
+
+    <span class="hljs-comment"># scale &amp; shift</span>
+    out = x_hat * gamma + beta
+    <span class="hljs-keyword">return</span> out</code></pre>
+<pre><code class="hljs python"><span class="hljs-comment"># 复杂版本</span>
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">batchnorm_forward</span>(<span class="hljs-params">x, gamma, beta, bn_param</span>):</span>
+    mode = bn_param[<span class="hljs-string">&#x27;mode&#x27;</span>]
+    eps = bn_param.get(<span class="hljs-string">&#x27;eps&#x27;</span>, <span class="hljs-number">1e-5</span>) 
+    momentum = bn_param.get(<span class="hljs-string">&#x27;momentum&#x27;</span>, <span class="hljs-number">0.9</span>)
+    
+    N, D = s.shape  <span class="hljs-comment"># N is batch_size * H * W, D is channels</span>
+    running_mean = bn_param.get(<span class="hljs-string">&#x27;running_mean&#x27;</span>, np.zeros(D, dtype=x.dtype))
+    running_var = bn_param.get(<span class="hljs-string">&#x27;running_var&#x27;</span>, np.zeros(D, dtype=x.dtype))
+    
+    out, cahce = <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">if</span> mode == <span class="hljs-string">&#x27;train&#x27;</span>:    
+        batch_mean = np.mean(x, axis=<span class="hljs-number">0</span>, keepdims=<span class="hljs-literal">True</span>)
+        batch_var = np.var(x, axis=<span class="hljs-number">0</span>, keepdims=<span class="hljs-literal">True</span>) 
+        x_norm = (inp - batch_mean) / np.sqrt(batch_var + eps)
+        out = x_norm * gamma + beta
+        <span class="hljs-comment"># store variables in cache</span>
+        cache = (x, x_norm, gamma, beta, eps, batch_mean, batch_var)
+        <span class="hljs-comment"># update running_mean &amp; running var</span>
+        running_mean = momentum * running_mean + (<span class="hljs-number">1</span> - momentum) * batch_mean
+        running_var = momentum * running_var + (<span class="hljs-number">1</span> - momentum) * batch_var
+    <span class="hljs-keyword">elif</span> mode == <span class="hljs-string">&#x27;test&#x27;</span>:
+        x_norm = (x - running_mean) / np.sqrt(running_var + eps)
+        out = x_norm * gamma + beta
+        
+    bn_param[<span class="hljs-string">&#x27;running_mean&#x27;</span>] = running_mean
+    bn_param[<span class="hljs-string">&#x27;running_var&#x27;</span>] = running_var
+    <span class="hljs-keyword">return</span> out, cache</code></pre>
+</li>
+<li><p>kmeans算法</p>
+<pre><code class="hljs python"></code></pre>
+</li>
+<li><p>手写 nms 算法</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pu_cpu_nms</span>(<span class="hljs-params">dets, thresh</span>):</span>
+    <span class="hljs-comment"># 提取四边形并计算区域面积</span>
+    x1 = dets[:, <span class="hljs-number">0</span>]
+    y1 = dets[:, <span class="hljs-number">1</span>]
+    x2 = dets[:, <span class="hljs-number">2</span>]
+    y2 = dets[:, <span class="hljs-number">3</span>]
+    area = (x2 - x1 + <span class="hljs-number">1</span>) * (y2 - y1 + <span class="hljs-number">1</span>)
+    <span class="hljs-comment"># 提取 scores 并进行排序</span>
+    scores = dets[:, <span class="hljs-number">4</span>]
+    order = scores.argsort()[::<span class="hljs-number">-1</span>]
+    
+    keep = []
+    <span class="hljs-keyword">while</span> order.size &gt; <span class="hljs-number">0</span>:
+        <span class="hljs-comment"># 计算 iou</span>
+        i = order[<span class="hljs-number">0</span>]
+        keep.append(i)
+        xx1 = np.maximum(x1[i], x1[<span class="hljs-number">1</span>:])
+        yy1 = np.maximun(y1[i], y1[<span class="hljs-number">1</span>:])
+        xx2 = np.minimum(x2[i], x2[<span class="hljs-number">1</span>:])
+        yy2 = np.minimum(y2[i], y2[<span class="hljs-number">1</span>:])
+        
+        w = np.maximum(<span class="hljs-number">0.0</span>, xx2 - xx1 + <span class="hljs-number">1</span>)
+        h = np.maximum(<span class="hljs-number">0.0</span>, yy2 - yy1 + <span class="hljs-number">1</span>)
+        
+        inter = w * h
+        ovr = inter / (area[i] + area[order[<span class="hljs-number">1</span>:]] - inter)
+        
+        <span class="hljs-comment"># 保留小于 thresh 的 bbox</span>
+        inds = np.where(ovr &lt;= thresh)[<span class="hljs-number">0</span>]
+        order = order[inds + <span class="hljs-number">1</span>]
+        
+    <span class="hljs-keyword">return</span> keep</code></pre>
+</li>
+<li><p>最大的岛屿面积</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid, <span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> c, <span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> n)</span></span>&#123;
+    <span class="hljs-keyword">if</span>(r &lt; <span class="hljs-number">0</span> || c &lt; <span class="hljs-number">0</span> || r &gt;= m || c &gt;= n || grid[r][c] == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+    grid[r][c] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + bfs(grid, r<span class="hljs-number">-1</span>, c, m, n) + bfs(grid, r+<span class="hljs-number">1</span>, c, m, n) 
+                + bfs(grid, r, c<span class="hljs-number">-1</span>, m, n) + bfs(grid, r, c+<span class="hljs-number">1</span>, m, n);
+&#125;
+
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxAreaOfIsland</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;
+    <span class="hljs-keyword">int</span> max_area = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(grid.size() == <span class="hljs-number">0</span> || grid[<span class="hljs-number">0</span>].size() == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> m = grid.size();
+    <span class="hljs-keyword">int</span> n = grid[<span class="hljs-number">0</span>].size();
+
+    <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++)&#123;
+            <span class="hljs-keyword">if</span>(grid[i][j] == <span class="hljs-number">1</span>) &#123;
+                <span class="hljs-keyword">int</span> cur_area = bfs(grid, i, j, m, n);
+                max_area = max(max_area, cur_area);
+            &#125;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> max_area;
+&#125;</code></pre>
+</li>
+<li><p>手写卷积</p>
+<pre><code class="hljs cpp"></code></pre></li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%85%B6%E4%BB%96/">其他</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/02/03/leetcode-review/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">leetcode-review</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/02/03/leetcode-algorithm/">
+                        <span class="hidden-mobile">leetcode-algorithm</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "leetcode-work&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
