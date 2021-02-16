@@ -160,20 +160,21 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/09/13/%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E8%AE%BE%E8%AE%A1%E6%8A%80%E5%B7%A7/">推理引擎设计技巧</a>
+        <a href="/2020/02/03/leetcode-work/">leetcode-work</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/09/13/%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E8%AE%BE%E8%AE%A1%E6%8A%80%E5%B7%A7/">
+        <a href="/2020/02/03/leetcode-work/">
           
           
             
           
-          1. 基于C/C++的基本优化
-编译器很牛逼，GCC/CLANG 都有运行速度的优化选项，打开这些选项能帮助程序显著提升速度，虽然这还远远不够，但聊胜于无吧。
-下面是 ncnn 示例项目中的一段代码:
-# ncnn/examples/squeezencnn/jni/Android.mk
-LOCAL_CFLAGS := -O2 -fvisibility=hidden -fomit-frame-poi
+          
+一些工作中经常会用到的算法
+IOU 的计算
+bool isRectangleOverlap(vector&lt;int&gt;&amp; rec1, vector&lt;int&gt;&amp; rec2) &#123;
+    int area_rec1 = (rec1[3] - rec1[1]) * (rec1[2] - rec1[0]);
+    int aera_rec2 = (rec2
         </a>
       </p>
 
@@ -181,8 +182,8 @@ LOCAL_CFLAGS := -O2 -fvisibility=hidden -fomit-frame-poi
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-13 00:26" pubdate>
-              2020-09-13
+            <time datetime="2020-02-03 08:58" pubdate>
+              2020-02-03
             </time>
           </div>
         
@@ -190,7 +191,7 @@ LOCAL_CFLAGS := -O2 -fvisibility=hidden -fomit-frame-poi
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+              <a href="/categories/%E5%85%B6%E4%BB%96/">其他</a>
             
           </div>
         
@@ -204,26 +205,27 @@ LOCAL_CFLAGS := -O2 -fvisibility=hidden -fomit-frame-poi
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/08/18/rk3399%E7%B3%BB%E7%BB%9F%E7%83%A7%E5%86%99/">rk3399系统烧写</a>
+        <a href="/2020/02/03/leetcode-algorithm/">leetcode-algorithm</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/08/18/rk3399%E7%B3%BB%E7%BB%9F%E7%83%A7%E5%86%99/">
+        <a href="/2020/02/03/leetcode-algorithm/">
           
           
             
           
-          一. 相关工具的准备
-下载 烧写工具:
+          [TOC]
+1. 位运算
+(1) 常见技巧总结
+等号的优先级是大于位运算的!  n &amp; (n-1) == 0 等价于 n &amp; ((n-1) == 0) 而不是 (n &amp; (n-1)) == 0
 
-git clone https://github.com/rockchip-linux/rkbin.git
+对 32bit 位分别进行运算是一种思想 !
 
-下载相关的 ubuntu 镜像。下载地址  https://github.com/lanseyujie/tn3399_v3/release
 
-二. 刷机
-板卡进入刷机模式
-
-连接 usb-c 和 PC 主机。断开电源， 按住 recovey 键， 
+// &amp;   与    |   或    ~  非      ^   异或
+// 最常见的几个用法
+// (1) 
+n &
         </a>
       </p>
 
@@ -231,8 +233,8 @@ git clone https://github.com/rockchip-linux/rkbin.git
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-18 09:25" pubdate>
-              2020-08-18
+            <time datetime="2020-02-03 08:57" pubdate>
+              2020-02-03
             </time>
           </div>
         
@@ -240,7 +242,7 @@ git clone https://github.com/rockchip-linux/rkbin.git
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/DL-Deploy/">DL_Deploy</a>
+              <a href="/categories/%E5%85%B6%E4%BB%96/">其他</a>
             
           </div>
         
@@ -254,16 +256,20 @@ git clone https://github.com/rockchip-linux/rkbin.git
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/05/17/pytorch2ncnn/">pytorch2ncnn</a>
+        <a href="/2020/02/03/leetcode-ds/">leetcode-ds</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/05/17/pytorch2ncnn/">
+        <a href="/2020/02/03/leetcode-ds/">
           
           
             
           
-          借助 onnx 实现 pytorch 到 ncnn 的转换
+          [TOC]
+1. 数组(含二维)和字符串题型一: 同向双指针[283] 移动零 https://leetcode-cn.com/problems/move-zeroes/   🌟🌟// 经典双指针
+void moveZeroes(vector&lt;int&gt;&amp; nums) &#123;
+    int i = 0;
+    for(int j = 0; j &lt; nums.s
         </a>
       </p>
 
@@ -271,8 +277,8 @@ git clone https://github.com/rockchip-linux/rkbin.git
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-05-17 18:15" pubdate>
-              2020-05-17
+            <time datetime="2020-02-03 08:57" pubdate>
+              2020-02-03
             </time>
           </div>
         
@@ -280,49 +286,7 @@ git clone https://github.com/rockchip-linux/rkbin.git
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E8%AF%AD%E8%A8%80%E5%92%8C%E5%BA%93/">语言和库</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/02/06/RNN/">RNN</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/02/06/RNN/">
-          
-          
-            
-          
-          
-title: RNNdate: 2019-03-05 11:49:20tags:
-mathjax: true​        循环神经网络（Recurrent Neural Network）是用来建模序列化数据的一种主流深度学习模型。我们知道，传统的前馈神经网络一般的输入都是一个定长的向量，无法处理变长的序列信息，即使通过一些方法把序列处理成定长的向量，模型也很难捕捉序列中的长距离依赖关系。RN
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-02-06 21:53" pubdate>
-              2020-02-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%9F%BA%E7%A1%80/">基础</a>
+              <a href="/categories/%E5%85%B6%E4%BB%96/">其他</a>
             
           </div>
         
@@ -576,11 +540,51 @@ horovod： Uber 开源外部解决方案
     </article>
   </div>
 
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2019/04/23/YOLO/">YOLO</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/23/YOLO/">
+          
+          
+            
+          
+          YOLO series: YOLO v1. YOLO v2 and. YOLO v3
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-23 16:00" pubdate>
+              2019-04-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9F%BA%E6%9C%AC%E6%96%B9%E5%90%91/">基本方向</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   
