@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.2k 字
+      6.3k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      73
+      76
        分钟
     </span>
   
@@ -222,12 +222,11 @@
 </ul>
 <h4 id="1-网络主体框架"><a href="#1-网络主体框架" class="headerlink" title="1. 网络主体框架"></a>1. 网络主体框架</h4><p>一般分为三个部分： backbone、neck、head</p>
 <h6 id="（1）backbone：常见的-backbone-设计方案有"><a href="#（1）backbone：常见的-backbone-设计方案有" class="headerlink" title="（1）backbone：常见的 backbone 设计方案有"></a>（1）backbone：常见的 backbone 设计方案有</h6><ul>
-<li><p>基础网络：VGG16、Resnet50、CSPReNeXt50</p>
-</li>
-<li><p>Efficientnet、HRNet、SpineNet</p>
-</li>
+<li>基础网络：VGG16、Resnet50、CSPReNeXt50、resnet50-vd</li>
+<li>Efficientnet、HRNet、SpineNet</li>
 <li>轻量级网络：shufflenet、mobilenet、ghostnet </li>
 </ul>
+<p>一些特殊结构： DCN、CoordConv、swish 或 mish 激活函数、Attention module（空间或者通道）、transformer 结构</p>
 <h6 id="2-neck"><a href="#2-neck" class="headerlink" title="(2) neck"></a>(2) neck</h6><p>addition-aggregation：SPP 模块、ASPP 模块、RFB 模块和 SAM 模块</p>
 <p>Path-aggregation：FPN、PANet、NAS-FPN、 FC-FPN、BiFPN、ASFF、 SFAM</p>
 <h6 id="3-head"><a href="#3-head" class="headerlink" title="(3) head"></a>(3) head</h6><p>主要是用于输出结果，一般为常见的卷积层</p>
@@ -237,14 +236,18 @@
 <li>CornerNet、CenterNet、MatrixNet、FCOS(anchor free)</li>
 </ul>
 </li>
-<li>Sparse Prediction(two stage)<ul>
+<li><p>Sparse Prediction(two stage)</p>
+<ul>
 <li>Faster RCNN、F-FCN、Mask R-CNN(anchor based)</li>
 <li>RepPoints(anchor free)</li>
 </ul>
 </li>
+<li><p>单个 Anchor 分配多个标签</p>
+</li>
 </ul>
+<p>其他：更好的预训练模型</p>
 <h4 id="2-nms-设计"><a href="#2-nms-设计" class="headerlink" title="2. nms 设计"></a>2. nms 设计</h4><p>nms 设计要点在于判定两个 bbox 的 IoU。常见的 IoU 如下所示：</p>
-<h5 id="IoU"><a href="#IoU" class="headerlink" title="IoU"></a>IoU</h5><p>IoU就是我们所说的交并比，是目标检测中最常用的指标。 他的作用不仅用来确定正样本和负样本，还可以用来评价输出框 (predict box) 和 ground-truth 的距离。</p>
+<h5 id="2-1-IoU"><a href="#2-1-IoU" class="headerlink" title="2.1 IoU"></a>2.1 IoU</h5><p>IoU就是我们所说的交并比，是目标检测中最常用的指标。 他的作用不仅用来确定正样本和负样本，还可以用来评价输出框 (predict box) 和 ground-truth 的距离。</p>
 <script type="math/tex; mode=display">
 IoU = \frac{A \cup B}{ A \cap B}</script><p>其拥有几个特性：</p>
 <ul>
@@ -268,7 +271,7 @@ IoU = \frac{A \cup B}{ A \cap B}</script><p>其拥有几个特性：</p>
     
     inter = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> (in_h &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> in_w &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">else</span> in_h * in_w
     <span class="hljs-keyword">return</span> inter / (area1 + area2 - inter)</code></pre>
-<h5 id="GIoU"><a href="#GIoU" class="headerlink" title="GIoU"></a>GIoU</h5><p>论文地址: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1902.09630.pdf">https://arxiv.org/pdf/1902.09630.pdf</a></p>
+<h5 id="2-2-GIoU"><a href="#2-2-GIoU" class="headerlink" title="2.2 GIoU"></a>2.2 GIoU</h5><p>论文地址: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1902.09630.pdf">https://arxiv.org/pdf/1902.09630.pdf</a></p>
 <p>​        GIoU（Generalized Intersection over Union）相较于 IoU 多了一个 ‘Generalized’，这也意味着它能在更广义的层面上计算IoU，并解决刚才我们说的 ‘两个图像没有相交时，无法比较两个图像的距离远近’ 的问题。</p>
 <p>GIoU 的计算公式为：</p>
 <script type="math/tex; mode=display">
@@ -295,7 +298,7 @@ GIoU = IoU - \frac{A^c - (A \cup B)}{ A^c}</script><p>其中 $A^c$ 代表两个�
     
   
     <span class="hljs-keyword">return</span> iou - (area_C - union) / area_C</code></pre>
-<h5 id="DIoU"><a href="#DIoU" class="headerlink" title="DIoU"></a>DIoU</h5><p>参考论文：Distance-IoU Loss: Faster and Better Learning for Bounding Box Regression</p>
+<h5 id="2-3-DIoU"><a href="#2-3-DIoU" class="headerlink" title="2.3 DIoU"></a>2.3 DIoU</h5><p>参考论文：Distance-IoU Loss: Faster and Better Learning for Bounding Box Regression</p>
 <p>​        GIoU 虽然解决了 IoU 的一些问题(这里主要是重叠度的问题)，但是它并不能直接反映预测框与目标框之间的距离，比如当目标框完全包裹预测框的时候，IoU 和 GIoU 的值都一样，此时 GIoU 退化为IoU,  无法区分其相对位置关系。</p>
 <p>DIoU(Distance-IoU)即可解决这个问题，它将两个框之间的重叠度、距离、尺度都考虑了进来，DIoU的计算公式如下：</p>
 <script type="math/tex; mode=display">
@@ -318,7 +321,7 @@ DIoU = IoU - \frac{\rho^2(b, b^{gt})}{c^2}</script><p>其中 $b$，$b^{gt}$ 分�
  
     iou = IoU(box1, box2)
     <span class="hljs-keyword">return</span> iou - D_2 / C_2</code></pre>
-<h5 id="CIoU"><a href="#CIoU" class="headerlink" title="CIoU"></a>CIoU</h5><p>CIoU 的全称为 Complete IoU，它在 DIoU 的基础上，还能同时考虑两个矩形的长宽比，也就是形状的相似性，CIoU 的计算公式为：</p>
+<h5 id="2-4-CIoU"><a href="#2-4-CIoU" class="headerlink" title="2. 4 CIoU"></a>2. 4 CIoU</h5><p>CIoU 的全称为 Complete IoU，它在 DIoU 的基础上，还能同时考虑两个矩形的长宽比，也就是形状的相似性，CIoU 的计算公式为：</p>
 <script type="math/tex; mode=display">
 CIoU = IoU - \frac{\rho^2(b, b^{gt})}{c^2} - \alpha v</script><p>其中 $\alpha$ 是权重参数，而 $v$ 用来度量长宽比的相似性：</p>
 <script type="math/tex; mode=display">
@@ -339,7 +342,7 @@ v = \frac{4}{\pi^2} (arctan \frac{w^{gt}}{h^{gt}} - arctan \frac{w}{h})^2, \\
     <span class="hljs-keyword">return</span> diou - alpha * v</code></pre>
 <p>如下图所示， 是以不同的 IoU 作为损失函数， 在 Pascal VOC 验证集上的增益：</p>
 <p><img src="/2020/10/21/principles-of-detection-network-design/5.png" srcset="/img/loading.gif" style="zoom:40%;"></p>
-<h4 id="3-loss-设计"><a href="#3-loss-设计" class="headerlink" title="3. loss 设计"></a>3. loss 设计</h4><p>目标检测中的损失函数 loss 可以分为两类： 第一类是分类损失， 第二类是检测回归损失。</p>
+<h5 id="2-5-Matrix-nms"><a href="#2-5-Matrix-nms" class="headerlink" title="2.5 Matrix nms"></a>2.5 Matrix nms</h5><h4 id="3-loss-设计"><a href="#3-loss-设计" class="headerlink" title="3. loss 设计"></a>3. loss 设计</h4><p>目标检测中的损失函数 loss 可以分为两类： 第一类是分类损失， 第二类是检测回归损失。</p>
 <p>常见的分类损失有： cross entropy、 focal loss、GHM loss、AP loss 和 DR loss 等等</p>
 <p>常见的回归损失有：</p>
 <ul>
@@ -405,7 +408,7 @@ smooth_{L1}(x) &= \left\{
 
 \end{align}</script><p>​        smooth L1 loss 相对于 l2 loss 的优点： 当预测框与 ground truth 差别过大时，梯度值不至于过大；当预测框与 ground truth 差别很小时，梯度值足够小。</p>
 <h5 id="3-2-2-IoU-loss"><a href="#3-2-2-IoU-loss" class="headerlink" title="3.2.2  IoU loss"></a>3.2.2  IoU loss</h5><p>​        首次将 IoU 的概念引入 loss 损失函数由旷视提出， 发表于 UnitBox: An Advanced Object Detection Network。 论文指出，通过 4 个点回归坐标框的方式是假设4个坐标点是相互独立的，没有考虑其相关性，实际 4 个坐标点具有一定的相关性。其中 $IoU_{loss} = 1 - IoU + 修正项$。其中， IoU 可以是 IoU， GIoU， DIoU 和 CIoU。</p>
-<h3 id="二-数据增强技术-含标签增强"><a href="#二-数据增强技术-含标签增强" class="headerlink" title="二. 数据增强技术(含标签增强)"></a>二. 数据增强技术(含标签增强)</h3><p>常见的数据增强方式可以分为四种： 几何变换、光学变换、增强噪声、数据源扩充。</p>
+<h5 id="3-2-3-IOU-Aware"><a href="#3-2-3-IOU-Aware" class="headerlink" title="3.2.3 IOU Aware"></a>3.2.3 IOU Aware</h5><h5 id="3-2-4-Grid-Sensitive"><a href="#3-2-4-Grid-Sensitive" class="headerlink" title="3.2.4 Grid Sensitive"></a>3.2.4 Grid Sensitive</h5><h3 id="二-数据增强技术-含标签增强"><a href="#二-数据增强技术-含标签增强" class="headerlink" title="二. 数据增强技术(含标签增强)"></a>二. 数据增强技术(含标签增强)</h3><p>常见的数据增强方式可以分为四种： 几何变换、光学变换、增强噪声、数据源扩充。</p>
 <ul>
 <li><p>几何变换：可以丰富物体在图像中出现的位置和尺度等， 从而满足模型的平移不变性与尺度不变性。例如平移， 翻转、翻转、缩放和裁剪等操作。尤其是水平翻转 180度， 在多个物体检测算法中都有使用， 效果很好。</p>
 </li>
@@ -416,14 +419,54 @@ smooth_{L1}(x) &= \left\{
 <li>数据源头： 有时为了扩充数据集， 可以将检测物体与其他背景图像融合，通过替换物体背景的方式来增加数据集的丰富性。  比如比较时髦的 CutOut、Mixup、CutMix、Mosaic、label-smoothing 等方案。</li>
 </ul>
 <p>一些比较有用的数据增强方案的代码解析</p>
-<h3 id="三-算法优化"><a href="#三-算法优化" class="headerlink" title="三. 算法优化"></a>三. 算法优化</h3><h4 id="1-学习率"><a href="#1-学习率" class="headerlink" title="1. 学习率"></a>1. 学习率</h4><p>常见的几种学习率的调整方法：  ReduceLROnPlateau、余弦退火、StepLR</p>
+<p><strong>dataset</strong></p>
+<ol>
+<li>data-aug:</li>
+</ol>
 <ul>
-<li>ReduceLROnPlateau：当指定指标不下降（上升）的时候， 将学习率降低为原来的十分之一。是这三种方案里面最优的， 他可以根据训练的情况进行动态调整， 需要注意的是， 用的时候最好设置一下最小学习率，不然后期会因为学习率衰减得过小导致模型不再训练。</li>
-<li>余弦退火使用的时候，最大学习率和最小学习率相差的数量级不要太大(比如1e-1和1e-4)，不然会导致在该快的时候太慢，在该慢的时候太快，特别的接近最优解的时候，太大就直接跑偏。</li>
-<li>StepLR就很传统，也挺好用的，但是灵活度不如 ReduceLROnPlateau。</li>
+<li><p>YOLOv4: CutMix、Mosaic （马赛克） 、Self Adversarial Training， SAT、Label Smoothing</p>
+</li>
+<li><p>PPYolo: DropBlock</p>
+</li>
+<li><p>freebies: Image Mixup、Label Smoothing</p>
+</li>
+<li><p>mixup</p>
+</li>
 </ul>
-<p>warmup：warmup 是在 resnet 论文中提到的一种学习率预热的方法，它在训练开始的时候先选择使用一个较小的学习率，训练了一些 epoches 或者 steps (比如 4 个epoches, 10000steps)， 再修改为预先设置的学习来进行训练。由于刚开始训练时，模型的权重(weights)是随机初始化的，此时若选择一个较大的学习率,可能带来模型的不稳定(振荡)，选择 Warmup 预热学习率的方式，可以使得开始训练的几个 epoches 或者一些 steps 内学习率较小，在预热的小学习率下，模型可以慢慢趋于稳定,等模型相对稳定后再选择预先设置的学习率进行训练,使得模型收敛速度变得更快，模型效果更佳。</p>
-<h4 id="2-优化器"><a href="#2-优化器" class="headerlink" title="2. 优化器"></a>2. 优化器</h4><h4 id="3-归一化"><a href="#3-归一化" class="headerlink" title="3. 归一化"></a>3. 归一化</h4><p>常见的归一化方式如下图所示，其中 N 是 batch size， C 表示的是 channel， H 和 W 表示单张图片的宽度和高度, 蓝色区域的部分就是需要归一化的部分。</p>
+<ol>
+<li><p>big batchsize</p>
+</li>
+<li><p>random shapes training</p>
+</li>
+<li><p>解决数据不平衡问题</p>
+</li>
+<li><p>freebies：Data Preprocessing </p>
+</li>
+</ol>
+<h3 id="三-算法优化"><a href="#三-算法优化" class="headerlink" title="三. 算法优化"></a>三. 算法优化</h3><h4 id="1-学习率-done"><a href="#1-学习率-done" class="headerlink" title="1. 学习率 done"></a>1. 学习率 done</h4><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>scheduler = ...
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> range(<span class="hljs-number">100</span>):
+<span class="hljs-meta">&gt;&gt;&gt; </span>    train(...)
+<span class="hljs-meta">&gt;&gt;&gt; </span>    validate(...)
+<span class="hljs-meta">&gt;&gt;&gt; </span>    scheduler.step()</code></pre>
+<p>常见的几种学习率的调整方法：  ReduceLROnPlateau、余弦退火、StepLR</p>
+<ul>
+<li><p>ReduceLROnPlateau：当指定指标不下降（上升）的时候， 将学习率降低为原来的十分之一。是这三种方案里面最优的， 他可以根据训练的情况进行动态调整， 需要注意的是， 用的时候最好设置一下最小学习率，不然后期会因为学习率衰减得过小导致模型不再训练。</p>
+<pre><code class="hljs python">torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode=<span class="hljs-string">&#x27;min&#x27;</span>, factor=<span class="hljs-number">0.1</span>, patience=<span class="hljs-number">10</span>, threshold=<span class="hljs-number">0.0001</span>, threshold_mode=<span class="hljs-string">&#x27;rel&#x27;</span>, cooldown=<span class="hljs-number">0</span>, min_lr=<span class="hljs-number">0</span>, eps=<span class="hljs-number">1e-08</span>, verbose=<span class="hljs-literal">False</span>)</code></pre>
+</li>
+<li><p>余弦退火使用的时候，最大学习率和最小学习率相差的数量级不要太大(比如1e-1和1e-4)，不然会导致在该快的时候太慢，该慢的时候太快，特别的接近最优解的时候，太大就直接跑偏</p>
+<pre><code class="hljs python">torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max, eta_min=<span class="hljs-number">0</span>, last_epoch=<span class="hljs-number">-1</span>, verbose=<span class="hljs-literal">False</span>)</code></pre>
+</li>
+<li><p>StepLR 传统，也挺好用的，但是灵活度不如 ReduceLROnPlateau</p>
+<pre><code class="hljs python">torch.optim.lr_scheduler.StepLR(optimizer, step_size, gamma=<span class="hljs-number">0.1</span>, last_epoch=<span class="hljs-number">-1</span>, verbose=<span class="hljs-literal">False</span>)</code></pre>
+</li>
+</ul>
+<p>warmup：warmup 是在 resnet 论文中提到的一种学习率预热的方法，它在训练开始的时候先选择使用一个较小的学习率，训练了一些 epoches 或者 steps (比如 4 个epoches, 10000steps)， 再修改为预先设置的学习来进行训练。由于刚开始训练时，模型的权重(weights)是随机初始化的，此时若选择一个较大的学习率,可能带来模型的不稳定(振荡)，选择 Warmup 预热学习率的方式，可以使得开始训练的几个 epoches 或者一些 steps 内学习率较小，在预热的小学习率下，模型可以慢慢趋于稳定,等模型相对稳定后再选择预先设置的学习率进行训练,使得模型收敛速度变得更快，模型效果更佳</p>
+<pre><code class="hljs python">torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0, T_mult=<span class="hljs-number">1</span>, eta_min=<span class="hljs-number">0</span>, last_epoch=<span class="hljs-number">-1</span>, verbose=<span class="hljs-literal">False</span>)</code></pre>
+<p>​        通常当我们增加 batchsize 为原来的 n 倍时，要保证经过同样的样本后更新的权重相等，按照线性缩放规则，学习率应该增加为原来的 n 倍[5]。但是如果要保证权重的方差不变，则学习率应该增加为原来的 sqrt(n) 倍[7]，目前这两种策略都被研究过，使用前者的明显居多。</p>
+<h4 id="2-优化器-done"><a href="#2-优化器-done" class="headerlink" title="2. 优化器 done"></a>2. 优化器 done</h4><p>SGD with momentum 和 Adam variants 是最通用、最基本的选择。 计算机视觉任务优先使用前者， NLP 优先使用后者。原因是自适应优化器 adam 更容易找到 sharp minima， 泛化性能常常比 SGD 差。</p>
+<pre><code class="hljs python">torch.optim.Adam(params, lr=<span class="hljs-number">0.001</span>, betas=(<span class="hljs-number">0.9</span>, <span class="hljs-number">0.999</span>), eps=<span class="hljs-number">1e-08</span>, weight_decay=<span class="hljs-number">0</span>, amsgrad=<span class="hljs-literal">False</span>)</code></pre>
+<pre><code class="hljs python">torch.optim.SGD(params, lr=&lt;required parameter&gt;, momentum=<span class="hljs-number">0</span>, dampening=<span class="hljs-number">0</span>, weight_decay=<span class="hljs-number">0</span>, nesterov=<span class="hljs-literal">False</span>)</code></pre>
+<h4 id="3-归一化"><a href="#3-归一化" class="headerlink" title="3. 归一化"></a>3. 归一化</h4><p>常见的归一化方式如下图所示，其中 N 是 batch size， C 表示的是 channel， H 和 W 表示单张图片的宽度和高度, 蓝色区域的部分就是需要归一化的部分。</p>
 <p><img src="/2020/10/21/principles-of-detection-network-design/7.png" srcset="/img/loading.gif" style="zoom:60%;"></p>
 <p>归一化步骤</p>
 <ul>
@@ -432,19 +475,17 @@ smooth_{L1}(x) &= \left\{
 <li><p>加入缩放和平移变量 $\gamma$ 和 $\beta$， 归一化后的值 $y = \gamma x’ + \beta$</p>
 </li>
 </ul>
-<p>Batch Normalization：<strong>BN适用于判别模型，比如图片分类模型</strong>。BN 注重对每个 batch 进行归一化，从而保证数据分布的一致性，而判别模型的结果正是取决于数据整体分布。但是 BN 对 batchsize 的大小比较敏感，由于每次计算的均值和方差是在一个 batch 上，所以如果 batchsize 太小，则计算的均值方差不足以代表整个数据分布。</p>
-<p>Instance Normalization<strong>: </strong>IN 适用于生成模型，比如图片分割、迁移。因为图片生成的结果主要依赖于某个图像实例，所以对整个 batch 归一化不适合图像风格化中，在风格迁移中使用Instance Norm 不仅可以加速模型收敛，并且可以保持图像实例之间的独立。</p>
-<p>Group Normalization:为了解决 Batch Normalization 对较小的 mini-batch 效果差的问题(没办法通过几个样本的数据量，来近似总体的均值和标准差)。其主要思想是在 channel 方向 group，然后每个 group 内做归一化<em>*，计算 (C/G)</em>H*W 的均值和方差，这样就与 batch size 无关，不受其约束。Group Normalization 把每一个样本特征图的通道分成 G 组，对每组求均值和标准差，并独立地进行归一化。</p>
-<p>Layer Normlization：Layer Normalization 的一个优势是不需要批训练，在单条数据内部就能归一化，因此可以用于 batch size 为 1 和 RNN 中。<strong>Layer Normalization 用于 RNN 效果比较明显，但是在CNN上，效果不如BN</strong> </p>
+<p>四个 Normalization 适用于不同的模型。 其中  Batch Normalization：适用于判别模型，比如图片分类。Instance Normalization 适用于生成模型，比如图片分割、迁移。Group Normalization 则是为了解决 Batch Normalization 对较小的 mini-batch 效果差的问题。 Layer Normlization 多用于 NLP 任务比如 RNN 和 Transformer。</p>
+<p>? ? ? ? ? BN: CmBN/SyncBN</p>
 <h4 id="4-初始化"><a href="#4-初始化" class="headerlink" title="4. 初始化"></a>4. 初始化</h4><p>网络参数初始化的优劣在极大程度上决定了网络的最终性能。网络参数初始化方式主要有以下几种：</p>
 <ul>
 <li>全零初始化：全零初始化会导致神经元的输出相同，相同的输出导致梯度更新完全一样，这样便会令更新后的参数仍然保持一样的状态，从而无法对模型进行训练。</li>
 <li>随机初始化：将参数值随机设定为接近0的一个很小的随机数（有正有负）。比如使用高斯分布或者均匀分布。比较推荐的模型包括： Xavier 初始化方式和 Kaiming 初始化方式。</li>
-<li><p>预训练模型初始化</p>
-</li>
-<li><p>数据敏感的参数初始化方式  <a target="_blank" rel="noopener" href="https://github.com/philkr/magic_init">https://github.com/philkr/magic_init</a></p>
-</li>
+<li>预训练模型初始化</li>
+<li>数据敏感的参数初始化方式  <a target="_blank" rel="noopener" href="https://github.com/philkr/magic_init">https://github.com/philkr/magic_init</a></li>
 </ul>
+<h4 id="5-参数更新方案"><a href="#5-参数更新方案" class="headerlink" title="5. 参数更新方案"></a>5. 参数更新方案</h4><p>遗传算法选择超参数</p>
+<p>参数更新上使用滑动平均</p>
 <h3 id="四-其他"><a href="#四-其他" class="headerlink" title="四. 其他"></a>四. 其他</h3><h4 id="1-编写代码的基本流程"><a href="#1-编写代码的基本流程" class="headerlink" title="1. 编写代码的基本流程"></a>1. 编写代码的基本流程</h4><ul>
 <li>构建网络， 输入随机 Tensor， 检查输入和输出是否正确。</li>
 <li>构建数据集读取接口， 查看是否能够准确的读取数据、可视化，并检测数据</li>

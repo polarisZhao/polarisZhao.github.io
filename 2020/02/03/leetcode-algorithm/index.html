@@ -1682,37 +1682,36 @@ sort(pair_vec.begin(), pair_vec.end(),
 <li><p>sort 接受一个用户指定的函数 cmp。可以使外部定义的函数， 也可以是内嵌的 lambda 函数。 要求: 对于排序后的每两个相邻元素都要满足使 cmp 结果为 TRUE。也就是说，在进行比较运算的时候拿用户定义的比较函数来替代原有的比较运算符。</p>
 </li>
 </ul>
-<h6 id="lcof-51-逆序数-https-leetcode-cn-com-problems-shu-zu-zhong-de-ni-xu-dui-lcof-🌟🌟🌟🌟"><a href="#lcof-51-逆序数-https-leetcode-cn-com-problems-shu-zu-zhong-de-ni-xu-dui-lcof-🌟🌟🌟🌟" class="headerlink" title="[lcof 51] 逆序数  https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/   🌟🌟🌟🌟"></a>[lcof 51] 逆序数  <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/">https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/</a>   🌟🌟🌟🌟</h6><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; tmp, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span> </span>&#123;
-    <span class="hljs-keyword">if</span> (l &gt;= r)   <span class="hljs-keyword">return</span>;
+<h6 id="lcof-51-逆序数-https-leetcode-cn-com-problems-shu-zu-zhong-de-ni-xu-dui-lcof-🌟🌟🌟🌟"><a href="#lcof-51-逆序数-https-leetcode-cn-com-problems-shu-zu-zhong-de-ni-xu-dui-lcof-🌟🌟🌟🌟" class="headerlink" title="[lcof 51] 逆序数  https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/   🌟🌟🌟🌟"></a>[lcof 51] 逆序数  <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/">https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/</a>   🌟🌟🌟🌟</h6><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; tmp, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span></span>&#123;
+    <span class="hljs-keyword">if</span>(l &gt;= r) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> mid = l + (r - l) / <span class="hljs-number">2</span>;
+    <span class="hljs-comment">// l -&gt; mid 和 mid+1 -&gt; r</span>
+    <span class="hljs-keyword">int</span> inv_cnt = mergeSort(nums, tmp, l, mid) + mergeSort(nums, tmp, mid+<span class="hljs-number">1</span>, r);
 
-    <span class="hljs-keyword">int</span> mid = l + (r-l) / <span class="hljs-number">2</span>;
-    mergeSort(nums, tmp, l, mid);
-    mergeSort(nums, tmp, mid + <span class="hljs-number">1</span>, r);
-
-    <span class="hljs-keyword">int</span> i = l, j = mid + <span class="hljs-number">1</span>, pos = l;
-    <span class="hljs-keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= r) &#123;
-        <span class="hljs-keyword">if</span> (nums[i] &lt;= nums[j]) &#123;
-            tmp[pos++] = nums[i];
-            ++i;
-            inv_count += (j - (mid + <span class="hljs-number">1</span>));
-        &#125;
-        <span class="hljs-keyword">else</span> &#123;
-            tmp[pos++] = nums[j];
-            ++j;
+    <span class="hljs-keyword">int</span> i = l, j = mid+<span class="hljs-number">1</span>, pos = l;
+    <span class="hljs-keyword">while</span>(i &lt;= mid &amp;&amp; j &lt;= r)&#123;
+        <span class="hljs-keyword">if</span>(nums[i] &lt;= nums[j])&#123;
+            tmp[pos++] = nums[i++];
+            inv_cnt += (j - mid - <span class="hljs-number">1</span>); <span class="hljs-comment">// j - mid - 1</span>
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            tmp[pos++] = nums[j++];
         &#125;
     &#125;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = i; k &lt;= mid; ++k) &#123;
-        tmp[pos++] = nums[k];
-        inv_count += (j - (mid + <span class="hljs-number">1</span>));
+
+    <span class="hljs-keyword">while</span>(i &lt;= mid)&#123;
+        tmp[pos++] = nums[i++];
+        inv_cnt += (j - mid - <span class="hljs-number">1</span>);
     &#125;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = j; k &lt;= r; ++k)  tmp[pos++] = nums[k];
+    <span class="hljs-keyword">while</span>(j &lt;= r) tmp[pos++] = nums[j++];
     copy(tmp.begin() + l, tmp.begin() + r + <span class="hljs-number">1</span>, nums.begin() + l);
+    <span class="hljs-keyword">return</span> inv_cnt;
 &#125;
 
+
 <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">reversePairs</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;
-    <span class="hljs-keyword">int</span> n = nums.size();
-    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">tmp</span><span class="hljs-params">(n)</span></span>;
-    <span class="hljs-keyword">return</span> mergeSort(nums, tmp, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">if</span>(nums.size() == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">tmp</span><span class="hljs-params">(nums.size(), <span class="hljs-number">0</span>)</span></span>;
+    <span class="hljs-keyword">return</span> mergeSort(nums, tmp, <span class="hljs-number">0</span>, nums.size()<span class="hljs-number">-1</span>);
 &#125;
 
 </code></pre>

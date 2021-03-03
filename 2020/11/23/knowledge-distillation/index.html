@@ -153,8 +153,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-01-13 21:19" pubdate>
-        January 13, 2021 pm
+      <time datetime="2020-11-23 21:19" pubdate>
+        November 23, 2020 pm
       </time>
     </span>
   
@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      477 字
+      1k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      12
        分钟
     </span>
   
@@ -208,18 +208,35 @@
             <h1 style="display: none">knowledge-distillation</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="知识蒸馏"><a href="#知识蒸馏" class="headerlink" title="知识蒸馏"></a>知识蒸馏</h2><h4 id="1-基本思想"><a href="#1-基本思想" class="headerlink" title="1. 基本思想"></a>1. 基本思想</h4><p>​        知识蒸馏通过采用预先训练好的教师模型( teacher model) 的输出作为监督信号去训练另外一个轻量化的网络( student model ) 。从而实现将复杂网络(老师模型)的知识迁移到小网络(学生模型) 中， 提高小网络的精度。</p>
-<p>​        知识蒸馏首先由 Hinton 在 Distilling the Knowledge in a Neural Network 提出，使用 teacher 模型去指导一个参数量和运算量更少的 student 模型。student 模型的训练有两个目标：一个是 student 模型输出的类别概率和 label 的交叉熵，另一个是 student 模型输出的类别概率和 teacher 模型输出的类别概率的交叉熵，记为 soft target，这两个 loss 加权后得到最终的训练 loss，共同指导 student 模型的训练。 实际操作的时候，会将原来的 softmax 除以 T， 变为:</p>
+              <h2 id="知识蒸馏"><a href="#知识蒸馏" class="headerlink" title="知识蒸馏"></a>知识蒸馏</h2><h4 id="1-基本思想"><a href="#1-基本思想" class="headerlink" title="1. 基本思想"></a>1. 基本思想</h4><p>​        知识蒸馏通过采用预先训练好的教师模型( teacher model) 的输出作为监督信号去训练另外一个轻量化的网络( student model ) 。从而实现将复杂网络(老师模型)的知识迁移到小网络(学生模型) 中， 提高小网络的精度。蒸馏的目的是让学生模型学习到教师模型的泛化能力，而不是去过拟合训练数据。</p>
+<p>​        知识蒸馏首先由 Hinton 在 Distilling the Knowledge in a Neural Network 定义，使用 teacher 模型去指导一个参数量和运算量更少的 student 模型。student 模型的训练有两个目标：一个是 student 模型输出的类别概率和 label 的交叉熵，另一个是 student 模型输出的类别概率和 teacher 模型输出的类别概率的交叉熵，记为 soft target，这两个 loss 加权后得到最终的训练 loss，共同指导 student 模型的训练。 实际操作的时候，会将原来的 softmax 除以 T， 变为:</p>
 <script type="math/tex; mode=display">
-y_i = \frac{exp(x_i / T)}{\sum_j{exp(x_j/T)}}</script><p><img src="/2021/01/13/knowledge-distillation/5.png" srcset="/img/loading.gif" alt="img" style="zoom:30%;"></p>
+y_i = \frac{exp(x_i / T)}{\sum_j{exp(x_j/T)}}</script><p><img src="/2020/11/23/knowledge-distillation/5.png" srcset="/img/loading.gif" alt="img" style="zoom:30%;"></p>
+<p>​        如果 T 越大，则输出的结果的分布越平缓，相当于平滑的一个作用，起到保留相似信息的作用。如果 T 等于无穷，就是一个均匀分布。</p>
+<p>几个问题：</p>
+<p>（1） T 的选择？T 通常设置为  1，在 paper 中，T 的范围为 1-20。根据经验，student model 和 teacher model 差距越大， T 应该设置的越小。 </p>
+<p>（2）蒸馏时的损失函数为</p>
+<script type="math/tex; mode=display">
+Loss = \alpha CE(y, p) + \beta CE(p, q) \cdot T^2</script><p>其中 CE 是交叉熵（Cross-Entropy），y是真实 label，p 是学生模型的预测结果， q 是教师模型的预测结果。$\alpha$ 和 $\beta$ 是 两个 CE 的加权值， 默认 $\alpha + \beta = 1$。这里要注意的是，因为学生模型要拟合教师模型的分布，所以在求 p 时的也要使用一样的参数 T。另外，因为在求梯度时新的目标函数会导致梯度是以前的 $\frac{1}{T^2}$ ，所以要再乘上 $T^2$。</p>
+<p>（3）如果可以拟合 prob，那直接拟合 logits 可以吗？ 可以，Hinton 在论文中进行了证明，如果 T 很大，且 logits 分布的均值为0 时，优化概率交叉熵和 logits 的平方差是等价的。</p>
+<p>（4） kd loss 和 ce 的 可以使用 mse 作为 loss 吗 ？</p>
+<p>mse 的 label 往往是一个任意值而不是概率。知识蒸馏旨在让 student model 学习 teacher model 的概率分布，衡量两个分布的差异，使用 CE 或者 KL 散度更加合适。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/436604824/answer/1647365123">https://www.zhihu.com/question/436604824/answer/1647365123</a></p>
+<p>（5）为什么 KD 有效？</p>
+<ul>
+<li><p>KD 促使 DNN 更容易从数据中学习更多的视觉概念。prod 具有更大的熵， 包含类间关系等更加丰富的信息。</p>
+</li>
+<li><p>KD 可确保 DNN 更容易同时学习到各种视觉概念，在没有 KD 的情况下，DNN 在多个阶段分阶段学习不同的视觉概念。</p>
+</li>
+<li><p>KD 使得学习产生了更稳定的优化方向。</p>
+</li>
+</ul>
 <h4 id="2-优缺点"><a href="#2-优缺点" class="headerlink" title="2. 优缺点"></a>2. 优缺点</h4><h5 id="2-1-优点"><a href="#2-1-优点" class="headerlink" title="2.1 优点"></a>2.1 优点</h5><ul>
 <li>知识蒸馏不局限于特定的网络， 可以实现任何网络的蒸馏。 </li>
 </ul>
 <h5 id="2-2-缺点"><a href="#2-2-缺点" class="headerlink" title="2.2 缺点"></a>2.2 缺点</h5><ul>
-<li><p>知识蒸馏的过程也是训练的过程， 同样需要足够多的数据并耗费大量的时间</p>
-</li>
-<li><p>需要精心设计学生网络。</p>
-</li>
+<li>知识蒸馏的过程也是训练的过程， 同样需要足够多的数据并耗费大量的时间</li>
+<li>需要精心设计学生网络</li>
 </ul>
 <h5 id="2-3-相关改进"><a href="#2-3-相关改进" class="headerlink" title="2.3 相关改进"></a>2.3 相关改进</h5><ul>
 <li><p>使用 GAN 来生成相应的数据</p>
@@ -238,6 +255,8 @@ y_i = \frac{exp(x_i / T)}{\sum_j{exp(x_j/T)}}</script><p><img src="/2021/01/13/k
 <p>FastBERT: a Self-distilling BERT with Adaptive Inference Time</p>
 </li>
 </ul>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/160206075">https://zhuanlan.zhihu.com/p/160206075</a></p>
 
             </div>
             <hr>
@@ -254,12 +273,18 @@ y_i = \frac{exp(x_i / T)}{\sum_j{exp(x_j/T)}}</script><p><img src="/2021/01/13/k
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2020/11/24/network-pruning/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">network-pruning</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/01/12/TensorRT/">
-                        <span class="hidden-mobile">TensorRT</span>
+                      <a href="/2020/11/15/lightweight-cnn-architecture-design/">
+                        <span class="hidden-mobile">lightweight-cnn-architecture-design</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

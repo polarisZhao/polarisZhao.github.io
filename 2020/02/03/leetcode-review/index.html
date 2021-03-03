@@ -165,7 +165,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.3k 字
+      1.5k 字
     </span>
   
 
@@ -175,7 +175,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      16
+      20
        分钟
     </span>
   
@@ -287,31 +287,28 @@ reverse、partition、range、
 cache、cand、point、amount、rest、flag、base、coins
 prime、fill、cap、delete_node、</code></pre>
 <h3 id="3-高频题目"><a href="#3-高频题目" class="headerlink" title="3. 高频题目"></a>3. 高频题目</h3><ol>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/generate-parentheses">括号生成</a></li>
-</ol>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/reverse-nodes-in-k-group">K 个一组翻转链表</a></li>
-</ol>
-<ol>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/search-in-rotated-sorted-array">搜索旋转排序数组</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/generate-parentheses">括号生成</a> 🌟</p>
+<p>(1) 主函数一般是声明 res， track， 调用， 返回   （2）递归函数：不符合返回， 符合处理， 递归调用</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/search-in-rotated-sorted-array">搜索旋转排序数组</a>  🌟</p>
 <p>先和左端点进行比较(<strong>&gt;=</strong>)、判定区间是否有序， 然后判断 target 是否在有序区间内 ！</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array">在排序数组中查找元素的第一个和最后一个位置</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array">在排序数组中查找元素的第一个和最后一个位置</a>  🌟</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/trapping-rain-water">接雨水</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/trapping-rain-water">接雨水</a>  🌟</p>
 <p>max_element 函数</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/permutations-ii">全排列 II</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/permutations-ii">全排列 II</a>  🌟</p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/n-queens">N 皇后</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/jump-game">跳跃游戏</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/jump-game">跳跃游戏</a>  🌟</p>
 <p>先判断，再跳跃</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/merge-intervals">合并区间</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/merge-intervals">合并区间</a>  🌟</p>
 <p>根据区间右端点进行排序， 利用 vector， 需要判定是否进行区间覆盖</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-search">单词搜索</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-search">单词搜索</a>  🌟</p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximal-rectangle">最大矩形</a></p>
 <pre><code class="hljs cpp"><span class="hljs-comment">// 将其转化为接雨水的问题</span>
@@ -322,42 +319,42 @@ prime、fill、cap、delete_node、</code></pre>
     area = max(area, w * h);
 &#125;</code></pre>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal">二叉树的层序遍历</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal">二叉树的层序遍历</a>  🌟</p>
 <p>在循环外取 size， 然后进行遍历 需要判断左右子树是否为空</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal">从前序与中序遍历序列构造二叉树</a></p>
-<p>（1）前序全局、中序取 map  （2）三个参数: pre_root: 根节点在前序遍历中的下标、中序遍历的左侧边界和右侧边界<br>（3）右子树的根节点: 前序遍历的根节点的坐标 + 左子树的个数 + 1</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal">从前序与中序遍历序列构造二叉树</a>   🌟</p>
+<p>（1）前序全局、中序取 map  （2）三个参数: pre_root: 根节点在前序遍历中的下标、中序遍历的左侧边界和右侧边界<br>（3）右子树的根节点: 前序遍历的根节点的坐标 + 左子树的个数 + 1<br>（4）递归退出条件： <code>if(right &lt; left) return NULL;</code></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-maximum-path-sum">二叉树中的最大路径和</a><br>递归处理的几个步骤：何时跳出递归？ 处理部分？ 递归部分 ？ 返回值<br>helper 函数的作用： 求从根节点出发的最大路径！</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-maximum-path-sum">二叉树中的最大路径和</a>  🌟<br>递归处理的几个步骤：何时跳出递归？ 处理部分？ 递归部分 ？ 返回值<br>helper 函数的作用： 求从根节点出发的最大路径！</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/copy-list-with-random-pointer">复制带随机指针的链表</a><br>（1） 一个 node 的 vec、一个 node 2 idx 的 map  （2） 别忘记 push_back(0)</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/copy-list-with-random-pointer">复制带随机指针的链表</a>  🌟<br>（1） 一个 node 的 vec、一个 node 2 idx 的 map  （2） 别忘记 push_back(0)</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/linked-list-cycle-ii">环形链表 II</a><br>(1) 会证明吗?    （2）fast、slow 初始化均为 head， 然后先移动，后判定是否相等</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/linked-list-cycle-ii">环形链表 II</a>  🌟<br>(1) 会证明吗?    （2）fast、slow 初始化均为 head， 然后先移动，后判定是否相等</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-preorder-traversal">二叉树的前序遍历</a><br>前序遍历和中序遍历的区别在 push_back 的位置</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-preorder-traversal">二叉树的前序遍历</a>  🌟<br>前序遍历和中序遍历的区别在 push_back 的位置</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array">寻找旋转排序数组中的最小值</a><br>和右端点进行比较， 如果大于 left = mid + 1； 如果小于 right = mid;  如果等于 right—;</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array">寻找旋转排序数组中的最小值</a>  🌟🌟<br>和右端点进行比较， 如果大于 left = mid + 1； 如果小于 right = mid;  如果等于 right—;</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/palindrome-linked-list">回文链表</a><br>(1) 求中间值， 翻转，判断回文 (2) 将中间节点的前置节点的 next 指针置零   (3) 两个指针均不为空 </p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/palindrome-linked-list">回文链表</a>  🌟<br>(1) 求中间值， 翻转，判断回文 (2) 将中间节点的前置节点的 next 指针置零   (3) 两个指针均不为空 </p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree">二叉树的最近公共祖先</a><br><code>if(left &amp;&amp; right) return root;   return left ? left : right;</code></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree">二叉树的最近公共祖先</a>  🌟<br><code>if(left &amp;&amp; right) return root;   return left ? left : right;</code></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-number-of-arrows-to-burst-balloons">用最少数量的箭引爆气球</a><br>按照左端点进行排序</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-number-of-arrows-to-burst-balloons">用最少数量的箭引爆气球</a> 🌟<br>按照左端点进行排序</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-an-array">排序数组</a><br>几个条件不同：<code>while(left != right)</code> 、 <code>left &lt; right</code> 、<code>nums[left] &gt;= pivot</code> （2） return left</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-an-array">排序数组</a>       🌟<br>几个条件不同：<code>while(left != right)</code> 、 <code>left &lt; right</code> 、<code>nums[left] &gt;= pivot</code> （2） return left</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof">最小的k个数</a><br>最小的k个数， 用最大堆， 声明时用 less； 最大的k个数， 用最小堆， 声明时用 greater</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof">最小的k个数</a> 🌟<br>最小的k个数， 用最大堆， 声明时用 less； 最大的k个数， 用最小堆， 声明时用 greater</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shu-ju-liu-zhong-de-zhong-wei-shu-lcof">数据流中的中位数</a><br><img src="/2020/02/03/leetcode-review/1.png" srcset="/img/loading.gif" style="zoom:40%;"></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shu-ju-liu-zhong-de-zhong-wei-shu-lcof">数据流中的中位数</a> 🌟<br><img src="/2020/02/03/leetcode-review/1.png" srcset="/img/loading.gif" style="zoom:40%;"></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof">二叉树中和为某一值的路径</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof">二叉树中和为某一值的路径</a> 🌟</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof">数组中的逆序对</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof">数组中的逆序对</a> 🌟</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof">滑动窗口的最大值</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof">滑动窗口的最大值</a>  🌟</p>
 <p>先进行弹出队列头元素的判断(i - q.front() &gt;= k)，再进行添加 (i &gt;= k-1)   res 添加的是坐标，而不是元素           </p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/lru-cache-lcci">LRU 缓存</a></p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/lru-cache-lcci">LRU 缓存</a> 🌟</p>
 <p>以对 cache 的操作为主，对 map 的操作只有满了的时候删除 <code>m_map.erase(cache.back().first)</code> 和 两个操作的更改指向 <code>m_map[key] = cache.begin()</code>。 其余的基本是对cache 进行操作。</p>
 </li>
 <li><p>BN 操作的实现</p>
@@ -370,6 +367,48 @@ prime、fill、cap、delete_node、</code></pre>
     
     <span class="hljs-keyword">return</span> out_x</code></pre>
 </li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/reverse-nodes-in-k-group">K 个一组翻转链表</a></p>
+<pre><code class="hljs c++"><span class="hljs-function">ListNode* <span class="hljs-title">reverse</span><span class="hljs-params">(ListNode * head)</span></span>&#123;
+ListNode * prev = <span class="hljs-literal">NULL</span>;
+    ListNode * cur = head;
+<span class="hljs-keyword">while</span>(cur)&#123;
+        ListNode * next = cur -&gt; next;
+        cur -&gt; next = prev;
+        prev = cur;
+        cur = next;
+    &#125;
+<span class="hljs-keyword">return</span> prev;
+&#125;
+
+<span class="hljs-function">ListNode* <span class="hljs-title">reverseKGroup</span><span class="hljs-params">(ListNode* head, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
+    
+    ListNode * dummy = <span class="hljs-keyword">new</span> ListNode(<span class="hljs-number">0</span>);
+    dummy -&gt; next = head;
+
+    ListNode * prev = dummy;
+    ListNode * tail = dummy;
+
+    <span class="hljs-keyword">while</span>(tail-&gt;next != <span class="hljs-literal">NULL</span>)&#123;
+        <span class="hljs-comment">// 首先定位出来 prev 和 tail 节点</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; k &amp;&amp; tail != <span class="hljs-literal">NULL</span>; i++) tail = tail -&gt; next;
+        <span class="hljs-keyword">if</span>(tail == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">break</span>;
+        <span class="hljs-comment">// 利用 prev 定位出 start， 利用 tail 定位出 next 节点 </span>
+        ListNode * start = prev -&gt; next;
+        ListNode * next = tail -&gt; next;
+        tail -&gt; next = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">// 注意这一句</span>
+        <span class="hljs-comment">// 翻转，然后连接链表</span>
+        prev -&gt; next = reverse(start);
+        start -&gt; next = next;
+        <span class="hljs-comment">// 更新 prev 和 tail 节点</span>
+        prev = start;
+        tail = start;
+    &#125;
+
+    <span class="hljs-keyword">return</span> dummy -&gt; next;
+&#125;</code></pre>
+</li>
+</ol>
+<ol>
 <li><p>nms 实现</p>
 <p>最核心的几个操作: 解析出来 x1，y1，x2， y2， scores 和 求 iou<br>排序:   <code>order = scores.argsort()[::-1]</code></p>
 <p>对 iou 的选择：</p>
